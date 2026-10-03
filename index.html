@@ -47,6 +47,9 @@ html{scroll-behavior:smooth}body{font-family:Inter,system-ui,-apple-system,Blink
 .comments{padding-top:12px}.comment{display:flex;gap:9px;margin-top:10px}.comment .user-pic{width:34px;height:34px;font-size:12px}.comment-bubble{background:#f2f5f8;border-radius:14px;padding:9px 11px;flex:1}.comment-name{font-size:12px;font-weight:900}.comment-name span{color:var(--azul);font-weight:750;margin-left:4px}.comment-text{font-size:13px;line-height:1.4;margin-top:2px}.comment-form{display:flex;gap:8px;margin-top:12px}.comment-form input{flex:1;border:1px solid var(--borda);border-radius:13px;padding:11px;outline:none;min-width:0}.comment-form button{border:0;background:var(--azul);color:white;border-radius:13px;padding:0 14px;font-weight:900}
 .empty-feed{text-align:center;background:white;border:1px dashed #cfd8e1;border-radius:22px;padding:35px 20px;color:var(--cinza)}.empty-feed .big{font-size:36px;margin-bottom:8px}.loading{text-align:center;padding:28px;color:var(--cinza)}
 
+
+.study-view{width:min(100%,900px);margin:auto;padding:20px}.study-hero{background:linear-gradient(135deg,#0b65b9,#043765);color:white;border-radius:25px;padding:24px;box-shadow:0 14px 30px rgba(7,87,166,.2);margin-bottom:18px}.study-hero small{opacity:.8;font-weight:800}.study-hero h2{font-size:25px;margin:7px 0}.study-hero p{opacity:.9;line-height:1.5}.study-list{display:grid;gap:12px}.study-card{background:white;border:1px solid var(--borda);border-radius:20px;padding:17px;box-shadow:var(--sombra);cursor:pointer}.study-card-top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.study-week{font-size:11px;font-weight:900;color:var(--azul);text-transform:uppercase;letter-spacing:.06em}.study-card h3{font-size:17px;margin:5px 0}.study-card p{font-size:13px;color:var(--cinza);line-height:1.45}.study-ref{display:inline-block;margin-top:10px;background:var(--claro);color:var(--azul);padding:6px 9px;border-radius:10px;font-size:11px;font-weight:800}.study-detail{background:white;border:1px solid var(--borda);border-radius:24px;box-shadow:var(--sombra);overflow:hidden}.study-detail-head{background:linear-gradient(135deg,#0b65b9,#043765);color:white;padding:24px}.study-detail-head h2{font-size:26px;margin:7px 0}.study-detail-body{padding:21px}.study-section{margin-bottom:24px}.study-section h3{font-size:16px;color:var(--azul);margin-bottom:8px}.study-section p{line-height:1.65;font-size:15px}.study-reading{background:#f1f7fd;border-left:4px solid var(--azul);padding:14px;border-radius:0 14px 14px 0}.study-questions{padding-left:20px}.study-questions li{margin:9px 0;line-height:1.45}.study-callout{background:#fff8e8;border:1px solid #f1d99e;border-radius:16px;padding:15px}.study-prayer{background:#eef8f2;border:1px solid #cde7d7;border-radius:16px;padding:15px}.video-card{border:1px solid var(--borda);border-radius:18px;overflow:hidden}.video-placeholder{background:#0c1d2e;color:white;min-height:180px;display:flex;align-items:center;justify-content:center;text-align:center;padding:25px}.video-card-info{padding:14px}.video-card-info strong{display:block}.video-card-info p{font-size:12px;color:var(--cinza);margin-top:5px}.video-card-info .btn{margin-top:10px}.study-empty{text-align:center;padding:35px;background:white;border-radius:20px;color:var(--cinza)}
+
 @media(max-width:720px){.hero-inner{grid-template-columns:1fr;text-align:center}.hero p{margin:auto}.hero-actions{justify-content:center}.hero-logo{width:190px}.hero-visual{order:-1}.public-grid{grid-template-columns:1fr}.join{align-items:flex-start;flex-direction:column}.header-actions .btn-soft{display:none}.member-grid{grid-template-columns:1fr 1fr}}@media(min-width:700px){.member-grid{grid-template-columns:repeat(4,1fr)}.bottom-nav{border-left:1px solid var(--borda);border-right:1px solid var(--borda);border-radius:22px 22px 0 0}}
 </style>
 </head>
@@ -77,7 +80,7 @@ html{scroll-behavior:smooth}body{font-family:Inter,system-ui,-apple-system,Blink
 <section class="verse"><div class="eyebrow-blue">Palavra para hoje</div><blockquote>“Lâmpada para os meus pés é a tua palavra e luz para o meu caminho.”</blockquote><span>Salmos 119:105</span></section>
 <div class="section-head"><h2>Desafio da semana</h2></div><section class="challenge"><small>🎯 RESPONSÁVEL DA SEMANA</small><h3 id="weeklyPerson">Em breve teremos o primeiro sorteio</h3><p id="weeklyMission">Toda semana alguém do grupo terá uma missão especial para compartilhar com todos.</p></section>
 <div class="section-head"><h2>Nosso espaço</h2></div><section class="member-grid">
-<button class="member-card" onclick="comingSoon('Estudos')"><div class="icon">📖</div><h4>Estudos</h4><p>Estudos bíblicos e conteúdos preparados para o grupo.</p></button>
+<button class="member-card" onclick="showStudies()"><div class="icon">📖</div><h4>Estudos</h4><p>Estudos bíblicos e conteúdos preparados para o grupo.</p></button>
 <button class="member-card" onclick="showCommunity()"><div class="icon">💬</div><h4>Comunidade</h4><p>Compartilhe reflexões, indicações e converse com o grupo.</p></button>
 <button class="member-card" onclick="comingSoon('Agenda')"><div class="icon">📅</div><h4>Agenda</h4><p>Reuniões, atividades e próximos eventos.</p></button>
 <button class="member-card" onclick="comingSoon('Memórias')"><div class="icon">📸</div><h4>Memórias</h4><p>Furnas, encontros, passeios e momentos que vivemos juntos.</p></button>
@@ -85,6 +88,16 @@ html{scroll-behavior:smooth}body{font-family:Inter,system-ui,-apple-system,Blink
 <section id="adminArea" class="admin-panel hidden"><strong>⚙️ Administração</strong><p id="adminDescription">Gerencie membros e conteúdos do Nosso Estudo.</p><div class="admin-actions"><button id="newMemberBtn" class="btn btn-primary hidden" onclick="openMemberAdmin()">+ Novo membro</button><button class="btn btn-soft" onclick="comingSoon('Gerenciar conteúdos')">Gerenciar conteúdos</button></div></section>
 <button class="logout" onclick="logout()">Sair da conta</button>
 </div>
+
+
+<section id="studiesView" class="study-view hidden">
+  <div class="back-row"><button class="back-btn" onclick="showHome()">‹</button><div><strong>Estudos</strong><div style="font-size:12px;color:var(--cinza)">Nossa caminhada pela Palavra</div></div></div>
+  <div id="studiesContent"><div class="loading">Carregando estudos...</div></div>
+</section>
+<section id="studyDetailView" class="study-view hidden">
+  <div class="back-row"><button class="back-btn" onclick="showStudies()">‹</button><strong>Voltar aos estudos</strong></div>
+  <div id="studyDetailContent"></div>
+</section>
 
 <section id="communityView" class="community-view hidden">
   <div class="community-head">
@@ -133,7 +146,7 @@ html{scroll-behavior:smooth}body{font-family:Inter,system-ui,-apple-system,Blink
     <p class="profile-status">Sua foto, nome e apelido serão usados para identificar você nas publicações, comentários e outras interações do grupo.</p>
   </div>
 </section>
-<nav class="bottom-nav"><button class="nav-btn active"><span>⌂</span>Início</button><button class="nav-btn" onclick="comingSoon('Estudos')"><span>📖</span>Estudos</button><button id="communityNavBtn" class="nav-btn" onclick="showCommunity()"><span>＋</span>Comunidade</button><button class="nav-btn" onclick="comingSoon('Agenda')"><span>📅</span>Agenda</button><button id="profileNavBtn" class="nav-btn" onclick="showProfile()"><span>☺</span>Perfil</button></nav>
+<nav class="bottom-nav"><button class="nav-btn active"><span>⌂</span>Início</button><button id="studiesNavBtn" class="nav-btn" onclick="showStudies()"><span>📖</span>Estudos</button><button id="communityNavBtn" class="nav-btn" onclick="showCommunity()"><span>＋</span>Comunidade</button><button class="nav-btn" onclick="comingSoon('Agenda')"><span>📅</span>Agenda</button><button id="profileNavBtn" class="nav-btn" onclick="showProfile()"><span>☺</span>Perfil</button></nav>
 </main>
 
 <div id="memberModal" class="modal-wrap hidden"><div class="modal admin-modal"><button class="modal-close" onclick="closeMemberAdmin()">×</button><div class="admin-title"><h2>Novo membro</h2><p>Somente administradores podem criar novos acessos.</p></div><form id="memberForm"><div class="field"><label>Nome</label><input id="memberName" required placeholder="Nome completo"></div><div class="field"><label>E-mail</label><input id="memberEmail" type="email" required placeholder="email@exemplo.com"></div><div class="field"><label>Senha provisória</label><input id="memberPassword" type="password" minlength="6" required placeholder="Mínimo 6 caracteres"></div><div class="field"><label>Cargo</label><select id="memberRole"><option value="membro">Membro</option><option value="lider">Líder</option><option value="admin">Administrador</option></select></div><button id="memberSubmit" class="btn btn-primary wide" type="submit">Criar membro</button></form><div id="memberMessage" class="message"></div><p class="note">A senha é provisória. Depois podemos adicionar recuperação/troca de senha pelo próprio site.</p></div></div>
@@ -167,6 +180,8 @@ async function loadApp(user){
 function showHome(){
  document.getElementById('profileView').classList.add('hidden');
  document.getElementById('communityView').classList.add('hidden');
+ document.getElementById('studiesView').classList.add('hidden');
+ document.getElementById('studyDetailView').classList.add('hidden');
  document.getElementById('homeView').classList.remove('hidden');
  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
  document.querySelector('.bottom-nav .nav-btn:first-child').classList.add('active');
@@ -176,6 +191,8 @@ async function showProfile(){
  if(!currentProfile)return;
  document.getElementById('homeView').classList.add('hidden');
  document.getElementById('communityView').classList.add('hidden');
+ document.getElementById('studiesView').classList.add('hidden');
+ document.getElementById('studyDetailView').classList.add('hidden');
  document.getElementById('profileView').classList.remove('hidden');
  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
  document.getElementById('profileNavBtn').classList.add('active');
@@ -259,6 +276,65 @@ async function removeProfilePhoto(){
 }
 
 
+
+let studiesCache=[];
+async function showStudies(){
+ if(!currentProfile)return;
+ ['homeView','profileView','communityView','studyDetailView'].forEach(id=>document.getElementById(id)?.classList.add('hidden'));
+ document.getElementById('studiesView').classList.remove('hidden');
+ document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+ document.getElementById('studiesNavBtn')?.classList.add('active');
+ window.scrollTo({top:0,behavior:'smooth'});
+ await loadStudies();
+}
+async function loadStudies(){
+ const box=document.getElementById('studiesContent');
+ box.innerHTML='<div class="loading">Carregando estudos...</div>';
+ const {data,error}=await supabaseClient.from('estudos').select('*').eq('publicado',true).order('ordem',{ascending:true}).order('semana',{ascending:true});
+ if(error){console.error('Estudos:',error);box.innerHTML='<div class="study-empty">Não foi possível carregar os estudos.</div>';return}
+ studiesCache=data||[];
+ if(!studiesCache.length){box.innerHTML='<div class="study-empty">Os estudos aparecerão aqui em breve.</div>';return}
+ const first=studiesCache[0];
+ box.innerHTML=`<div class="study-hero"><small>📖 COMEÇE SUA JORNADA</small><h2>${escapeHtml(first.titulo)}</h2><p>${escapeHtml(first.descricao||'')}</p><button class="btn btn-white" style="margin-top:15px" onclick="openStudy(${first.id})">Abrir estudo →</button></div>
+ <div class="section-head"><h2>Biblioteca de Estudos</h2><p>${studiesCache.length} estudos disponíveis</p></div>
+ <div class="study-list">${studiesCache.map(s=>`<article class="study-card" onclick="openStudy(${s.id})"><div class="study-card-top"><div><div class="study-week">${s.semana?'Semana '+s.semana:'Estudo'}</div><h3>${escapeHtml(s.titulo)}</h3></div><span style="color:var(--azul);font-size:22px">›</span></div><p>${escapeHtml(s.descricao||'')}</p>${s.leitura_biblica||s.referencia_biblica?`<span class="study-ref">📖 ${escapeHtml(s.leitura_biblica||s.referencia_biblica)}</span>`:''}</article>`).join('')}</div>`;
+}
+async function openStudy(id){
+ let s=studiesCache.find(x=>Number(x.id)===Number(id));
+ if(!s){const {data}=await supabaseClient.from('estudos').select('*').eq('id',id).single();s=data}
+ if(!s)return;
+ document.getElementById('studiesView').classList.add('hidden');
+ document.getElementById('studyDetailView').classList.remove('hidden');
+ const qs=Array.isArray(s.perguntas)?s.perguntas:[];
+ let video='';
+ if(s.video_titulo||s.video_url){
+   video=`<div class="study-section"><h3>🎬 Assista também</h3><div class="video-card"><div class="video-placeholder"><div><div style="font-size:38px">▶</div><strong>${escapeHtml(s.video_titulo||'Vídeo recomendado')}</strong></div></div><div class="video-card-info"><strong>${escapeHtml(s.video_titulo||'Material em vídeo')}</strong><p>Conteúdo complementar recomendado para este estudo.</p>${s.video_url?`<button class="btn btn-primary" onclick="openStudyVideo('${escapeHtml(s.video_url)}','${escapeHtml(s.video_embed_url||'')}')">▶ Assistir</button>`:''}</div></div></div>`;
+ }
+ document.getElementById('studyDetailContent').innerHTML=`<article class="study-detail"><div class="study-detail-head"><small>${s.semana?'SEMANA '+s.semana:'NOSSO ESTUDO'}</small><h2>${escapeHtml(s.titulo)}</h2><p>${escapeHtml(s.descricao||'')}</p></div><div class="study-detail-body">
+ ${s.leitura_biblica||s.referencia_biblica?`<div class="study-section"><h3>📖 Leitura bíblica</h3><div class="study-reading">${escapeHtml(s.leitura_biblica||s.referencia_biblica)}</div></div>`:''}
+ ${s.introducao?`<div class="study-section"><h3>Começando</h3><p>${escapeHtml(s.introducao)}</p></div>`:''}
+ ${s.explicacao?`<div class="study-section"><h3>Entendendo o texto</h3><p>${escapeHtml(s.explicacao)}</p></div>`:''}
+ ${s.conteudo?`<div class="study-section"><h3>Nosso estudo</h3><p>${escapeHtml(s.conteudo)}</p></div>`:''}
+ ${s.aplicacao?`<div class="study-section"><h3>💭 Trazendo para nossa vida</h3><p>${escapeHtml(s.aplicacao)}</p></div>`:''}
+ ${qs.length?`<div class="study-section"><h3>❓ Para conversar</h3><ol class="study-questions">${qs.map(q=>`<li>${escapeHtml(q)}</li>`).join('')}</ol></div>`:''}
+ ${s.desafio?`<div class="study-section"><h3>🎯 Desafio da semana</h3><div class="study-callout">${escapeHtml(s.desafio)}</div></div>`:''}
+ ${s.oracao?`<div class="study-section"><h3>🙏 Oração sugerida</h3><div class="study-prayer">${escapeHtml(s.oracao)}</div></div>`:''}
+ ${video}
+ </div></article>`;
+ window.scrollTo({top:0,behavior:'smooth'});
+}
+function openStudyVideo(url,embed){
+ if(embed){
+   const content=document.getElementById('studyDetailContent');
+   const frame=document.createElement('div');
+   frame.className='modal-wrap';
+   frame.innerHTML=`<div class="modal" style="width:min(96%,850px);padding:12px"><button class="modal-close" onclick="this.closest('.modal-wrap').remove()">×</button><div style="aspect-ratio:16/9;margin-top:35px"><iframe src="${escapeHtml(embed)}" style="width:100%;height:100%;border:0;border-radius:14px" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe></div></div>`;
+   document.body.appendChild(frame);
+ }else{
+   window.open(url,'_blank','noopener');
+ }
+}
+
 function escapeHtml(value=''){
  return String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
 }
@@ -288,6 +364,8 @@ async function showCommunity(){
  if(!currentProfile)return;
  document.getElementById('homeView').classList.add('hidden');
  document.getElementById('profileView').classList.add('hidden');
+ document.getElementById('studiesView').classList.add('hidden');
+ document.getElementById('studyDetailView').classList.add('hidden');
  document.getElementById('communityView').classList.remove('hidden');
  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
  document.getElementById('communityNavBtn').classList.add('active');
