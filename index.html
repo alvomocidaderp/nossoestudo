@@ -345,6 +345,26 @@ function openLogin(context=''){document.getElementById('loginSubtitle').textCont
 function closeLogin(){loginModal.classList.add('hidden')}
 function modalBackdrop(e){if(e.target===loginModal)closeLogin()}
 function requireLogin(context){openLogin(context)}
+
+document.getElementById('loginForm').addEventListener('submit',async e=>{
+ e.preventDefault();
+ const btn=document.getElementById('loginButton');
+ const email=document.getElementById('loginEmail').value.trim();
+ const password=document.getElementById('loginPassword').value;
+ btn.disabled=true; btn.textContent='Entrando...';
+ authMessage.className='message'; authMessage.textContent='';
+ try{
+   const {data,error}=await supabaseClient.auth.signInWithPassword({email,password});
+   if(error)throw error;
+   if(!data?.user)throw new Error('Não foi possível entrar.');
+   await loadApp(data.user);
+ }catch(err){
+   showMessage(authMessage,err?.message==='Invalid login credentials'?'E-mail ou senha incorretos.':(err?.message||'Não foi possível entrar.'),'error');
+ }finally{
+   btn.disabled=false; btn.textContent='Entrar';
+ }
+});
+
 function goWhatsApp(){window.open('https://wa.me/5516981824502?text='+encodeURIComponent('Olá, Valmir! Vi o site do Alvo da Mocidade e gostaria de saber mais sobre o grupo e como posso participar.'),'_blank')}
 function showMessage(el,text,type){el.textContent=text;el.className='message '+type}
 function comingSoon(area){alert(area+' já está preparada na estrutura. Vamos ativar essa área nas próximas etapas.')}
