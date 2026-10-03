@@ -16,6 +16,20 @@ html{scroll-behavior:smooth}body{font-family:Inter,system-ui,-apple-system,Blink
 .modal-wrap{position:fixed;inset:0;z-index:100;background:rgba(3,22,40,.66);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:20px}.modal{width:min(100%,430px);background:white;border-radius:28px;padding:25px;box-shadow:0 30px 90px rgba(0,0,0,.3);position:relative}.modal-close{position:absolute;right:15px;top:15px;border:0;background:#eef2f5;width:36px;height:36px;border-radius:50%;font-size:20px}.modal-brand{text-align:center;margin-bottom:22px}.modal-brand img{width:125px;height:78px;object-fit:contain;margin-bottom:8px}.modal-brand h2{color:var(--azul)}.modal-brand p{color:var(--cinza);font-size:13px;margin-top:4px}.field{margin-bottom:14px}.field label{display:block;font-size:13px;font-weight:800;margin-bottom:7px}.field input,.field select{width:100%;padding:14px;border:1px solid var(--borda);border-radius:14px;outline:none;background:white}.field input:focus,.field select:focus{border-color:var(--azul);box-shadow:0 0 0 3px rgba(7,87,166,.08)}.wide{width:100%;padding:14px}.message{display:none;margin-top:13px;padding:12px;border-radius:12px;font-size:13px}.message.error{display:block;background:#ffeaea;color:#8d2020}.message.success{display:block;background:#e9f8ef;color:#176b3a}.login-help{text-align:center;color:var(--cinza);font-size:12px;margin-top:15px}.login-help button{border:0;background:transparent;color:var(--azul);font-weight:800}
 #app{min-height:100vh;padding-bottom:92px}.topbar{background:linear-gradient(135deg,var(--azul),var(--escuro));color:white;padding:calc(18px + env(safe-area-inset-top)) 20px 28px;border-radius:0 0 30px 30px}.topbar-inner{max-width:900px;margin:auto}.user-row{display:flex;align-items:center;justify-content:space-between;gap:14px}.app-brand{display:flex;align-items:center;gap:12px}.app-brand img{width:65px;height:50px;object-fit:contain;background:white;border-radius:14px;padding:5px}.hello small{opacity:.8;display:block;margin-bottom:3px}.hello h2{font-size:22px}.avatar{width:48px;height:48px;border-radius:16px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:18px}.content{width:min(100%,900px);margin:auto;padding:20px}.challenge{background:linear-gradient(135deg,#0b65b9,#07467e);color:white;border-radius:22px;padding:21px;box-shadow:0 14px 30px rgba(7,87,166,.22)}.challenge small{opacity:.8}.challenge h3{margin:6px 0 8px;font-size:21px}.challenge p{opacity:.92;line-height:1.45}.member-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:13px}.member-card{padding:18px;min-height:145px;border:0;text-align:left}.member-card h4{margin-bottom:5px}.member-card p{color:var(--cinza);font-size:13px;line-height:1.4}.admin-panel{margin-top:18px;padding:20px;background:#fff9ed;border-color:#efd79e}.admin-panel p{color:#725b2d;font-size:13px;margin:6px 0 14px}.admin-actions{display:flex;gap:9px;flex-wrap:wrap}.logout{border:0;background:white;color:var(--vermelho);width:100%;padding:15px;border-radius:15px;margin-top:25px;font-weight:800;box-shadow:var(--sombra)}.bottom-nav{position:fixed;left:50%;bottom:0;transform:translateX(-50%);width:min(100%,900px);background:rgba(255,255,255,.96);backdrop-filter:blur(18px);border-top:1px solid var(--borda);display:grid;grid-template-columns:repeat(5,1fr);padding:8px 6px calc(8px + env(safe-area-inset-bottom));z-index:50}.nav-btn{border:0;background:transparent;color:#84909b;font-size:10px;font-weight:700;padding:5px 2px}.nav-btn span{display:block;font-size:21px;margin-bottom:3px}.nav-btn.active{color:var(--azul)}
 .admin-modal{width:min(100%,520px)}.admin-title{margin-bottom:17px}.admin-title h2{color:var(--azul)}.admin-title p{font-size:13px;color:var(--cinza);margin-top:4px}.note{font-size:12px;color:var(--cinza);line-height:1.45;margin-top:10px}
+
+.profile-view{width:min(100%,900px);margin:auto;padding:20px}
+.profile-cover{background:linear-gradient(135deg,#0b65b9,#043765);border-radius:26px;padding:28px 20px 64px;color:white;text-align:center;position:relative;overflow:hidden}
+.profile-cover:after{content:"";position:absolute;width:180px;height:180px;border-radius:50%;background:rgba(255,255,255,.08);right:-55px;top:-65px}
+.profile-avatar-wrap{width:112px;height:112px;margin:-52px auto 12px;position:relative;z-index:2}
+.profile-avatar{width:112px;height:112px;border-radius:50%;object-fit:cover;background:#eaf4ff;border:5px solid white;box-shadow:0 10px 28px rgba(20,40,70,.18)}
+.profile-avatar-fallback{width:112px;height:112px;border-radius:50%;background:var(--azul);color:white;border:5px solid white;display:flex;align-items:center;justify-content:center;font-size:38px;font-weight:900;box-shadow:0 10px 28px rgba(20,40,70,.18)}
+.profile-name{text-align:center;font-size:24px;font-weight:900}.profile-nick{text-align:center;color:var(--azul);font-weight:800;margin-top:3px}.profile-role{text-align:center;color:var(--cinza);font-size:12px;margin-top:5px;text-transform:uppercase;letter-spacing:.08em}
+.profile-card{background:white;border:1px solid var(--borda);border-radius:22px;padding:20px;box-shadow:var(--sombra);margin-top:18px}
+.profile-card h3{margin-bottom:16px}.profile-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:14px}.profile-actions .btn{flex:1;min-width:140px}
+.profile-email{background:#f5f7fa;color:var(--cinza)!important}.profile-status{font-size:12px;color:var(--cinza);line-height:1.45;margin-top:10px}
+.avatar.has-photo{background-size:cover;background-position:center;color:transparent}
+.back-row{display:flex;align-items:center;gap:10px;margin-bottom:15px}.back-btn{border:0;background:white;color:var(--azul);width:42px;height:42px;border-radius:14px;box-shadow:var(--sombra);font-weight:900;font-size:20px}
+
 @media(max-width:720px){.hero-inner{grid-template-columns:1fr;text-align:center}.hero p{margin:auto}.hero-actions{justify-content:center}.hero-logo{width:190px}.hero-visual{order:-1}.public-grid{grid-template-columns:1fr}.join{align-items:flex-start;flex-direction:column}.header-actions .btn-soft{display:none}.member-grid{grid-template-columns:1fr 1fr}}@media(min-width:700px){.member-grid{grid-template-columns:repeat(4,1fr)}.bottom-nav{border-left:1px solid var(--borda);border-right:1px solid var(--borda);border-radius:22px 22px 0 0}}
 </style>
 </head>
@@ -42,7 +56,7 @@ html{scroll-behavior:smooth}body{font-family:Inter,system-ui,-apple-system,Blink
 
 <main id="app" class="hidden">
 <header class="topbar"><div class="topbar-inner"><div class="user-row"><div class="app-brand"><img src="logo.png" alt="Alvo"><div class="hello"><small>Bem-vindo ao Nosso Estudo</small><h2 id="welcomeName">Olá 👋</h2></div></div><div class="avatar" id="avatar">N</div></div></div></header>
-<div class="content">
+<div id="homeView" class="content">
 <section class="verse"><div class="eyebrow-blue">Palavra para hoje</div><blockquote>“Lâmpada para os meus pés é a tua palavra e luz para o meu caminho.”</blockquote><span>Salmos 119:105</span></section>
 <div class="section-head"><h2>Desafio da semana</h2></div><section class="challenge"><small>🎯 RESPONSÁVEL DA SEMANA</small><h3 id="weeklyPerson">Em breve teremos o primeiro sorteio</h3><p id="weeklyMission">Toda semana alguém do grupo terá uma missão especial para compartilhar com todos.</p></section>
 <div class="section-head"><h2>Nosso espaço</h2></div><section class="member-grid">
@@ -54,7 +68,32 @@ html{scroll-behavior:smooth}body{font-family:Inter,system-ui,-apple-system,Blink
 <section id="adminArea" class="admin-panel hidden"><strong>⚙️ Administração</strong><p id="adminDescription">Gerencie membros e conteúdos do Nosso Estudo.</p><div class="admin-actions"><button id="newMemberBtn" class="btn btn-primary hidden" onclick="openMemberAdmin()">+ Novo membro</button><button class="btn btn-soft" onclick="comingSoon('Gerenciar conteúdos')">Gerenciar conteúdos</button></div></section>
 <button class="logout" onclick="logout()">Sair da conta</button>
 </div>
-<nav class="bottom-nav"><button class="nav-btn active"><span>⌂</span>Início</button><button class="nav-btn" onclick="comingSoon('Estudos')"><span>📖</span>Estudos</button><button class="nav-btn" onclick="comingSoon('Compartilhar')"><span>＋</span>Compartilhar</button><button class="nav-btn" onclick="comingSoon('Agenda')"><span>📅</span>Agenda</button><button class="nav-btn" onclick="comingSoon('Perfil')"><span>☺</span>Perfil</button></nav>
+<section id="profileView" class="profile-view hidden">
+  <div class="back-row"><button class="back-btn" onclick="showHome()">‹</button><strong>Meu perfil</strong></div>
+  <div class="profile-cover"><h2>Meu Perfil</h2><p style="opacity:.85;margin-top:5px">Sua identidade dentro do Nosso Estudo</p></div>
+  <div class="profile-avatar-wrap">
+    <img id="profilePhoto" class="profile-avatar hidden" alt="Foto de perfil">
+    <div id="profileFallback" class="profile-avatar-fallback">N</div>
+  </div>
+  <div id="profileDisplayName" class="profile-name">Membro</div>
+  <div id="profileDisplayNick" class="profile-nick hidden"></div>
+  <div id="profileDisplayRole" class="profile-role">Membro</div>
+  <div class="profile-card">
+    <h3>Editar meu perfil</h3>
+    <div class="field"><label>Nome completo</label><input id="profileName" type="text" required></div>
+    <div class="field"><label>Apelido <span style="font-weight:500;color:var(--cinza)">(opcional)</span></label><input id="profileNick" type="text" placeholder="Como gosta de ser chamado"></div>
+    <div class="field"><label>Telefone <span style="font-weight:500;color:var(--cinza)">(opcional)</span></label><input id="profilePhone" type="tel" placeholder="(16) 99999-9999"></div>
+    <div class="field"><label>E-mail</label><input id="profileEmail" class="profile-email" type="email" readonly></div>
+    <div class="field"><label>Foto de perfil</label><input id="profilePhotoInput" type="file" accept="image/jpeg,image/png,image/webp"></div>
+    <div class="profile-actions">
+      <button id="saveProfileBtn" class="btn btn-primary" onclick="saveProfile()">Salvar alterações</button>
+      <button id="removePhotoBtn" class="btn btn-soft hidden" onclick="removeProfilePhoto()">Remover foto</button>
+    </div>
+    <div id="profileMessage" class="message"></div>
+    <p class="profile-status">Sua foto, nome e apelido serão usados para identificar você nas publicações, comentários e outras interações do grupo.</p>
+  </div>
+</section>
+<nav class="bottom-nav"><button class="nav-btn active"><span>⌂</span>Início</button><button class="nav-btn" onclick="comingSoon('Estudos')"><span>📖</span>Estudos</button><button class="nav-btn" onclick="comingSoon('Compartilhar')"><span>＋</span>Compartilhar</button><button class="nav-btn" onclick="comingSoon('Agenda')"><span>📅</span>Agenda</button><button id="profileNavBtn" class="nav-btn" onclick="showProfile()"><span>☺</span>Perfil</button></nav>
 </main>
 
 <div id="memberModal" class="modal-wrap hidden"><div class="modal admin-modal"><button class="modal-close" onclick="closeMemberAdmin()">×</button><div class="admin-title"><h2>Novo membro</h2><p>Somente administradores podem criar novos acessos.</p></div><form id="memberForm"><div class="field"><label>Nome</label><input id="memberName" required placeholder="Nome completo"></div><div class="field"><label>E-mail</label><input id="memberEmail" type="email" required placeholder="email@exemplo.com"></div><div class="field"><label>Senha provisória</label><input id="memberPassword" type="password" minlength="6" required placeholder="Mínimo 6 caracteres"></div><div class="field"><label>Cargo</label><select id="memberRole"><option value="membro">Membro</option><option value="lider">Líder</option><option value="admin">Administrador</option></select></div><button id="memberSubmit" class="btn btn-primary wide" type="submit">Criar membro</button></form><div id="memberMessage" class="message"></div><p class="note">A senha é provisória. Depois podemos adicionar recuperação/troca de senha pelo próprio site.</p></div></div>
@@ -81,8 +120,102 @@ async function loadApp(user){
  const adminArea=document.getElementById('adminArea'),newMemberBtn=document.getElementById('newMemberBtn');
  if(perfil.tipo==='admin'||perfil.tipo==='lider'){adminArea.classList.remove('hidden');document.getElementById('adminDescription').textContent=perfil.tipo==='admin'?'Você possui acesso administrativo. Gerencie membros, líderes, estudos, eventos e conteúdos.':'Você possui acesso de líder para gerenciar conteúdos e atividades.';}else adminArea.classList.add('hidden');
  if(perfil.tipo==='admin')newMemberBtn.classList.remove('hidden');else newMemberBtn.classList.add('hidden');
- await loadWeeklyChallenge();
+ await renderProfilePhoto();
+  await loadWeeklyChallenge();
 }
+
+function showHome(){
+ document.getElementById('profileView').classList.add('hidden');
+ document.getElementById('homeView').classList.remove('hidden');
+ document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+ document.querySelector('.bottom-nav .nav-btn:first-child').classList.add('active');
+ window.scrollTo({top:0,behavior:'smooth'});
+}
+async function showProfile(){
+ if(!currentProfile)return;
+ document.getElementById('homeView').classList.add('hidden');
+ document.getElementById('profileView').classList.remove('hidden');
+ document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+ document.getElementById('profileNavBtn').classList.add('active');
+ fillProfileForm();
+ await renderProfilePhoto();
+ window.scrollTo({top:0,behavior:'smooth'});
+}
+function fillProfileForm(){
+ const p=currentProfile||{};
+ document.getElementById('profileName').value=p.nome||'';
+ document.getElementById('profileNick').value=p.apelido||'';
+ document.getElementById('profilePhone').value=p.telefone||'';
+ document.getElementById('profileEmail').value=p.email||'';
+ document.getElementById('profileDisplayName').textContent=p.nome||'Membro';
+ const nick=document.getElementById('profileDisplayNick');
+ if(p.apelido){nick.textContent='“'+p.apelido+'”';nick.classList.remove('hidden')}else nick.classList.add('hidden');
+ document.getElementById('profileDisplayRole').textContent=p.tipo==='admin'?'Administrador':p.tipo==='lider'?'Líder':'Membro';
+ const initial=(p.nome||'M').trim().charAt(0).toUpperCase();
+ document.getElementById('profileFallback').textContent=initial;
+ document.getElementById('removePhotoBtn').classList.toggle('hidden',!p.foto_url);
+}
+async function getSignedPhoto(path){
+ if(!path)return null;
+ const {data,error}=await supabaseClient.storage.from('perfis').createSignedUrl(path,3600);
+ if(error){console.warn('Foto perfil:',error);return null}
+ return data?.signedUrl||null;
+}
+async function renderProfilePhoto(){
+ const path=currentProfile?.foto_url;
+ const url=await getSignedPhoto(path);
+ const img=document.getElementById('profilePhoto'),fallback=document.getElementById('profileFallback'),top=document.getElementById('avatar');
+ const initial=(currentProfile?.nome||'M').trim().charAt(0).toUpperCase();
+ if(url){
+   img.src=url;img.classList.remove('hidden');fallback.classList.add('hidden');
+   top.style.backgroundImage=`url("${url}")`;top.classList.add('has-photo');top.textContent='';
+ }else{
+   img.removeAttribute('src');img.classList.add('hidden');fallback.classList.remove('hidden');
+   top.style.backgroundImage='';top.classList.remove('has-photo');top.textContent=initial;
+ }
+}
+async function saveProfile(){
+ if(!currentProfile)return;
+ const btn=document.getElementById('saveProfileBtn'),msg=document.getElementById('profileMessage');
+ btn.disabled=true;btn.textContent='Salvando...';msg.className='message';
+ try{
+   const nome=document.getElementById('profileName').value.trim();
+   const apelido=document.getElementById('profileNick').value.trim()||null;
+   const telefone=document.getElementById('profilePhone').value.trim()||null;
+   if(!nome)throw new Error('Informe seu nome.');
+   let fotoPath=currentProfile.foto_url||null;
+   const file=document.getElementById('profilePhotoInput').files[0];
+   if(file){
+     if(file.size>5*1024*1024)throw new Error('Escolha uma foto de até 5 MB.');
+     const ext=(file.name.split('.').pop()||'jpg').toLowerCase().replace(/[^a-z0-9]/g,'')||'jpg';
+     fotoPath=currentProfile.id+'/avatar.'+ext;
+     const {error:uploadError}=await supabaseClient.storage.from('perfis').upload(fotoPath,file,{upsert:true,contentType:file.type||'image/jpeg'});
+     if(uploadError)throw uploadError;
+   }
+   const {data,error}=await supabaseClient.from('perfis').update({nome,apelido,telefone,foto_url:fotoPath}).eq('id',currentProfile.id).select('*').single();
+   if(error)throw error;
+   currentProfile=data;
+   const primeiroNome=data.nome.split(' ')[0];
+   document.getElementById('welcomeName').textContent='Olá, '+primeiroNome+' 👋';
+   fillProfileForm();await renderProfilePhoto();
+   document.getElementById('profilePhotoInput').value='';
+   showMessage(msg,'Perfil atualizado com sucesso!','success');
+ }catch(err){console.error('Salvar perfil:',err);showMessage(msg,err.message||'Não foi possível salvar seu perfil.','error')}
+ finally{btn.disabled=false;btn.textContent='Salvar alterações'}
+}
+async function removeProfilePhoto(){
+ if(!currentProfile?.foto_url)return;
+ const msg=document.getElementById('profileMessage'),path=currentProfile.foto_url;
+ try{
+   const {error:removeError}=await supabaseClient.storage.from('perfis').remove([path]);
+   if(removeError)throw removeError;
+   const {data,error}=await supabaseClient.from('perfis').update({foto_url:null}).eq('id',currentProfile.id).select('*').single();
+   if(error)throw error;
+   currentProfile=data;fillProfileForm();await renderProfilePhoto();
+   showMessage(msg,'Foto removida.','success');
+ }catch(err){console.error('Remover foto:',err);showMessage(msg,err.message||'Não foi possível remover a foto.','error')}
+}
+
 async function loadWeeklyChallenge(){const hoje=new Date().toISOString().split('T')[0];const {data,error}=await supabaseClient.from('responsaveis_semanais').select('*, perfis:usuario_id(nome), missoes_semanais:missao_id(titulo,descricao)').lte('inicio',hoje).gte('fim',hoje).neq('status','cancelado').limit(1);if(error){console.warn('Desafio:',error);return}if(!data?.length)return;const d=data[0];if(d.perfis?.nome)document.getElementById('weeklyPerson').textContent=d.perfis.nome;const descricao=d.descricao_missao||d.missoes_semanais?.descricao;if(descricao)document.getElementById('weeklyMission').textContent=descricao;}
 document.getElementById('loginForm').addEventListener('submit',async e=>{e.preventDefault();const b=document.getElementById('loginButton');b.disabled=true;b.textContent='Entrando...';authMessage.className='message';const email=document.getElementById('loginEmail').value.trim(),password=document.getElementById('loginPassword').value;const {data,error}=await supabaseClient.auth.signInWithPassword({email,password});b.disabled=false;b.textContent='Entrar';if(error){showMessage(authMessage,'Não foi possível entrar. Confira seu e-mail e senha.','error');return}await loadApp(data.user)});
 async function logout(){await supabaseClient.auth.signOut();currentProfile=null;app.classList.add('hidden');publicSite.classList.remove('hidden');window.scrollTo({top:0,behavior:'smooth'})}
