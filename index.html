@@ -30,6 +30,23 @@ html{scroll-behavior:smooth}body{font-family:Inter,system-ui,-apple-system,Blink
 .avatar.has-photo{background-size:cover;background-position:center;color:transparent}
 .back-row{display:flex;align-items:center;gap:10px;margin-bottom:15px}.back-btn{border:0;background:white;color:var(--azul);width:42px;height:42px;border-radius:14px;box-shadow:var(--sombra);font-weight:900;font-size:20px}
 
+
+.community-view{width:min(100%,900px);margin:auto;padding:20px}
+.community-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}
+.community-head h2{font-size:24px}.community-head p{color:var(--cinza);font-size:13px;margin-top:3px}
+.composer,.post-card{background:white;border:1px solid var(--borda);border-radius:22px;box-shadow:var(--sombra)}
+.composer{padding:17px;margin-bottom:18px}.composer-top{display:flex;gap:11px;align-items:flex-start}
+.user-pic{width:44px;height:44px;border-radius:50%;object-fit:cover;background:var(--azul);color:white;display:flex;align-items:center;justify-content:center;font-weight:900;flex:none}
+.composer textarea{width:100%;min-height:90px;resize:vertical;border:0;outline:0;font:inherit;font-size:15px;line-height:1.45;padding:6px;background:transparent}
+.composer-bottom{display:flex;align-items:center;justify-content:space-between;gap:10px;border-top:1px solid var(--borda);padding-top:12px;margin-top:8px;flex-wrap:wrap}
+.photo-label{display:inline-flex;align-items:center;gap:7px;color:var(--azul);font-weight:800;font-size:13px;cursor:pointer}.photo-label input{display:none}
+.file-name{font-size:11px;color:var(--cinza);max-width:190px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.feed{display:grid;gap:15px}.post-card{overflow:hidden}.post-body{padding:17px}.post-user{display:flex;align-items:center;gap:10px}.post-user-info{min-width:0;flex:1}.post-user-info strong{display:block;font-size:14px}.post-nick{color:var(--azul);font-size:12px;font-weight:750}.post-time{display:block;color:var(--cinza);font-size:11px;margin-top:2px}.post-menu{border:0;background:transparent;color:var(--cinza);font-size:19px;padding:5px}
+.post-text{font-size:15px;line-height:1.55;margin-top:13px;white-space:pre-wrap;word-break:break-word}.post-image{width:100%;max-height:560px;object-fit:cover;display:block;background:#eef2f5}
+.post-actions{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--borda);border-bottom:1px solid var(--borda);margin-top:14px}.post-action{border:0;background:white;padding:11px;color:var(--cinza);font-weight:800}.post-action.liked{color:var(--azul)}
+.comments{padding-top:12px}.comment{display:flex;gap:9px;margin-top:10px}.comment .user-pic{width:34px;height:34px;font-size:12px}.comment-bubble{background:#f2f5f8;border-radius:14px;padding:9px 11px;flex:1}.comment-name{font-size:12px;font-weight:900}.comment-name span{color:var(--azul);font-weight:750;margin-left:4px}.comment-text{font-size:13px;line-height:1.4;margin-top:2px}.comment-form{display:flex;gap:8px;margin-top:12px}.comment-form input{flex:1;border:1px solid var(--borda);border-radius:13px;padding:11px;outline:none;min-width:0}.comment-form button{border:0;background:var(--azul);color:white;border-radius:13px;padding:0 14px;font-weight:900}
+.empty-feed{text-align:center;background:white;border:1px dashed #cfd8e1;border-radius:22px;padding:35px 20px;color:var(--cinza)}.empty-feed .big{font-size:36px;margin-bottom:8px}.loading{text-align:center;padding:28px;color:var(--cinza)}
+
 @media(max-width:720px){.hero-inner{grid-template-columns:1fr;text-align:center}.hero p{margin:auto}.hero-actions{justify-content:center}.hero-logo{width:190px}.hero-visual{order:-1}.public-grid{grid-template-columns:1fr}.join{align-items:flex-start;flex-direction:column}.header-actions .btn-soft{display:none}.member-grid{grid-template-columns:1fr 1fr}}@media(min-width:700px){.member-grid{grid-template-columns:repeat(4,1fr)}.bottom-nav{border-left:1px solid var(--borda);border-right:1px solid var(--borda);border-radius:22px 22px 0 0}}
 </style>
 </head>
@@ -61,13 +78,36 @@ html{scroll-behavior:smooth}body{font-family:Inter,system-ui,-apple-system,Blink
 <div class="section-head"><h2>Desafio da semana</h2></div><section class="challenge"><small>🎯 RESPONSÁVEL DA SEMANA</small><h3 id="weeklyPerson">Em breve teremos o primeiro sorteio</h3><p id="weeklyMission">Toda semana alguém do grupo terá uma missão especial para compartilhar com todos.</p></section>
 <div class="section-head"><h2>Nosso espaço</h2></div><section class="member-grid">
 <button class="member-card" onclick="comingSoon('Estudos')"><div class="icon">📖</div><h4>Estudos</h4><p>Estudos bíblicos e conteúdos preparados para o grupo.</p></button>
-<button class="member-card" onclick="comingSoon('Comunidade')"><div class="icon">💬</div><h4>Comunidade</h4><p>Compartilhe reflexões, indicações e converse com o grupo.</p></button>
+<button class="member-card" onclick="showCommunity()"><div class="icon">💬</div><h4>Comunidade</h4><p>Compartilhe reflexões, indicações e converse com o grupo.</p></button>
 <button class="member-card" onclick="comingSoon('Agenda')"><div class="icon">📅</div><h4>Agenda</h4><p>Reuniões, atividades e próximos eventos.</p></button>
 <button class="member-card" onclick="comingSoon('Memórias')"><div class="icon">📸</div><h4>Memórias</h4><p>Furnas, encontros, passeios e momentos que vivemos juntos.</p></button>
 </section>
 <section id="adminArea" class="admin-panel hidden"><strong>⚙️ Administração</strong><p id="adminDescription">Gerencie membros e conteúdos do Nosso Estudo.</p><div class="admin-actions"><button id="newMemberBtn" class="btn btn-primary hidden" onclick="openMemberAdmin()">+ Novo membro</button><button class="btn btn-soft" onclick="comingSoon('Gerenciar conteúdos')">Gerenciar conteúdos</button></div></section>
 <button class="logout" onclick="logout()">Sair da conta</button>
 </div>
+
+<section id="communityView" class="community-view hidden">
+  <div class="community-head">
+    <div><h2>Comunidade</h2><p>Compartilhe com o pessoal do Alvo.</p></div>
+    <button class="back-btn" onclick="showHome()">×</button>
+  </div>
+  <div class="composer">
+    <div class="composer-top">
+      <div id="composerAvatar" class="user-pic">M</div>
+      <textarea id="postText" maxlength="2000" placeholder="Compartilhe uma reflexão, indicação ou algo com o grupo..."></textarea>
+    </div>
+    <div class="composer-bottom">
+      <div style="display:flex;align-items:center;gap:8px;min-width:0">
+        <label class="photo-label">📷 Adicionar foto<input id="postPhoto" type="file" accept="image/jpeg,image/png,image/webp" onchange="showPostFileName()"></label>
+        <span id="postFileName" class="file-name"></span>
+      </div>
+      <button id="publishBtn" class="btn btn-primary" onclick="createPost()">Publicar</button>
+    </div>
+    <div id="postMessage" class="message"></div>
+  </div>
+  <div id="communityFeed" class="feed"><div class="loading">Carregando comunidade...</div></div>
+</section>
+
 <section id="profileView" class="profile-view hidden">
   <div class="back-row"><button class="back-btn" onclick="showHome()">‹</button><strong>Meu perfil</strong></div>
   <div class="profile-cover"><h2>Meu Perfil</h2><p style="opacity:.85;margin-top:5px">Sua identidade dentro do Nosso Estudo</p></div>
@@ -93,7 +133,7 @@ html{scroll-behavior:smooth}body{font-family:Inter,system-ui,-apple-system,Blink
     <p class="profile-status">Sua foto, nome e apelido serão usados para identificar você nas publicações, comentários e outras interações do grupo.</p>
   </div>
 </section>
-<nav class="bottom-nav"><button class="nav-btn active"><span>⌂</span>Início</button><button class="nav-btn" onclick="comingSoon('Estudos')"><span>📖</span>Estudos</button><button class="nav-btn" onclick="comingSoon('Compartilhar')"><span>＋</span>Compartilhar</button><button class="nav-btn" onclick="comingSoon('Agenda')"><span>📅</span>Agenda</button><button id="profileNavBtn" class="nav-btn" onclick="showProfile()"><span>☺</span>Perfil</button></nav>
+<nav class="bottom-nav"><button class="nav-btn active"><span>⌂</span>Início</button><button class="nav-btn" onclick="comingSoon('Estudos')"><span>📖</span>Estudos</button><button id="communityNavBtn" class="nav-btn" onclick="showCommunity()"><span>＋</span>Comunidade</button><button class="nav-btn" onclick="comingSoon('Agenda')"><span>📅</span>Agenda</button><button id="profileNavBtn" class="nav-btn" onclick="showProfile()"><span>☺</span>Perfil</button></nav>
 </main>
 
 <div id="memberModal" class="modal-wrap hidden"><div class="modal admin-modal"><button class="modal-close" onclick="closeMemberAdmin()">×</button><div class="admin-title"><h2>Novo membro</h2><p>Somente administradores podem criar novos acessos.</p></div><form id="memberForm"><div class="field"><label>Nome</label><input id="memberName" required placeholder="Nome completo"></div><div class="field"><label>E-mail</label><input id="memberEmail" type="email" required placeholder="email@exemplo.com"></div><div class="field"><label>Senha provisória</label><input id="memberPassword" type="password" minlength="6" required placeholder="Mínimo 6 caracteres"></div><div class="field"><label>Cargo</label><select id="memberRole"><option value="membro">Membro</option><option value="lider">Líder</option><option value="admin">Administrador</option></select></div><button id="memberSubmit" class="btn btn-primary wide" type="submit">Criar membro</button></form><div id="memberMessage" class="message"></div><p class="note">A senha é provisória. Depois podemos adicionar recuperação/troca de senha pelo próprio site.</p></div></div>
@@ -126,6 +166,7 @@ async function loadApp(user){
 
 function showHome(){
  document.getElementById('profileView').classList.add('hidden');
+ document.getElementById('communityView').classList.add('hidden');
  document.getElementById('homeView').classList.remove('hidden');
  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
  document.querySelector('.bottom-nav .nav-btn:first-child').classList.add('active');
@@ -134,6 +175,7 @@ function showHome(){
 async function showProfile(){
  if(!currentProfile)return;
  document.getElementById('homeView').classList.add('hidden');
+ document.getElementById('communityView').classList.add('hidden');
  document.getElementById('profileView').classList.remove('hidden');
  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
  document.getElementById('profileNavBtn').classList.add('active');
@@ -214,6 +256,156 @@ async function removeProfilePhoto(){
    currentProfile=data;fillProfileForm();await renderProfilePhoto();
    showMessage(msg,'Foto removida.','success');
  }catch(err){console.error('Remover foto:',err);showMessage(msg,err.message||'Não foi possível remover a foto.','error')}
+}
+
+
+function escapeHtml(value=''){
+ return String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
+}
+function formatDate(value){
+ if(!value)return '';
+ const d=new Date(value);
+ return d.toLocaleString('pt-BR',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'}).replace('.','');
+}
+function showPostFileName(){
+ const file=document.getElementById('postPhoto').files[0];
+ document.getElementById('postFileName').textContent=file?file.name:'';
+}
+async function signedUrl(bucket,path,seconds=3600){
+ if(!path)return null;
+ const {data,error}=await supabaseClient.storage.from(bucket).createSignedUrl(path,seconds);
+ if(error)return null;
+ return data?.signedUrl||null;
+}
+async function avatarHtml(profile,size='normal'){
+ const name=profile?.nome||'Membro';
+ const initial=escapeHtml(name.trim().charAt(0).toUpperCase()||'M');
+ const url=profile?.foto_url?await signedUrl('perfis',profile.foto_url):null;
+ if(url)return `<img class="user-pic" src="${escapeHtml(url)}" alt="">`;
+ return `<div class="user-pic">${initial}</div>`;
+}
+async function showCommunity(){
+ if(!currentProfile)return;
+ document.getElementById('homeView').classList.add('hidden');
+ document.getElementById('profileView').classList.add('hidden');
+ document.getElementById('communityView').classList.remove('hidden');
+ document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+ document.getElementById('communityNavBtn').classList.add('active');
+ const comp=document.getElementById('composerAvatar');
+ const url=await getSignedPhoto(currentProfile.foto_url);
+ if(url){comp.innerHTML=`<img src="${escapeHtml(url)}" style="width:100%;height:100%;object-fit:cover;border-radius:50%" alt="">`}
+ else comp.textContent=(currentProfile.nome||'M').charAt(0).toUpperCase();
+ window.scrollTo({top:0,behavior:'smooth'});
+ await loadCommunity();
+}
+async function createPost(){
+ const text=document.getElementById('postText').value.trim();
+ const file=document.getElementById('postPhoto').files[0];
+ const btn=document.getElementById('publishBtn'),msg=document.getElementById('postMessage');
+ msg.className='message';
+ if(!text&&!file){showMessage(msg,'Escreva algo ou adicione uma foto.','error');return}
+ btn.disabled=true;btn.textContent='Publicando...';
+ let imagePath=null;
+ try{
+   if(file){
+     if(file.size>8*1024*1024)throw new Error('Escolha uma foto de até 8 MB.');
+     const ext=(file.name.split('.').pop()||'jpg').toLowerCase().replace(/[^a-z0-9]/g,'')||'jpg';
+     imagePath=currentProfile.id+'/'+Date.now()+'.'+ext;
+     const {error:upErr}=await supabaseClient.storage.from('comunidade').upload(imagePath,file,{contentType:file.type||'image/jpeg'});
+     if(upErr)throw upErr;
+   }
+   const {error}=await supabaseClient.from('publicacoes').insert({autor_id:currentProfile.id,texto:text||null,imagem_url:imagePath});
+   if(error)throw error;
+   document.getElementById('postText').value='';
+   document.getElementById('postPhoto').value='';
+   document.getElementById('postFileName').textContent='';
+   showMessage(msg,'Publicado!','success');
+   await loadCommunity();
+ }catch(err){
+   console.error('Publicar:',err);
+   if(imagePath)await supabaseClient.storage.from('comunidade').remove([imagePath]);
+   showMessage(msg,err.message||'Não foi possível publicar.','error');
+ }finally{btn.disabled=false;btn.textContent='Publicar'}
+}
+async function loadCommunity(){
+ const feed=document.getElementById('communityFeed');
+ feed.innerHTML='<div class="loading">Carregando comunidade...</div>';
+ const {data:posts,error}=await supabaseClient.from('publicacoes')
+   .select('id,autor_id,texto,imagem_url,video_url,created_at,perfis:autor_id(id,nome,apelido,foto_url,tipo),curtidas(usuario_id),comentarios(id,autor_id,texto,created_at,perfis:autor_id(id,nome,apelido,foto_url))')
+   .order('created_at',{ascending:false}).limit(50);
+ if(error){console.error('Feed:',error);feed.innerHTML='<div class="empty-feed">Não foi possível carregar a comunidade.</div>';return}
+ if(!posts?.length){feed.innerHTML='<div class="empty-feed"><div class="big">💬</div><strong>A comunidade começa aqui</strong><p style="margin-top:6px">Faça a primeira publicação do grupo.</p></div>';return}
+ const blocks=[];
+ for(const post of posts){
+   const author=post.perfis||{nome:'Membro'};
+   const av=await avatarHtml(author);
+   const nick=author.apelido?`<span class="post-nick">“${escapeHtml(author.apelido)}”</span>`:'';
+   const liked=(post.curtidas||[]).some(l=>l.usuario_id===currentProfile.id);
+   const canDelete=post.autor_id===currentProfile.id||currentProfile.tipo==='lider'||currentProfile.tipo==='admin';
+   let image='';
+   if(post.imagem_url){
+     const u=await signedUrl('comunidade',post.imagem_url);
+     if(u)image=`<img class="post-image" src="${escapeHtml(u)}" alt="Foto da publicação">`;
+   }
+   const comments=[];
+   for(const c of (post.comentarios||[]).sort((a,b)=>new Date(a.created_at)-new Date(b.created_at))){
+     const cp=c.perfis||{nome:'Membro'};
+     const cav=await avatarHtml(cp);
+     const cn=cp.apelido?`<span>“${escapeHtml(cp.apelido)}”</span>`:'';
+     comments.push(`<div class="comment">${cav}<div class="comment-bubble"><div class="comment-name">${escapeHtml(cp.nome||'Membro')} ${cn}</div><div class="comment-text">${escapeHtml(c.texto||'')}</div></div></div>`);
+   }
+   blocks.push(`<article class="post-card" data-post="${post.id}">
+     <div class="post-body">
+       <div class="post-user">${av}<div class="post-user-info"><strong>${escapeHtml(author.nome||'Membro')} ${nick}</strong><span class="post-time">${formatDate(post.created_at)}</span></div>${canDelete?`<button class="post-menu" onclick="deletePost(${post.id},'${escapeHtml(post.imagem_url||'')}')" title="Excluir">🗑️</button>`:''}</div>
+       ${post.texto?`<div class="post-text">${escapeHtml(post.texto)}</div>`:''}
+     </div>
+     ${image}
+     <div class="post-body" style="padding-top:0">
+       <div class="post-actions">
+         <button class="post-action ${liked?'liked':''}" onclick="toggleLike(${post.id},${liked})">♥ ${post.curtidas?.length||0} Curtir</button>
+         <button class="post-action" onclick="focusComment(${post.id})">💬 ${post.comentarios?.length||0} Comentar</button>
+       </div>
+       <div class="comments">${comments.join('')}
+         <form class="comment-form" onsubmit="addComment(event,${post.id})"><input id="comment-${post.id}" maxlength="500" placeholder="Escreva um comentário..." required><button type="submit">➤</button></form>
+       </div>
+     </div>
+   </article>`);
+ }
+ feed.innerHTML=blocks.join('');
+}
+function focusComment(postId){document.getElementById('comment-'+postId)?.focus()}
+async function toggleLike(postId,liked){
+ try{
+   if(liked){
+     const {error}=await supabaseClient.from('curtidas').delete().eq('publicacao_id',postId).eq('usuario_id',currentProfile.id);
+     if(error)throw error;
+   }else{
+     const {error}=await supabaseClient.from('curtidas').insert({publicacao_id:postId,usuario_id:currentProfile.id});
+     if(error)throw error;
+   }
+   await loadCommunity();
+ }catch(err){console.error('Curtir:',err);alert('Não foi possível atualizar a curtida.')}
+}
+async function addComment(event,postId){
+ event.preventDefault();
+ const input=document.getElementById('comment-'+postId),texto=input.value.trim();
+ if(!texto)return;
+ const button=event.target.querySelector('button');button.disabled=true;
+ try{
+   const {error}=await supabaseClient.from('comentarios').insert({publicacao_id:postId,autor_id:currentProfile.id,texto});
+   if(error)throw error;
+   input.value='';await loadCommunity();
+ }catch(err){console.error('Comentário:',err);alert('Não foi possível comentar.')}
+ finally{button.disabled=false}
+}
+async function deletePost(postId,imagePath){
+ if(!confirm('Excluir esta publicação?'))return;
+ try{
+   const {error}=await supabaseClient.from('publicacoes').delete().eq('id',postId);
+   if(error)throw error;
+   if(imagePath)await supabaseClient.storage.from('comunidade').remove([imagePath]);
+   await loadCommunity();
+ }catch(err){console.error('Excluir publicação:',err);alert('Não foi possível excluir a publicação.')}
 }
 
 async function loadWeeklyChallenge(){const hoje=new Date().toISOString().split('T')[0];const {data,error}=await supabaseClient.from('responsaveis_semanais').select('*, perfis:usuario_id(nome), missoes_semanais:missao_id(titulo,descricao)').lte('inicio',hoje).gte('fim',hoje).neq('status','cancelado').limit(1);if(error){console.warn('Desafio:',error);return}if(!data?.length)return;const d=data[0];if(d.perfis?.nome)document.getElementById('weeklyPerson').textContent=d.perfis.nome;const descricao=d.descricao_missao||d.missoes_semanais?.descricao;if(descricao)document.getElementById('weeklyMission').textContent=descricao;}
