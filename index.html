@@ -111,6 +111,10 @@ html{scroll-behavior:smooth}body{font-family:Inter,system-ui,-apple-system,Blink
 .furnas-form textarea{width:100%;min-height:105px;padding:13px;border:1px solid var(--borda);border-radius:14px;resize:vertical;font:inherit;outline:none}.furnas-form textarea:focus{border-color:var(--azul)}
 @media(max-width:620px){.furnas-cover{height:210px}.furnas-links{grid-template-columns:1fr}.furnas-count strong{font-size:17px}}
 
+
+/* ===== RESPONSÁVEL DA SEMANA ===== */
+.challenge-person{display:flex;align-items:center;gap:13px;margin:10px 0}.challenge-avatar{width:62px;height:62px;border-radius:50%;object-fit:cover;background:rgba(255,255,255,.18);border:2px solid rgba(255,255,255,.5);display:flex;align-items:center;justify-content:center;font-size:23px;font-weight:900;flex:none}.challenge-info{min-width:0}.challenge-info h3{margin:0 0 3px}.challenge-info span{font-size:12px;opacity:.8}.challenge-mission{background:rgba(255,255,255,.12);border-radius:15px;padding:13px;margin-top:12px}.challenge-mission strong{display:block;font-size:12px;margin-bottom:5px}.challenge-admin-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:13px}.challenge-admin-actions .btn{font-size:12px;padding:9px 12px}.challenge-history{display:grid;gap:9px;max-height:300px;overflow:auto}.challenge-history-item{border:1px solid var(--borda);border-radius:14px;padding:12px}.challenge-history-item strong{font-size:13px}.challenge-history-item p{font-size:12px;color:var(--cinza);margin-top:4px;line-height:1.4}.challenge-cycle{display:inline-block;background:var(--claro);color:var(--azul);font-size:10px;font-weight:900;padding:5px 8px;border-radius:999px;margin-top:7px}
+
 </style>
 </head>
 <body>
@@ -138,7 +142,7 @@ html{scroll-behavior:smooth}body{font-family:Inter,system-ui,-apple-system,Blink
 <header class="topbar"><div class="topbar-inner"><div class="user-row"><div class="app-brand"><img src="logo.png" alt="Alvo"><div class="hello"><small>Bem-vindo ao Nosso Estudo</small><h2 id="welcomeName">Olá 👋</h2></div></div><div class="avatar" id="avatar">N</div></div></div></header>
 <div id="homeView" class="content">
 <section class="verse"><div class="eyebrow-blue">Palavra para hoje</div><blockquote>“Lâmpada para os meus pés é a tua palavra e luz para o meu caminho.”</blockquote><span>Salmos 119:105</span></section>
-<div class="section-head"><h2>Desafio da semana</h2></div><section class="challenge"><small>🎯 RESPONSÁVEL DA SEMANA</small><h3 id="weeklyPerson">Em breve teremos o primeiro sorteio</h3><p id="weeklyMission">Toda semana alguém do grupo terá uma missão especial para compartilhar com todos.</p></section>
+<div class="section-head"><h2>Desafio da semana</h2></div><section class="challenge"><small>🎯 RESPONSÁVEL DA SEMANA</small><div id="weeklyChallengeContent"><h3 id="weeklyPerson">Em breve teremos o primeiro sorteio</h3><p id="weeklyMission">Toda semana alguém do grupo terá uma missão especial para compartilhar com todos.</p></div><div id="weeklyAdminActions" class="challenge-admin-actions hidden"><button class="btn btn-white" onclick="openWeeklyDraw()">🎲 Sortear responsável</button><button class="btn btn-glass" onclick="openWeeklyHistory()">📜 Histórico</button></div></section>
 <div class="section-head"><h2>Nosso espaço</h2></div><section class="member-grid">
 <button class="member-card" onclick="showStudies()"><div class="icon">📖</div><h4>Estudos</h4><p>Estudos bíblicos e conteúdos preparados para o grupo.</p></button>
 <button class="member-card" onclick="showCommunity()"><div class="icon">💬</div><h4>Comunidade</h4><p>Compartilhe reflexões, indicações e converse com o grupo.</p></button>
@@ -250,6 +254,16 @@ html{scroll-behavior:smooth}body{font-family:Inter,system-ui,-apple-system,Blink
 
 
 
+
+<div id="weeklyDrawModal" class="modal-wrap hidden"><div class="modal admin-modal"><button class="modal-close" onclick="closeWeeklyDraw()">×</button><div class="admin-title"><h2>🎯 Responsável da semana</h2><p>O sistema não repete ninguém até todos os participantes do ciclo terem sido sorteados.</p></div>
+<form id="weeklyDrawForm">
+<div class="field"><label>Início da semana</label><input id="weeklyStart" type="date" required></div>
+<div class="field"><label>Como definir a missão?</label><select id="weeklyMissionMode" onchange="toggleWeeklyMissionFields()"><option value="random">🎲 Sortear uma missão ativa</option><option value="existing">📋 Escolher uma missão</option><option value="custom">✍️ Criar missão personalizada</option></select></div>
+<div id="weeklyExistingWrap" class="field hidden"><label>Missão</label><select id="weeklyMissionSelect"></select></div>
+<div id="weeklyCustomWrap" class="hidden"><div class="field"><label>Título da missão</label><input id="weeklyCustomTitle" maxlength="150"></div><div class="field"><label>Descrição</label><input id="weeklyCustomDescription" maxlength="500"></div></div>
+<button id="weeklyDrawBtn" class="btn btn-primary wide" type="submit">🎲 Realizar sorteio</button></form><div id="weeklyDrawMessage" class="message"></div></div></div>
+<div id="weeklyHistoryModal" class="modal-wrap hidden"><div class="modal admin-modal"><button class="modal-close" onclick="closeWeeklyHistory()">×</button><div class="admin-title"><h2>📜 Histórico</h2><p>Participações e ciclos do responsável da semana.</p></div><div id="weeklyHistoryContent" class="challenge-history"><div class="loading">Carregando...</div></div></div></div>
+
 <div id="furnasModal" class="modal-wrap hidden"><div class="modal admin-modal" style="max-height:92vh;overflow:auto"><button class="modal-close" onclick="closeFurnasAdmin()">×</button><div class="admin-title"><h2>Gerenciar Furnas</h2><p>Essas informações aparecerão na página especial do acampamento.</p></div>
 <form id="furnasForm" class="furnas-form">
 <input id="furnasId" type="hidden">
@@ -332,6 +346,7 @@ async function loadApp(user){
  const adminArea=document.getElementById('adminArea'),newMemberBtn=document.getElementById('newMemberBtn');
  if(perfil.tipo==='admin'||perfil.tipo==='lider'){adminArea.classList.remove('hidden');document.getElementById('adminDescription').textContent=perfil.tipo==='admin'?'Você possui acesso administrativo. Gerencie membros, líderes, estudos, eventos e conteúdos.':'Você possui acesso de líder para gerenciar conteúdos e atividades.';}else adminArea.classList.add('hidden');
  if(perfil.tipo==='admin')newMemberBtn.classList.remove('hidden');else newMemberBtn.classList.add('hidden');
+ document.getElementById('weeklyAdminActions')?.classList.toggle('hidden',!(perfil.tipo==='admin'||perfil.tipo==='lider'));
  await renderProfilePhoto();
   await loadWeeklyChallenge();
 }
@@ -1119,14 +1134,54 @@ async function deleteEvent(id){
  await loadAgenda();
 }
 
-async function loadWeeklyChallenge(){const hoje=new Date().toISOString().split('T')[0];const {data,error}=await supabaseClient.from('responsaveis_semanais').select('*, perfis:usuario_id(nome), missoes_semanais:missao_id(titulo,descricao)').lte('inicio',hoje).gte('fim',hoje).neq('status','cancelado').limit(1);if(error){console.warn('Desafio:',error);return}if(!data?.length)return;const d=data[0];if(d.perfis?.nome)document.getElementById('weeklyPerson').textContent=d.perfis.nome;const descricao=d.descricao_missao||d.missoes_semanais?.descricao;if(descricao)document.getElementById('weeklyMission').textContent=descricao;}
-document.getElementById('loginForm').addEventListener('submit',async e=>{e.preventDefault();const b=document.getElementById('loginButton');b.disabled=true;b.textContent='Entrando...';authMessage.className='message';const email=document.getElementById('loginEmail').value.trim(),password=document.getElementById('loginPassword').value;const {data,error}=await supabaseClient.auth.signInWithPassword({email,password});b.disabled=false;b.textContent='Entrar';if(error){showMessage(authMessage,'Não foi possível entrar. Confira seu e-mail e senha.','error');return}await loadApp(data.user)});
+async function loadWeeklyChallenge(){
+ const box=document.getElementById('weeklyChallengeContent');if(!box||!currentProfile)return;
+ const today=new Date().toISOString().slice(0,10);
+ const {data,error}=await supabaseClient.from('responsaveis_semanais').select('*,perfis:usuario_id(nome,apelido,foto_url)').lte('inicio',today).gte('fim',today).order('inicio',{ascending:false}).limit(1).maybeSingle();
+ if(error){console.error('Responsável semanal:',error);return}
+ if(!data){box.innerHTML='<h3>Em breve teremos o primeiro sorteio</h3><p>Toda semana alguém do grupo terá uma missão especial para compartilhar com todos.</p>';return}
+ const p=data.perfis||{},display=p.apelido||p.nome||'Membro',initial=display.charAt(0).toUpperCase();let avatar=`<div class="challenge-avatar">${escapeHtml(initial)}</div>`;
+ if(p.foto_url){const {data:signed}=await supabaseClient.storage.from('perfis').createSignedUrl(p.foto_url,3600);if(signed?.signedUrl)avatar=`<img class="challenge-avatar" src="${signed.signedUrl}" alt="">`}
+ const ini=new Date(data.inicio+'T12:00:00').toLocaleDateString('pt-BR'),fim=new Date(data.fim+'T12:00:00').toLocaleDateString('pt-BR');
+ box.innerHTML=`<div class="challenge-person">${avatar}<div class="challenge-info"><h3>${escapeHtml(display)}</h3><span>${escapeHtml(p.nome||'')} • ${ini} a ${fim} • Ciclo ${data.ciclo}</span></div></div><div class="challenge-mission"><strong>MISSÃO DA SEMANA</strong><div style="font-weight:900">${escapeHtml(data.titulo_missao||'Missão especial')}</div>${data.descricao_missao?`<p style="margin-top:5px">${escapeHtml(data.descricao_missao)}</p>`:''}</div>`;
+}
+function canManageWeekly(){return currentProfile?.tipo==='admin'||currentProfile?.tipo==='lider'}
+async function openWeeklyDraw(){
+ if(!canManageWeekly())return;
+ const d=new Date(),day=d.getDay(),diff=(day+6)%7,monday=new Date(d);monday.setDate(d.getDate()-diff);document.getElementById('weeklyStart').value=monday.toISOString().slice(0,10);
+ const {data}=await supabaseClient.from('missoes_semanais').select('id,titulo').eq('ativa',true).order('titulo');
+ document.getElementById('weeklyMissionSelect').innerHTML=(data||[]).map(x=>`<option value="${x.id}">${escapeHtml(x.titulo)}</option>`).join('');
+ document.getElementById('weeklyMissionMode').value='random';toggleWeeklyMissionFields();document.getElementById('weeklyDrawMessage').className='message';document.getElementById('weeklyDrawModal').classList.remove('hidden');
+}
+function closeWeeklyDraw(){document.getElementById('weeklyDrawModal').classList.add('hidden')}
+function toggleWeeklyMissionFields(){const m=document.getElementById('weeklyMissionMode').value;document.getElementById('weeklyExistingWrap').classList.toggle('hidden',m!=='existing');document.getElementById('weeklyCustomWrap').classList.toggle('hidden',m!=='custom')}
+async function openWeeklyHistory(){
+ document.getElementById('weeklyHistoryModal').classList.remove('hidden');const box=document.getElementById('weeklyHistoryContent');box.innerHTML='<div class="loading">Carregando...</div>';
+ const {data,error}=await supabaseClient.from('responsaveis_semanais').select('*,perfis:usuario_id(nome,apelido)').order('inicio',{ascending:false}).limit(100);
+ if(error){box.innerHTML='<div class="memory-empty">Não foi possível carregar o histórico.</div>';return}
+ box.innerHTML=(data||[]).map(r=>`<div class="challenge-history-item"><strong>${escapeHtml(r.perfis?.apelido||r.perfis?.nome||'Membro')} — ${escapeHtml(r.titulo_missao||'Missão')}</strong><p>${new Date(r.inicio+'T12:00:00').toLocaleDateString('pt-BR')} até ${new Date(r.fim+'T12:00:00').toLocaleDateString('pt-BR')}${r.descricao_missao?' • '+escapeHtml(r.descricao_missao):''}</p><span class="challenge-cycle">Ciclo ${r.ciclo}</span></div>`).join('')||'<div class="memory-empty">Nenhum sorteio realizado ainda.</div>';
+}
+function closeWeeklyHistory(){document.getElementById('weeklyHistoryModal').classList.add('hidden')}
 async function logout(){await supabaseClient.auth.signOut();currentProfile=null;app.classList.add('hidden');publicSite.classList.remove('hidden');window.scrollTo({top:0,behavior:'smooth'})}
 function openMemberAdmin(){if(currentProfile?.tipo!=='admin')return;document.getElementById('memberMessage').className='message';document.getElementById('memberModal').classList.remove('hidden')}
 function closeMemberAdmin(){document.getElementById('memberModal').classList.add('hidden')}
 document.getElementById('memberForm').addEventListener('submit',async e=>{e.preventDefault();if(currentProfile?.tipo!=='admin')return;const b=document.getElementById('memberSubmit'),msg=document.getElementById('memberMessage');b.disabled=true;b.textContent='Criando...';msg.className='message';try{const {data:{session}}=await supabaseClient.auth.getSession();if(!session)throw new Error('Sua sessão expirou. Entre novamente.');const response=await fetch(SUPABASE_URL+'/functions/v1/criar-membro',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+session.access_token,'apikey':SUPABASE_KEY},body:JSON.stringify({nome:document.getElementById('memberName').value.trim(),email:document.getElementById('memberEmail').value.trim(),senha:document.getElementById('memberPassword').value,tipo:document.getElementById('memberRole').value})});const result=await response.json();if(!response.ok)throw new Error(result.error||'Não foi possível criar o membro.');showMessage(msg,'Membro criado com sucesso!','success');document.getElementById('memberForm').reset()}catch(err){showMessage(msg,err.message||'Erro ao criar membro.','error')}finally{b.disabled=false;b.textContent='Criar membro'}});
 
 
+
+
+document.getElementById('weeklyDrawForm').addEventListener('submit',async e=>{
+ e.preventDefault();if(!canManageWeekly())return;
+ if(!confirm('Confirmar o sorteio do responsável desta semana?'))return;
+ const btn=document.getElementById('weeklyDrawBtn'),msg=document.getElementById('weeklyDrawMessage');btn.disabled=true;btn.textContent='Sorteando...';
+ try{
+  const mode=document.getElementById('weeklyMissionMode').value,params={p_inicio:document.getElementById('weeklyStart').value,p_missao_id:null,p_titulo_missao:null,p_descricao_missao:null};
+  if(mode==='existing')params.p_missao_id=Number(document.getElementById('weeklyMissionSelect').value)||null;
+  if(mode==='custom'){params.p_titulo_missao=document.getElementById('weeklyCustomTitle').value.trim()||null;params.p_descricao_missao=document.getElementById('weeklyCustomDescription').value.trim()||null;if(!params.p_titulo_missao)throw new Error('Digite o título da missão personalizada.')}
+  const {data,error}=await supabaseClient.rpc('sortear_responsavel_semana',params);if(error)throw error;
+  showMessage(msg,'Sorteio realizado com sucesso!','success');await loadWeeklyChallenge();setTimeout(closeWeeklyDraw,700);
+ }catch(err){console.error('Sorteio:',err);showMessage(msg,err.message||'Não foi possível realizar o sorteio.','error')}finally{btn.disabled=false;btn.textContent='🎲 Realizar sorteio'}
+});
 
 document.getElementById('furnasForm').addEventListener('submit',async e=>{
  e.preventDefault();if(!canManageFurnas())return;const btn=document.getElementById('furnasSubmitBtn'),msg=document.getElementById('furnasMessage');btn.disabled=true;btn.textContent='Salvando...';
