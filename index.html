@@ -1143,9 +1143,21 @@ async function loadWeeklyChallenge(){
  const p=data.perfis||{},display=p.apelido||p.nome||'Membro',initial=display.charAt(0).toUpperCase();let avatar=`<div class="challenge-avatar">${escapeHtml(initial)}</div>`;
  if(p.foto_url){const {data:signed}=await supabaseClient.storage.from('perfis').createSignedUrl(p.foto_url,3600);if(signed?.signedUrl)avatar=`<img class="challenge-avatar" src="${signed.signedUrl}" alt="">`}
  const ini=new Date(data.inicio+'T12:00:00').toLocaleDateString('pt-BR'),fim=new Date(data.fim+'T12:00:00').toLocaleDateString('pt-BR');
- box.innerHTML=`<div class="challenge-person">${avatar}<div class="challenge-info"><h3>${escapeHtml(display)}</h3><span>${escapeHtml(p.nome||'')} • ${ini} a ${fim} • Ciclo ${data.ciclo}</span></div></div><div class="challenge-mission"><strong>MISSÃO DA SEMANA</strong><div style="font-weight:900">${escapeHtml(data.titulo_missao||'Missão especial')}</div>${data.descricao_missao?`<p style="margin-top:5px">${escapeHtml(data.descricao_missao)}</p>`:''}</div>`;
+ box.innerHTML=`<div class="challenge-person">${avatar}<div class="challenge-info"><h3>${escapeHtml(display)}</h3><span>${escapeHtml(p.nome||'')} • ${ini} a ${fim} • Ciclo ${data.ciclo}</span></div></div><div class="challenge-mission"><strong>${data.usuario_id===currentProfile.id?'🎯 É A SUA VEZ!':'MISSÃO DA SEMANA'}</strong><div style="font-weight:900">${escapeHtml(data.titulo_missao||'Missão especial')}</div>${data.descricao_missao?`<p style="margin-top:5px">${escapeHtml(data.descricao_missao)}</p>`:''}${data.status==='concluido'?`<div style="margin-top:10px;font-weight:900">✅ Missão cumprida</div>`:(data.usuario_id===currentProfile.id?`<button class="btn btn-white" style="margin-top:12px" onclick="completeWeeklyMission(${data.id})">✅ Concluir minha missão</button>`:'')}</div>`;
 }
 function canManageWeekly(){return currentProfile?.tipo==='admin'||currentProfile?.tipo==='lider'}
+
+async function completeWeeklyMission(id){
+ if(!currentProfile||!confirm('Confirmar que você concluiu sua missão da semana?'))return;
+ const {data:row,error:readError}=await supabaseClient.from('responsaveis_semanais').select('id,usuario_id,status').eq('id',id).maybeSingle();
+ if(readError||!row){alert('Não foi possível localizar esta missão.');return}
+ if(row.usuario_id!==currentProfile.id){alert('Somente o responsável sorteado pode concluir esta missão.');return}
+ if(row.status==='concluido'){await loadWeeklyChallenge();return}
+ const {error}=await supabaseClient.from('responsaveis_semanais').update({status:'concluido',concluido_em:new Date().toISOString()}).eq('id',id).eq('usuario_id',currentProfile.id);
+ if(error){console.error('Concluir missão:',error);alert('Não foi possível concluir a missão: '+error.message);return}
+ await loadWeeklyChallenge();alert('Missão concluída! ✅');
+}
+
 async function openWeeklyDraw(){
  if(!canManageWeekly())return;
  const d=new Date(),day=d.getDay(),diff=(day+6)%7,monday=new Date(d);monday.setDate(d.getDate()-diff);document.getElementById('weeklyStart').value=monday.toISOString().slice(0,10);
