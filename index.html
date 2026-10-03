@@ -6,62 +6,7 @@
 <meta name="theme-color" content="#0757a6">
 <title>Nosso Estudo | Alvo da Mocidade</title>
 <meta name="description" content="Nosso Estudo — estudos bíblicos, comunhão, eventos e memórias do Alvo da Mocidade.">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
-let managedMembers=[];
-async function showMemberManagement(){
- if(currentProfile?.tipo!=='admin'){alert('Somente administradores podem gerenciar membros.');return}
- document.querySelectorAll('#homeView,#studiesView,#studyDetailView,#communityView,#agendaView,#memoriesView,#albumView,#furnasView,#profileView,#memberManagementView').forEach(el=>el?.classList.add('hidden'));
- document.getElementById('memberManagementView').classList.remove('hidden');
- document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
- await loadManagedMembers();
- window.scrollTo({top:0,behavior:'smooth'});
-}
-async function loadManagedMembers(){
- const box=document.getElementById('managedMembersList'); box.innerHTML='<div class="loading">Carregando membros...</div>';
- const {data,error}=await supabaseClient.from('perfis').select('id,nome,apelido,email,telefone,foto_url,tipo,ativo,participa_sorteio,created_at').order('nome');
- if(error){box.innerHTML=`<div class="message error" style="display:block">${escapeHtml(error.message)}</div>`;return}
- managedMembers=data||[];
- await renderManagedMembers(managedMembers);
-}
-async function renderManagedMembers(list){
- const box=document.getElementById('managedMembersList');
- if(!list.length){box.innerHTML='<div class="empty-feed">Nenhum membro encontrado.</div>';return}
- const rows=await Promise.all(list.map(async m=>{
-   let photo=''; if(m.foto_url){try{const {data}=await supabaseClient.storage.from('perfis').createSignedUrl(m.foto_url,3600);photo=data?.signedUrl||''}catch(e){}}
-   const initials=(m.apelido||m.nome||'M').trim().charAt(0).toUpperCase();
-   return `<div class="manage-member-card"><div class="manage-member-top">${photo?`<img class="user-pic" src="${photo}" alt="">`:`<div class="user-pic">${escapeHtml(initials)}</div>`}<div class="manage-member-info"><strong>${escapeHtml(m.nome||'Membro')}${m.id===currentProfile.id?' (você)':''}</strong>${m.apelido?`<span>@${escapeHtml(m.apelido)}</span>`:''}<span>${escapeHtml(m.email||'')}</span></div></div><div class="member-badges"><span class="member-badge">${m.tipo==='admin'?'Administrador':m.tipo==='lider'?'Líder':'Membro'}</span><span class="member-badge ${m.ativo?'':'off'}">${m.ativo?'Conta ativa':'Conta desativada'}</span><span class="member-badge ${m.participa_sorteio?'':'off'}">${m.participa_sorteio?'🎯 Participa do sorteio':'Fora do sorteio'}</span></div><div class="member-manage-actions"><button class="btn btn-soft" onclick="openEditMember('${m.id}')">✏️ Editar</button></div></div>`;
- }));
- box.innerHTML=rows.join('');
-}
-function filterManagedMembers(){
- const q=(document.getElementById('memberSearch').value||'').trim().toLowerCase();
- const list=managedMembers.filter(m=>[m.nome,m.apelido,m.email].some(v=>(v||'').toLowerCase().includes(q)));
- renderManagedMembers(list);
-}
-function openEditMember(id){
- if(currentProfile?.tipo!=='admin')return;
- const m=managedMembers.find(x=>x.id===id); if(!m)return;
- editMemberId.value=m.id; editMemberName.value=m.nome||''; editMemberNick.value=m.apelido||''; editMemberPhone.value=m.telefone||''; editMemberEmail.value=m.email||''; editMemberRole.value=m.tipo||'membro'; editMemberActive.checked=!!m.ativo; editMemberDraw.checked=!!m.participa_sorteio;
- editMemberMessage.className='message'; editMemberMessage.textContent='';
- document.getElementById('editMemberModal').classList.remove('hidden');
-}
-function closeEditMember(){document.getElementById('editMemberModal').classList.add('hidden')}
-document.getElementById('editMemberForm').addEventListener('submit',async e=>{
- e.preventDefault(); if(currentProfile?.tipo!=='admin')return;
- const id=editMemberId.value;
- const payload={nome:editMemberName.value.trim(),apelido:editMemberNick.value.trim()||null,telefone:editMemberPhone.value.trim()||null,tipo:editMemberRole.value,ativo:editMemberActive.checked,participa_sorteio:editMemberDraw.checked};
- if(!payload.nome){return}
- if(id===currentProfile.id && !payload.ativo){alert('Você não pode desativar sua própria conta enquanto está usando o painel.');return}
- editMemberSubmit.disabled=true; editMemberSubmit.textContent='Salvando...';
- const {error}=await supabaseClient.from('perfis').update(payload).eq('id',id);
- editMemberSubmit.disabled=false; editMemberSubmit.textContent='Salvar alterações';
- if(error){editMemberMessage.className='message error';editMemberMessage.textContent=error.message;return}
- editMemberMessage.className='message success';editMemberMessage.textContent='Membro atualizado com sucesso.';
- if(id===currentProfile.id) Object.assign(currentProfile,payload);
- await loadManagedMembers(); setTimeout(closeEditMember,500);
-});
-
-</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0} :root{--azul:#0757a6;--escuro:#043765;--claro:#eaf4ff;--fundo:#f5f7fa;--branco:#fff;--texto:#15212d;--cinza:#687684;--borda:#e4eaf0;--verde:#239b56;--vermelho:#d64545;--sombra:0 12px 32px rgba(20,40,70,.10)}
 html{scroll-behavior:smooth}body{font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--fundo);color:var(--texto);min-height:100vh}button,input,select{font:inherit}button{cursor:pointer}.hidden{display:none!important}
@@ -1325,6 +1270,61 @@ document.getElementById('eventForm').addEventListener('submit',async e=>{
 
 async function checkSession(){const {data:{session}}=await supabaseClient.auth.getSession();if(session?.user)await loadApp(session.user)}
 checkSession();
+
+
+let managedMembers=[];
+async function showMemberManagement(){
+ if(currentProfile?.tipo!=='admin'){alert('Somente administradores podem gerenciar membros.');return}
+ document.querySelectorAll('#homeView,#studiesView,#studyDetailView,#communityView,#agendaView,#memoriesView,#albumView,#furnasView,#profileView,#memberManagementView').forEach(el=>el?.classList.add('hidden'));
+ document.getElementById('memberManagementView').classList.remove('hidden');
+ document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+ await loadManagedMembers();
+ window.scrollTo({top:0,behavior:'smooth'});
+}
+async function loadManagedMembers(){
+ const box=document.getElementById('managedMembersList'); box.innerHTML='<div class="loading">Carregando membros...</div>';
+ const {data,error}=await supabaseClient.from('perfis').select('id,nome,apelido,email,telefone,foto_url,tipo,ativo,participa_sorteio,created_at').order('nome');
+ if(error){box.innerHTML=`<div class="message error" style="display:block">${escapeHtml(error.message)}</div>`;return}
+ managedMembers=data||[];
+ await renderManagedMembers(managedMembers);
+}
+async function renderManagedMembers(list){
+ const box=document.getElementById('managedMembersList');
+ if(!list.length){box.innerHTML='<div class="empty-feed">Nenhum membro encontrado.</div>';return}
+ const rows=await Promise.all(list.map(async m=>{
+   let photo=''; if(m.foto_url){try{const {data}=await supabaseClient.storage.from('perfis').createSignedUrl(m.foto_url,3600);photo=data?.signedUrl||''}catch(e){}}
+   const initials=(m.apelido||m.nome||'M').trim().charAt(0).toUpperCase();
+   return `<div class="manage-member-card"><div class="manage-member-top">${photo?`<img class="user-pic" src="${photo}" alt="">`:`<div class="user-pic">${escapeHtml(initials)}</div>`}<div class="manage-member-info"><strong>${escapeHtml(m.nome||'Membro')}${m.id===currentProfile.id?' (você)':''}</strong>${m.apelido?`<span>@${escapeHtml(m.apelido)}</span>`:''}<span>${escapeHtml(m.email||'')}</span></div></div><div class="member-badges"><span class="member-badge">${m.tipo==='admin'?'Administrador':m.tipo==='lider'?'Líder':'Membro'}</span><span class="member-badge ${m.ativo?'':'off'}">${m.ativo?'Conta ativa':'Conta desativada'}</span><span class="member-badge ${m.participa_sorteio?'':'off'}">${m.participa_sorteio?'🎯 Participa do sorteio':'Fora do sorteio'}</span></div><div class="member-manage-actions"><button class="btn btn-soft" onclick="openEditMember('${m.id}')">✏️ Editar</button></div></div>`;
+ }));
+ box.innerHTML=rows.join('');
+}
+function filterManagedMembers(){
+ const q=(document.getElementById('memberSearch').value||'').trim().toLowerCase();
+ const list=managedMembers.filter(m=>[m.nome,m.apelido,m.email].some(v=>(v||'').toLowerCase().includes(q)));
+ renderManagedMembers(list);
+}
+function openEditMember(id){
+ if(currentProfile?.tipo!=='admin')return;
+ const m=managedMembers.find(x=>x.id===id); if(!m)return;
+ editMemberId.value=m.id; editMemberName.value=m.nome||''; editMemberNick.value=m.apelido||''; editMemberPhone.value=m.telefone||''; editMemberEmail.value=m.email||''; editMemberRole.value=m.tipo||'membro'; editMemberActive.checked=!!m.ativo; editMemberDraw.checked=!!m.participa_sorteio;
+ editMemberMessage.className='message'; editMemberMessage.textContent='';
+ document.getElementById('editMemberModal').classList.remove('hidden');
+}
+function closeEditMember(){document.getElementById('editMemberModal').classList.add('hidden')}
+document.getElementById('editMemberForm').addEventListener('submit',async e=>{
+ e.preventDefault(); if(currentProfile?.tipo!=='admin')return;
+ const id=editMemberId.value;
+ const payload={nome:editMemberName.value.trim(),apelido:editMemberNick.value.trim()||null,telefone:editMemberPhone.value.trim()||null,tipo:editMemberRole.value,ativo:editMemberActive.checked,participa_sorteio:editMemberDraw.checked};
+ if(!payload.nome){return}
+ if(id===currentProfile.id && !payload.ativo){alert('Você não pode desativar sua própria conta enquanto está usando o painel.');return}
+ editMemberSubmit.disabled=true; editMemberSubmit.textContent='Salvando...';
+ const {error}=await supabaseClient.from('perfis').update(payload).eq('id',id);
+ editMemberSubmit.disabled=false; editMemberSubmit.textContent='Salvar alterações';
+ if(error){editMemberMessage.className='message error';editMemberMessage.textContent=error.message;return}
+ editMemberMessage.className='message success';editMemberMessage.textContent='Membro atualizado com sucesso.';
+ if(id===currentProfile.id) Object.assign(currentProfile,payload);
+ await loadManagedMembers(); setTimeout(closeEditMember,500);
+});
 </script>
 </body>
 </html>
