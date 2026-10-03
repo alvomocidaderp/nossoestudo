@@ -69,6 +69,27 @@ html{scroll-behavior:smooth}body{font-family:Inter,system-ui,-apple-system,Blink
 @media(max-width:620px){.study-dashboard{grid-template-columns:1fr}.journey-top{align-items:center}.progress-ring-text{font-size:23px}}
 
 @media(max-width:720px){.hero-inner{grid-template-columns:1fr;text-align:center}.hero p{margin:auto}.hero-actions{justify-content:center}.hero-logo{width:190px}.hero-visual{order:-1}.public-grid{grid-template-columns:1fr}.join{align-items:flex-start;flex-direction:column}.header-actions .btn-soft{display:none}.member-grid{grid-template-columns:1fr 1fr}}@media(min-width:700px){.member-grid{grid-template-columns:repeat(4,1fr)}.bottom-nav{border-left:1px solid var(--borda);border-right:1px solid var(--borda);border-radius:22px 22px 0 0}}
+
+/* ===== AGENDA / EVENTOS ===== */
+.agenda-view{width:min(100%,900px);margin:auto;padding:20px}
+.agenda-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}
+.agenda-head h2{font-size:24px}.agenda-head p{color:var(--cinza);font-size:13px;margin-top:3px}
+.event-featured{background:linear-gradient(135deg,#0b65b9,#043765);color:white;border-radius:25px;overflow:hidden;box-shadow:0 14px 30px rgba(7,87,166,.2);margin-bottom:18px}
+.event-featured-img{width:100%;height:220px;object-fit:cover;display:block;background:#0b4f8d}
+.event-featured-body{padding:22px}.event-featured h2{font-size:25px;margin:7px 0}.event-featured p{opacity:.9;line-height:1.5}
+.event-badge{display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.2);padding:6px 9px;border-radius:999px;font-size:11px;font-weight:900;text-transform:uppercase}
+.countdown{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-top:16px}.countdown-box{background:rgba(255,255,255,.12);border-radius:13px;padding:10px 5px;text-align:center}.countdown-box strong{display:block;font-size:20px}.countdown-box span{font-size:9px;opacity:.78;text-transform:uppercase}
+.event-list{display:grid;gap:12px}.event-card{background:white;border:1px solid var(--borda);border-radius:20px;padding:17px;box-shadow:var(--sombra)}
+.event-card-top{display:flex;gap:13px;align-items:flex-start}.event-date{width:58px;min-width:58px;border-radius:15px;background:var(--claro);color:var(--azul);text-align:center;padding:9px 5px}.event-date strong{display:block;font-size:22px;line-height:1}.event-date span{font-size:10px;font-weight:900;text-transform:uppercase}
+.event-info{min-width:0;flex:1}.event-info h3{font-size:17px;margin:2px 0 5px}.event-meta{font-size:12px;color:var(--cinza);line-height:1.55}.event-desc{font-size:13px;color:var(--cinza);line-height:1.5;margin-top:10px;white-space:pre-wrap}
+.event-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:13px}.event-actions .btn{padding:9px 11px;font-size:12px}
+.event-past{opacity:.72}.agenda-empty{text-align:center;background:white;border:1px dashed #cfd8e1;border-radius:22px;padding:35px 20px;color:var(--cinza)}
+.event-admin-bar{display:flex;justify-content:space-between;align-items:center;gap:10px;background:#fff9ed;border:1px solid #efd79e;border-radius:18px;padding:13px 15px;margin-bottom:16px}.event-admin-bar p{font-size:12px;color:#725b2d}
+.event-form textarea{width:100%;min-height:100px;padding:13px;border:1px solid var(--borda);border-radius:14px;resize:vertical;font:inherit;outline:none}.event-form textarea:focus{border-color:var(--azul)}
+.check-row{display:flex;gap:16px;flex-wrap:wrap;margin:10px 0 16px}.check-row label{display:flex;align-items:center;gap:7px;font-size:13px;font-weight:800}
+.event-image-preview{width:100%;max-height:210px;object-fit:cover;border-radius:16px;margin-top:10px}
+@media(max-width:620px){.event-featured-img{height:180px}.countdown-box strong{font-size:17px}}
+
 </style>
 </head>
 <body>
@@ -100,7 +121,7 @@ html{scroll-behavior:smooth}body{font-family:Inter,system-ui,-apple-system,Blink
 <div class="section-head"><h2>Nosso espaço</h2></div><section class="member-grid">
 <button class="member-card" onclick="showStudies()"><div class="icon">📖</div><h4>Estudos</h4><p>Estudos bíblicos e conteúdos preparados para o grupo.</p></button>
 <button class="member-card" onclick="showCommunity()"><div class="icon">💬</div><h4>Comunidade</h4><p>Compartilhe reflexões, indicações e converse com o grupo.</p></button>
-<button class="member-card" onclick="comingSoon('Agenda')"><div class="icon">📅</div><h4>Agenda</h4><p>Reuniões, atividades e próximos eventos.</p></button>
+<button class="member-card" onclick="showAgenda()"><div class="icon">📅</div><h4>Agenda</h4><p>Reuniões, atividades e próximos eventos.</p></button>
 <button class="member-card" onclick="comingSoon('Memórias')"><div class="icon">📸</div><h4>Memórias</h4><p>Furnas, encontros, passeios e momentos que vivemos juntos.</p></button>
 </section>
 <section id="adminArea" class="admin-panel hidden"><strong>⚙️ Administração</strong><p id="adminDescription">Gerencie membros e conteúdos do Nosso Estudo.</p><div class="admin-actions"><button id="newMemberBtn" class="btn btn-primary hidden" onclick="openMemberAdmin()">+ Novo membro</button><button class="btn btn-soft" onclick="comingSoon('Gerenciar conteúdos')">Gerenciar conteúdos</button></div></section>
@@ -139,6 +160,19 @@ html{scroll-behavior:smooth}body{font-family:Inter,system-ui,-apple-system,Blink
   <div id="communityFeed" class="feed"><div class="loading">Carregando comunidade...</div></div>
 </section>
 
+
+<section id="agendaView" class="agenda-view hidden">
+  <div class="agenda-head">
+    <div><h2>Agenda</h2><p>Reuniões, atividades e momentos especiais do Alvo.</p></div>
+    <button class="back-btn" onclick="showHome()">×</button>
+  </div>
+  <div id="agendaAdminBar" class="event-admin-bar hidden">
+    <p><strong>Gerenciar agenda</strong><br>Líderes e administradores podem cadastrar e editar eventos.</p>
+    <button class="btn btn-primary" onclick="openEventAdmin()">+ Novo evento</button>
+  </div>
+  <div id="agendaContent"><div class="loading">Carregando agenda...</div></div>
+</section>
+
 <section id="profileView" class="profile-view hidden">
   <div class="back-row"><button class="back-btn" onclick="showHome()">‹</button><strong>Meu perfil</strong></div>
   <div class="profile-cover"><h2>Meu Perfil</h2><p style="opacity:.85;margin-top:5px">Sua identidade dentro do Nosso Estudo</p></div>
@@ -164,9 +198,34 @@ html{scroll-behavior:smooth}body{font-family:Inter,system-ui,-apple-system,Blink
     <p class="profile-status">Sua foto, nome e apelido serão usados para identificar você nas publicações, comentários e outras interações do grupo.</p>
   </div>
 </section>
-<nav class="bottom-nav"><button class="nav-btn active"><span>⌂</span>Início</button><button id="studiesNavBtn" class="nav-btn" onclick="showStudies()"><span>📖</span>Estudos</button><button id="communityNavBtn" class="nav-btn" onclick="showCommunity()"><span>＋</span>Comunidade</button><button class="nav-btn" onclick="comingSoon('Agenda')"><span>📅</span>Agenda</button><button id="profileNavBtn" class="nav-btn" onclick="showProfile()"><span>☺</span>Perfil</button></nav>
+<nav class="bottom-nav"><button class="nav-btn active"><span>⌂</span>Início</button><button id="studiesNavBtn" class="nav-btn" onclick="showStudies()"><span>📖</span>Estudos</button><button id="communityNavBtn" class="nav-btn" onclick="showCommunity()"><span>＋</span>Comunidade</button><button id="agendaNavBtn" class="nav-btn" onclick="showAgenda()"><span>📅</span>Agenda</button><button id="profileNavBtn" class="nav-btn" onclick="showProfile()"><span>☺</span>Perfil</button></nav>
 </main>
 
+
+
+<div id="eventModal" class="modal-wrap hidden">
+  <div class="modal admin-modal">
+    <button class="modal-close" onclick="closeEventAdmin()">×</button>
+    <div class="admin-title"><h2 id="eventModalTitle">Novo evento</h2><p>Preencha as informações que aparecerão na Agenda.</p></div>
+    <form id="eventForm" class="event-form">
+      <input id="eventId" type="hidden">
+      <div class="field"><label>Título</label><input id="eventTitle" maxlength="120" required placeholder="Ex.: Noite do Hambúrguer"></div>
+      <div class="field"><label>Descrição <span style="font-weight:500;color:var(--cinza)">(opcional)</span></label><textarea id="eventDescription" maxlength="2000" placeholder="Conte os detalhes do evento..."></textarea></div>
+      <div class="field"><label>Categoria</label><select id="eventCategory"><option value="evento">Evento</option><option value="reuniao">Reunião</option><option value="furnas">Furnas</option><option value="especial">Especial</option><option value="passeio">Passeio</option></select></div>
+      <div class="field"><label>Local <span style="font-weight:500;color:var(--cinza)">(opcional)</span></label><input id="eventLocation" maxlength="200" placeholder="Ex.: Igreja, salão, Furnas..."></div>
+      <div class="field"><label>Início</label><input id="eventStart" type="datetime-local" required></div>
+      <div class="field"><label>Término <span style="font-weight:500;color:var(--cinza)">(opcional)</span></label><input id="eventEnd" type="datetime-local"></div>
+      <div class="field"><label>Imagem por URL <span style="font-weight:500;color:var(--cinza)">(opcional)</span></label><input id="eventImage" type="url" placeholder="https://..."></div>
+      <div class="field"><label>Link externo <span style="font-weight:500;color:var(--cinza)">(opcional)</span></label><input id="eventLink" type="url" placeholder="https://..."></div>
+      <div class="check-row">
+        <label><input id="eventFeatured" type="checkbox"> Destacar evento</label>
+        <label><input id="eventPublished" type="checkbox" checked> Publicado</label>
+      </div>
+      <button id="eventSubmitBtn" class="btn btn-primary wide" type="submit">Salvar evento</button>
+    </form>
+    <div id="eventMessage" class="message"></div>
+  </div>
+</div>
 
 <div id="studyInviteModal" class="modal-wrap hidden">
  <div class="modal admin-modal">
@@ -313,7 +372,7 @@ let activeStudyRun=null;
 
 async function showStudies(){
  if(!currentProfile)return;
- ['homeView','profileView','communityView','studyDetailView'].forEach(id=>document.getElementById(id)?.classList.add('hidden'));
+ ['homeView','profileView','communityView','studyDetailView','agendaView'].forEach(id=>document.getElementById(id)?.classList.add('hidden'));
  document.getElementById('studiesView').classList.remove('hidden');
  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
  document.getElementById('studiesNavBtn')?.classList.add('active');
@@ -570,6 +629,7 @@ async function showCommunity(){
  document.getElementById('profileView').classList.add('hidden');
  document.getElementById('studiesView').classList.add('hidden');
  document.getElementById('studyDetailView').classList.add('hidden');
+ document.getElementById('agendaView').classList.add('hidden');
  document.getElementById('communityView').classList.remove('hidden');
  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
  document.getElementById('communityNavBtn').classList.add('active');
@@ -690,12 +750,199 @@ async function deletePost(postId,imagePath){
  }catch(err){console.error('Excluir publicação:',err);alert('Não foi possível excluir a publicação.')}
 }
 
+
+// ===== AGENDA / EVENTOS =====
+let eventsCache=[];
+let countdownTimer=null;
+
+function canManageEvents(){
+ return currentProfile?.tipo==='lider'||currentProfile?.tipo==='admin';
+}
+async function showAgenda(){
+ if(!currentProfile)return;
+ ['homeView','profileView','communityView','studiesView','studyDetailView'].forEach(id=>document.getElementById(id)?.classList.add('hidden'));
+ document.getElementById('agendaView').classList.remove('hidden');
+ document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+ document.getElementById('agendaNavBtn')?.classList.add('active');
+ document.getElementById('agendaAdminBar')?.classList.toggle('hidden',!canManageEvents());
+ window.scrollTo({top:0,behavior:'smooth'});
+ await loadAgenda();
+}
+async function loadAgenda(){
+ const box=document.getElementById('agendaContent');
+ box.innerHTML='<div class="loading">Carregando agenda...</div>';
+ let query=supabaseClient.from('eventos').select('*').order('data_inicio',{ascending:true});
+ if(!canManageEvents())query=query.eq('publicado',true);
+ const {data,error}=await query;
+ if(error){console.error('Agenda:',error);box.innerHTML='<div class="agenda-empty">Não foi possível carregar a agenda.</div>';return}
+ eventsCache=data||[];
+ renderAgenda();
+}
+function renderAgenda(){
+ const box=document.getElementById('agendaContent');
+ const now=Date.now();
+ const future=eventsCache.filter(e=>new Date(e.data_inicio).getTime()>=now-3600000);
+ const past=eventsCache.filter(e=>new Date(e.data_inicio).getTime()<now-3600000).sort((a,b)=>new Date(b.data_inicio)-new Date(a.data_inicio));
+ const featured=future.find(e=>e.destaque)||future[0]||null;
+ let out='';
+ if(featured){
+   const img=safeHttpUrl(featured.imagem_url);
+   out+=`<article class="event-featured">${img?`<img class="event-featured-img" src="${escapeHtml(img)}" alt="">`:''}<div class="event-featured-body"><span class="event-badge">${featured.destaque?'⭐ Em destaque':'📅 Próximo evento'}</span><h2>${escapeHtml(featured.titulo)}</h2><p>${eventDateLong(featured.data_inicio)}${featured.local?' • '+escapeHtml(featured.local):''}</p>${featured.descricao?`<p style="margin-top:9px">${escapeHtml(featured.descricao)}</p>`:''}<div id="eventCountdown" class="countdown" data-date="${escapeHtml(featured.data_inicio)}"></div>${eventActionButtons(featured,true)}</div></article>`;
+ }
+ if(future.length){
+   out+=`<div class="section-head"><h2>Próximos eventos</h2><p>O que vem por aí no Alvo.</p></div><div class="event-list">${future.map(eventCard).join('')}</div>`;
+ }else{
+   out+=`<div class="agenda-empty"><div style="font-size:36px;margin-bottom:8px">📅</div><strong>Nenhum evento futuro cadastrado</strong><p style="margin-top:6px">Quando houver novidade, ela aparecerá aqui.</p></div>`;
+ }
+ if(past.length){
+   out+=`<div class="section-head"><h2>Eventos anteriores</h2><p>Um histórico do que já aconteceu.</p></div><div class="event-list">${past.slice(0,12).map(e=>eventCard(e,true)).join('')}</div>`;
+ }
+ box.innerHTML=out;
+ startAgendaCountdown();
+}
+function eventCard(e,past=false){
+ const d=new Date(e.data_inicio);
+ const day=String(d.getDate()).padStart(2,'0');
+ const month=d.toLocaleDateString('pt-BR',{month:'short'}).replace('.','');
+ const hidden=canManageEvents()&&!e.publicado?'<span class="study-status">Oculto</span>':'';
+ return `<article class="event-card ${past?'event-past':''}"><div class="event-card-top"><div class="event-date"><strong>${day}</strong><span>${escapeHtml(month)}</span></div><div class="event-info"><div style="display:flex;justify-content:space-between;gap:8px"><div><span class="study-week">${escapeHtml(eventCategoryLabel(e.categoria))}</span><h3>${escapeHtml(e.titulo)}</h3></div>${hidden}</div><div class="event-meta">🕒 ${escapeHtml(eventTimeText(e))}${e.local?`<br>📍 ${escapeHtml(e.local)}`:''}</div>${e.descricao?`<div class="event-desc">${escapeHtml(e.descricao)}</div>`:''}${eventActionButtons(e,false)}</div></div></article>`;
+}
+function eventActionButtons(e,featured){
+ const buttons=[];
+ const link=safeHttpUrl(e.link_externo);
+ if(link)buttons.push(`<button class="btn ${featured?'btn-white':'btn-soft'}" onclick="openEventLink('${escapeHtml(link)}')">Mais informações</button>`);
+ if(canManageEvents()){
+   buttons.push(`<button class="btn ${featured?'btn-glass':'btn-soft'}" onclick="editEvent(${e.id})">✏️ Editar</button>`);
+   buttons.push(`<button class="btn ${featured?'btn-glass':'btn-soft'}" onclick="deleteEvent(${e.id})">🗑️ Excluir</button>`);
+ }
+ return buttons.length?`<div class="event-actions">${buttons.join('')}</div>`:'';
+}
+function eventCategoryLabel(v){
+ return ({reuniao:'Reunião',furnas:'Furnas',especial:'Especial',passeio:'Passeio',evento:'Evento'})[v]||'Evento';
+}
+function eventDateLong(value){
+ const d=new Date(value);
+ return d.toLocaleDateString('pt-BR',{weekday:'long',day:'2-digit',month:'long',year:'numeric'})+' às '+d.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+}
+function eventTimeText(e){
+ const a=new Date(e.data_inicio);
+ let txt=a.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit',year:'numeric'})+' às '+a.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+ if(e.data_fim){
+   const b=new Date(e.data_fim);
+   txt+=' até '+b.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'})+' '+b.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+ }
+ return txt;
+}
+function startAgendaCountdown(){
+ if(countdownTimer)clearInterval(countdownTimer);
+ const render=()=>{
+   const el=document.getElementById('eventCountdown');
+   if(!el)return;
+   const target=new Date(el.dataset.date).getTime();
+   let diff=target-Date.now();
+   if(diff<=0){el.innerHTML='<div class="countdown-box" style="grid-column:1/-1"><strong>É hoje! 🎉</strong><span>Confira o horário acima</span></div>';return}
+   const days=Math.floor(diff/86400000);diff%=86400000;
+   const hours=Math.floor(diff/3600000);diff%=3600000;
+   const mins=Math.floor(diff/60000);
+   const secs=Math.floor((diff%60000)/1000);
+   el.innerHTML=`<div class="countdown-box"><strong>${days}</strong><span>dias</span></div><div class="countdown-box"><strong>${hours}</strong><span>horas</span></div><div class="countdown-box"><strong>${mins}</strong><span>min</span></div><div class="countdown-box"><strong>${secs}</strong><span>seg</span></div>`;
+ };
+ render();countdownTimer=setInterval(render,1000);
+}
+function safeHttpUrl(value){
+ if(!value)return '';
+ try{const u=new URL(value);return ['http:','https:'].includes(u.protocol)?u.href:''}catch(e){return ''}
+}
+function openEventLink(url){
+ const safe=safeHttpUrl(url);if(safe)window.open(safe,'_blank','noopener,noreferrer');
+}
+function openEventAdmin(){
+ if(!canManageEvents())return;
+ document.getElementById('eventForm').reset();
+ document.getElementById('eventId').value='';
+ document.getElementById('eventPublished').checked=true;
+ document.getElementById('eventModalTitle').textContent='Novo evento';
+ document.getElementById('eventMessage').className='message';
+ document.getElementById('eventModal').classList.remove('hidden');
+}
+function closeEventAdmin(){document.getElementById('eventModal').classList.add('hidden')}
+function toLocalInput(value){
+ if(!value)return '';
+ const d=new Date(value),pad=n=>String(n).padStart(2,'0');
+ return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+}
+function editEvent(id){
+ if(!canManageEvents())return;
+ const e=eventsCache.find(x=>Number(x.id)===Number(id));if(!e)return;
+ document.getElementById('eventId').value=e.id;
+ document.getElementById('eventTitle').value=e.titulo||'';
+ document.getElementById('eventDescription').value=e.descricao||'';
+ document.getElementById('eventCategory').value=e.categoria||'evento';
+ document.getElementById('eventLocation').value=e.local||'';
+ document.getElementById('eventStart').value=toLocalInput(e.data_inicio);
+ document.getElementById('eventEnd').value=toLocalInput(e.data_fim);
+ document.getElementById('eventImage').value=e.imagem_url||'';
+ document.getElementById('eventLink').value=e.link_externo||'';
+ document.getElementById('eventFeatured').checked=!!e.destaque;
+ document.getElementById('eventPublished').checked=e.publicado!==false;
+ document.getElementById('eventModalTitle').textContent='Editar evento';
+ document.getElementById('eventMessage').className='message';
+ document.getElementById('eventModal').classList.remove('hidden');
+}
+async function deleteEvent(id){
+ if(!canManageEvents()||!confirm('Excluir este evento da agenda?'))return;
+ const {error}=await supabaseClient.from('eventos').delete().eq('id',id);
+ if(error){console.error(error);alert('Não foi possível excluir o evento.');return}
+ await loadAgenda();
+}
+
 async function loadWeeklyChallenge(){const hoje=new Date().toISOString().split('T')[0];const {data,error}=await supabaseClient.from('responsaveis_semanais').select('*, perfis:usuario_id(nome), missoes_semanais:missao_id(titulo,descricao)').lte('inicio',hoje).gte('fim',hoje).neq('status','cancelado').limit(1);if(error){console.warn('Desafio:',error);return}if(!data?.length)return;const d=data[0];if(d.perfis?.nome)document.getElementById('weeklyPerson').textContent=d.perfis.nome;const descricao=d.descricao_missao||d.missoes_semanais?.descricao;if(descricao)document.getElementById('weeklyMission').textContent=descricao;}
 document.getElementById('loginForm').addEventListener('submit',async e=>{e.preventDefault();const b=document.getElementById('loginButton');b.disabled=true;b.textContent='Entrando...';authMessage.className='message';const email=document.getElementById('loginEmail').value.trim(),password=document.getElementById('loginPassword').value;const {data,error}=await supabaseClient.auth.signInWithPassword({email,password});b.disabled=false;b.textContent='Entrar';if(error){showMessage(authMessage,'Não foi possível entrar. Confira seu e-mail e senha.','error');return}await loadApp(data.user)});
 async function logout(){await supabaseClient.auth.signOut();currentProfile=null;app.classList.add('hidden');publicSite.classList.remove('hidden');window.scrollTo({top:0,behavior:'smooth'})}
 function openMemberAdmin(){if(currentProfile?.tipo!=='admin')return;document.getElementById('memberMessage').className='message';document.getElementById('memberModal').classList.remove('hidden')}
 function closeMemberAdmin(){document.getElementById('memberModal').classList.add('hidden')}
 document.getElementById('memberForm').addEventListener('submit',async e=>{e.preventDefault();if(currentProfile?.tipo!=='admin')return;const b=document.getElementById('memberSubmit'),msg=document.getElementById('memberMessage');b.disabled=true;b.textContent='Criando...';msg.className='message';try{const {data:{session}}=await supabaseClient.auth.getSession();if(!session)throw new Error('Sua sessão expirou. Entre novamente.');const response=await fetch(SUPABASE_URL+'/functions/v1/criar-membro',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+session.access_token,'apikey':SUPABASE_KEY},body:JSON.stringify({nome:document.getElementById('memberName').value.trim(),email:document.getElementById('memberEmail').value.trim(),senha:document.getElementById('memberPassword').value,tipo:document.getElementById('memberRole').value})});const result=await response.json();if(!response.ok)throw new Error(result.error||'Não foi possível criar o membro.');showMessage(msg,'Membro criado com sucesso!','success');document.getElementById('memberForm').reset()}catch(err){showMessage(msg,err.message||'Erro ao criar membro.','error')}finally{b.disabled=false;b.textContent='Criar membro'}});
+
+document.getElementById('eventForm').addEventListener('submit',async e=>{
+ e.preventDefault();
+ if(!canManageEvents())return;
+ const btn=document.getElementById('eventSubmitBtn'),msg=document.getElementById('eventMessage');
+ btn.disabled=true;btn.textContent='Salvando...';msg.className='message';
+ try{
+   const id=document.getElementById('eventId').value;
+   const start=document.getElementById('eventStart').value;
+   const end=document.getElementById('eventEnd').value;
+   if(!start)throw new Error('Informe a data e o horário de início.');
+   if(end&&new Date(end)<new Date(start))throw new Error('O término não pode ser antes do início.');
+   const image=document.getElementById('eventImage').value.trim();
+   const link=document.getElementById('eventLink').value.trim();
+   if(image&&!safeHttpUrl(image))throw new Error('A URL da imagem não é válida.');
+   if(link&&!safeHttpUrl(link))throw new Error('O link externo não é válido.');
+   const payload={
+     titulo:document.getElementById('eventTitle').value.trim(),
+     descricao:document.getElementById('eventDescription').value.trim()||null,
+     categoria:document.getElementById('eventCategory').value,
+     local:document.getElementById('eventLocation').value.trim()||null,
+     data_inicio:new Date(start).toISOString(),
+     data_fim:end?new Date(end).toISOString():null,
+     imagem_url:image||null,
+     link_externo:link||null,
+     destaque:document.getElementById('eventFeatured').checked,
+     publicado:document.getElementById('eventPublished').checked,
+     criado_por:currentProfile.id
+   };
+   if(!payload.titulo)throw new Error('Informe o título do evento.');
+   let result;
+   if(id)result=await supabaseClient.from('eventos').update(payload).eq('id',id);
+   else result=await supabaseClient.from('eventos').insert(payload);
+   if(result.error)throw result.error;
+   showMessage(msg,id?'Evento atualizado com sucesso!':'Evento criado com sucesso!','success');
+   await loadAgenda();
+   setTimeout(closeEventAdmin,650);
+ }catch(err){console.error('Salvar evento:',err);showMessage(msg,err.message||'Não foi possível salvar o evento.','error')}
+ finally{btn.disabled=false;btn.textContent='Salvar evento'}
+});
+
 async function checkSession(){const {data:{session}}=await supabaseClient.auth.getSession();if(session?.user)await loadApp(session.user)}
 checkSession();
 </script>
