@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#0757a6">
+
+  <title>Nosso Estudo | Alvo da Mocidade</title>
+
+  <meta
+    name="description"
+    content="Nosso Estudo — estudos bíblicos, comunhão, eventos e memórias do Alvo da Mocidade."
+  >
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    *{
+      box-sizing:border-box;
+      margin:0;
+      padding:0;
+    }
+
+    :root{
+      --azul:#0757a6;
+      --azul-escuro:#063d74;
+      --azul-claro:#eaf4ff;
+      --fundo:#f5f7fa;
+      --branco:#fff;
+      --texto:#17202a;
+      --cinza:#687684;
+      --borda:#e7ebef;
+      --verde:#27ae60;
+      --vermelho:#d64545;
+      --sombra:0 10px 30px rgba(20,40,70,.08);
+    }
+
+    body{
+      font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      background:var(--fundo);
+      color:var(--texto);
+      min-height:100vh;
+    }
+
+    button,input{
+      font:inherit;
+    }
+
+    button{
+      cursor:pointer;
+    }
+
+    .hidden{
+      display:none !important;
+    }
+
+    /* LOGIN */
+
+    #authScreen{
+      min-height:100vh;
+      background:
+        radial-gradient(circle at top right,rgba(255,255,255,.22),transparent 30%),
+        linear-gradient(155deg,#0757a6,#063d74);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:24px;
+    }
+
+    .auth-card{
+      width:min(100%,430px);
+      background:#fff;
+      border-radius:30px;
+      padding:30px 24px;
+      box-shadow:0 30px 80px rgba(0,0,0,.25);
+    }
+
+    .brand{
+      text-align:center;
+      margin-bottom:28px;
+    }
+
+    .brand-logo{
+      width:94px;
+      height:94px;
+      border-radius:28px;
+      margin:0 auto 16px;
+      background:var(--azul);
+      color:#fff;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:30px;
+      font-weight:900;
+      letter-spacing:-2px;
+      box-shadow:0 12px 28px rgba(7,87,166,.25);
+    }
+
+    .brand h1{
+      font-size:28px;
+      color:var(--azul);
+      margin-bottom:5px;
+    }
+
+    .brand p{
+      color:var(--cinza);
+      font-size:14px;
+    }
+
+    .tabs{
+      background:#f0f3f6;
+      padding:4px;
+      border-radius:14px;
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      margin-bottom:22px;
+    }
+
+    .tab{
+      border:0;
+      background:transparent;
+      padding:11px;
+      border-radius:11px;
+      color:var(--cinza);
+      font-weight:700;
+    }
+
+    .tab.active{
+      background:#fff;
+      color:var(--azul);
+      box-shadow:0 3px 10px rgba(0,0,0,.06);
+    }
+
+    .field{
+      margin-bottom:15px;
+    }
+
+    .field label{
+      display:block;
+      font-size:13px;
+      font-weight:700;
+      margin-bottom:7px;
+    }
+
+    .field input{
+      width:100%;
+      border:1px solid var(--borda);
+      border-radius:14px;
+      padding:14px 15px;
+      outline:none;
+      background:#fff;
+    }
+
+    .field input:focus{
+      border-color:var(--azul);
+      box-shadow:0 0 0 3px rgba(7,87,166,.08);
+    }
+
+    .primary{
+      width:100%;
+      border:0;
+      background:var(--azul);
+      color:#fff;
+      padding:15px;
+      border-radius:15px;
+      font-weight:800;
+      margin-top:5px;
+    }
+
+    .primary:disabled{
+      opacity:.6;
+      cursor:not-allowed;
+    }
+
+    .message{
+      margin-top:14px;
+      padding:12px;
+      border-radius:12px;
+      font-size:13px;
+      display:none;
+    }
+
+    .message.error{
+      display:block;
+      color:#8d2020;
+      background:#ffeaea;
+    }
+
+    .message.success{
+      display:block;
+      color:#176b3a;
+      background:#e9f8ef;
+    }
+
+    /* APP */
+
+    #app{
+      min-height:100vh;
+      padding-bottom:90px;
+    }
+
+    .topbar{
+      background:linear-gradient(135deg,var(--azul),var(--azul-escuro));
+      color:#fff;
+      padding:calc(20px + env(safe-area-inset-top)) 20px 28px;
+      border-radius:0 0 28px 28px;
+    }
+
+    .topbar-inner{
+      max-width:900px;
+      margin:auto;
+    }
+
+    .user-row{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+    }
+
+    .hello small{
+      opacity:.8;
+      display:block;
+      margin-bottom:4px;
+    }
+
+    .hello h2{
+      font-size:23px;
+    }
+
+    .avatar{
+      width:48px;
+      height:48px;
+      border-radius:16px;
+      background:rgba(255,255,255,.18);
+      border:1px solid rgba(255,255,255,.25);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:900;
+      font-size:18px;
+    }
+
+    .content{
+      width:min(100%,900px);
+      margin:auto;
+      padding:20px;
+    }
+
+    .verse{
+      background:#fff;
+      border-radius:22px;
+      padding:22px;
+      box-shadow:var(--sombra);
+      margin-top:-2px;
+      border:1px solid var(--borda);
+    }
+
+    .eyebrow{
+      color:var(--azul);
+      font-size:12px;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+      font-weight:900;
+      margin-bottom:10px;
+    }
+
+    .verse blockquote{
+      font-size:18px;
+      line-height:1.5;
+      font-weight:650;
+      margin-bottom:10px;
+    }
+
+    .verse span{
+      color:var(--cinza);
+      font-size:13px;
+    }
+
+    .section-title{
+      margin:27px 0 14px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+    }
+
+    .section-title h3{
+      font-size:19px;
+    }
+
+    .section-title button{
+      border:0;
+      background:transparent;
+      color:var(--azul);
+      font-weight:800;
+      font-size:13px;
+    }
+
+    .challenge{
+      background:linear-gradient(135deg,#0b65b9,#07467e);
+      color:#fff;
+      border-radius:22px;
+      padding:21px;
+      box-shadow:0 14px 30px rgba(7,87,166,.22);
+    }
+
+    .challenge small{
+      opacity:.8;
+    }
+
+    .challenge h3{
+      margin:6px 0 8px;
+      font-size:21px;
+    }
+
+    .challenge p{
+      opacity:.92;
+      line-height:1.45;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:13px;
+    }
+
+    .card{
+      background:#fff;
+      border:1px solid var(--borda);
+      border-radius:20px;
+      padding:18px;
+      box-shadow:0 6px 20px rgba(20,40,70,.05);
+      min-height:145px;
+    }
+
+    .card-icon{
+      width:44px;
+      height:44px;
+      border-radius:14px;
+      background:var(--azul-claro);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:22px;
+      margin-bottom:14px;
+    }
+
+    .card h4{
+      margin-bottom:5px;
+    }
+
+    .card p{
+      color:var(--cinza);
+      font-size:13px;
+      line-height:1.4;
+    }
+
+    .admin-card{
+      margin-top:18px;
+      background:#fff7e8;
+      border:1px solid #f1d79d;
+      border-radius:20px;
+      padding:18px;
+    }
+
+    .admin-card strong{
+      display:block;
+      margin-bottom:5px;
+    }
+
+    .admin-card p{
+      color:#725b2d;
+      font-size:13px;
+    }
+
+    .logout{
+      border:0;
+      background:#fff;
+      color:var(--vermelho);
+      width:100%;
+      padding:15px;
+      border-radius:15px;
+      margin-top:25px;
+      font-weight:800;
+      box-shadow:var(--sombra);
+    }
+
+    /* NAV */
+
+    .bottom-nav{
+      position:fixed;
+      left:50%;
+      bottom:0;
+      transform:translateX(-50%);
+      width:min(100%,900px);
+      background:rgba(255,255,255,.96);
+      backdrop-filter:blur(18px);
+      border-top:1px solid var(--borda);
+      display:grid;
+      grid-template-columns:repeat(5,1fr);
+      padding:8px 6px calc(8px + env(safe-area-inset-bottom));
+      z-index:50;
+    }
+
+    .nav-btn{
+      border:0;
+      background:transparent;
+      color:#84909b;
+      font-size:10px;
+      font-weight:700;
+      padding:5px 2px;
+    }
+
+    .nav-btn span{
+      display:block;
+      font-size:21px;
+      margin-bottom:3px;
+    }
+
+    .nav-btn.active{
+      color:var(--azul);
+    }
+
+    @media(min-width:700px){
+      .grid{
+        grid-template-columns:repeat(4,1fr);
+      }
+
+      .bottom-nav{
+        border-left:1px solid var(--borda);
+        border-right:1px solid var(--borda);
+        border-radius:22px 22px 0 0;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<section id="authScreen">
+
+  <div class="auth-card">
+
+    <div class="brand">
+      <div class="brand-logo">ALVO</div>
+      <h1>Nosso Estudo</h1>
+      <p>Alvo da Mocidade</p>
+    </div>
+
+    <div class="tabs">
+      <button class="tab active" id="loginTab" onclick="showLogin()">
+        Entrar
+      </button>
+
+      <button class="tab" id="registerTab" onclick="showRegister()">
+        Criar conta
+      </button>
+    </div>
+
+    <form id="loginForm">
+
+      <div class="field">
+        <label>E-mail</label>
+        <input
+          id="loginEmail"
+          type="email"
+          placeholder="seu@email.com"
+          required
+        >
+      </div>
+
+      <div class="field">
+        <label>Senha</label>
+        <input
+          id="loginPassword"
+          type="password"
+          placeholder="Sua senha"
+          required
+        >
+      </div>
+
+      <button class="primary" id="loginButton" type="submit">
+        Entrar
+      </button>
+
+    </form>
+
+    <form id="registerForm" class="hidden">
+
+      <div class="field">
+        <label>Nome</label>
+        <input
+          id="registerName"
+          type="text"
+          placeholder="Seu nome"
+          required
+        >
+      </div>
+
+      <div class="field">
+        <label>E-mail</label>
+        <input
+          id="registerEmail"
+          type="email"
+          placeholder="seu@email.com"
+          required
+        >
+      </div>
+
+      <div class="field">
+        <label>Senha</label>
+        <input
+          id="registerPassword"
+          type="password"
+          minlength="6"
+          placeholder="Crie uma senha"
+          required
+        >
+      </div>
+
+      <button class="primary" id="registerButton" type="submit">
+        Criar minha conta
+      </button>
+
+    </form>
+
+    <div id="authMessage" class="message"></div>
+
+  </div>
+
+</section>
+
+
+<main id="app" class="hidden">
+
+  <header class="topbar">
+    <div class="topbar-inner">
+
+      <div class="user-row">
+
+        <div class="hello">
+          <small>Bem-vindo ao Nosso Estudo</small>
+          <h2 id="welcomeName">Olá 👋</h2>
+        </div>
+
+        <div class="avatar" id="avatar">
+          N
+        </div>
+
+      </div>
+
+    </div>
+  </header>
+
+
+  <div class="content">
+
+    <section class="verse">
+
+      <div class="eyebrow">
+        Palavra para hoje
+      </div>
+
+      <blockquote>
+        “Lâmpada para os meus pés é a tua palavra e luz para o meu caminho.”
+      </blockquote>
+
+      <span>Salmos 119:105</span>
+
+    </section>
+
+
+    <div class="section-title">
+      <h3>Desafio da semana</h3>
+      <button>Ver detalhes</button>
+    </div>
+
+    <section class="challenge">
+
+      <small>🎯 RESPONSÁVEL DA SEMANA</small>
+
+      <h3 id="weeklyPerson">
+        Em breve teremos o primeiro sorteio
+      </h3>
+
+      <p id="weeklyMission">
+        Toda semana alguém do grupo terá uma missão especial para compartilhar com todos.
+      </p>
+
+    </section>
+
+
+    <div class="section-title">
+      <h3>Nosso espaço</h3>
+    </div>
+
+    <section class="grid">
+
+      <article class="card">
+        <div class="card-icon">📖</div>
+        <h4>Estudos</h4>
+        <p>Estudos bíblicos e conteúdos preparados para o grupo.</p>
+      </article>
+
+      <article class="card">
+        <div class="card-icon">💬</div>
+        <h4>Comunidade</h4>
+        <p>Compartilhe reflexões, indicações e converse com o grupo.</p>
+      </article>
+
+      <article class="card">
+        <div class="card-icon">📅</div>
+        <h4>Agenda</h4>
+        <p>Reuniões, atividades e os próximos eventos.</p>
+      </article>
+
+      <article class="card">
+        <div class="card-icon">📸</div>
+        <h4>Memórias</h4>
+        <p>Furnas, encontros, passeios e momentos que vivemos juntos.</p>
+      </article>
+
+    </section>
+
+
+    <section id="adminArea" class="admin-card hidden">
+      <strong>⚙️ Administração</strong>
+      <p>
+        Sua conta possui acesso administrativo. Aqui você poderá
+        administrar membros, líderes, estudos, eventos, desafios e conteúdos.
+      </p>
+    </section>
+
+
+    <button class="logout" onclick="logout()">
+      Sair da conta
+    </button>
+
+  </div>
+
+
+  <nav class="bottom-nav">
+
+    <button class="nav-btn active">
+      <span>⌂</span>
+      Início
+    </button>
+
+    <button class="nav-btn">
+      <span>📖</span>
+      Estudos
+    </button>
+
+    <button class="nav-btn">
+      <span>＋</span>
+      Compartilhar
+    </button>
+
+    <button class="nav-btn">
+      <span>📅</span>
+      Agenda
+    </button>
+
+    <button class="nav-btn">
+      <span>☺</span>
+      Perfil
+    </button>
+
+  </nav>
+
+</main>
+
+
+<script>
+
+  const SUPABASE_URL =
+    "https://bawfjkrpliuhntzkgbad.supabase.co";
+
+  const SUPABASE_KEY =
+    "sb_publishable_pUaKLDa3SLmLVN4f5E2JVw_wcJtzTSU";
+
+  const supabaseClient =
+    window.supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_KEY
+    );
+
+
+  const authScreen =
+    document.getElementById("authScreen");
+
+  const app =
+    document.getElementById("app");
+
+  const authMessage =
+    document.getElementById("authMessage");
+
+
+  function showMessage(text,type){
+
+    authMessage.textContent = text;
+    authMessage.className = "message " + type;
+
+  }
+
+
+  function clearMessage(){
+
+    authMessage.textContent = "";
+    authMessage.className = "message";
+
+  }
+
+
+  function showLogin(){
+
+    clearMessage();
+
+    document
+      .getElementById("loginForm")
+      .classList.remove("hidden");
+
+    document
+      .getElementById("registerForm")
+      .classList.add("hidden");
+
+    document
+      .getElementById("loginTab")
+      .classList.add("active");
+
+    document
+      .getElementById("registerTab")
+      .classList.remove("active");
+
+  }
+
+
+  function showRegister(){
+
+    clearMessage();
+
+    document
+      .getElementById("registerForm")
+      .classList.remove("hidden");
+
+    document
+      .getElementById("loginForm")
+      .classList.add("hidden");
+
+    document
+      .getElementById("registerTab")
+      .classList.add("active");
+
+    document
+      .getElementById("loginTab")
+      .classList.remove("active");
+
+  }
+
+
+  async function loadApp(user){
+
+    const {
+      data: perfil,
+      error
+    } = await supabaseClient
+      .from("perfis")
+      .select("*")
+      .eq("id",user.id)
+      .single();
+
+
+    if(error){
+
+      console.error(error);
+
+      alert(
+        "Sua conta entrou, mas não foi possível carregar o perfil."
+      );
+
+      return;
+
+    }
+
+
+    authScreen.classList.add("hidden");
+    app.classList.remove("hidden");
+
+
+    const primeiroNome =
+      perfil.nome
+        ? perfil.nome.split(" ")[0]
+        : "Membro";
+
+
+    document.getElementById("welcomeName")
+      .textContent =
+      "Olá, " + primeiroNome + " 👋";
+
+
+    document.getElementById("avatar")
+      .textContent =
+      primeiroNome.charAt(0).toUpperCase();
+
+
+    if(
+      perfil.tipo === "admin" ||
+      perfil.tipo === "lider"
+    ){
+
+      document
+        .getElementById("adminArea")
+        .classList.remove("hidden");
+
+    }else{
+
+      document
+        .getElementById("adminArea")
+        .classList.add("hidden");
+
+    }
+
+
+    await loadWeeklyChallenge();
+
+  }
+
+
+  async function loadWeeklyChallenge(){
+
+    const hoje =
+      new Date().toISOString().split("T")[0];
+
+
+    const {
+      data,
+      error
+    } = await supabaseClient
+      .from("responsaveis_semanais")
+      .select(`
+        *,
+        perfis:usuario_id(nome),
+        missoes_semanais:missao_id(
+          titulo,
+          descricao
+        )
+      `)
+      .lte("inicio",hoje)
+      .gte("fim",hoje)
+      .neq("status","cancelado")
+      .limit(1);
+
+
+    if(error){
+
+      console.error(
+        "Erro ao carregar desafio:",
+        error
+      );
+
+      return;
+
+    }
+
+
+    if(!data || data.length === 0){
+      return;
+    }
+
+
+    const desafio = data[0];
+
+
+    if(desafio.perfis?.nome){
+
+      document.getElementById("weeklyPerson")
+        .textContent =
+        desafio.perfis.nome;
+
+    }
+
+
+    const descricao =
+      desafio.descricao_missao ||
+      desafio.missoes_semanais?.descricao;
+
+
+    if(descricao){
+
+      document.getElementById("weeklyMission")
+        .textContent =
+        descricao;
+
+    }
+
+  }
+
+
+  document
+    .getElementById("loginForm")
+    .addEventListener(
+      "submit",
+      async function(event){
+
+        event.preventDefault();
+
+        clearMessage();
+
+
+        const button =
+          document.getElementById("loginButton");
+
+        button.disabled = true;
+        button.textContent = "Entrando...";
+
+
+        const email =
+          document
+            .getElementById("loginEmail")
+            .value.trim();
+
+        const password =
+          document
+            .getElementById("loginPassword")
+            .value;
+
+
+        const {
+          data,
+          error
+        } = await supabaseClient.auth
+          .signInWithPassword({
+            email,
+            password
+          });
+
+
+        button.disabled = false;
+        button.textContent = "Entrar";
+
+
+        if(error){
+
+          showMessage(
+            "Não foi possível entrar. Confira seu e-mail e senha.",
+            "error"
+          );
+
+          return;
+
+        }
+
+
+        await loadApp(data.user);
+
+      }
+    );
+
+
+  document
+    .getElementById("registerForm")
+    .addEventListener(
+      "submit",
+      async function(event){
+
+        event.preventDefault();
+
+        clearMessage();
+
+
+        const button =
+          document.getElementById("registerButton");
+
+        button.disabled = true;
+        button.textContent = "Criando conta...";
+
+
+        const nome =
+          document
+            .getElementById("registerName")
+            .value.trim();
+
+        const email =
+          document
+            .getElementById("registerEmail")
+            .value.trim();
+
+        const password =
+          document
+            .getElementById("registerPassword")
+            .value;
+
+
+        const {
+          data,
+          error
+        } = await supabaseClient.auth
+          .signUp({
+            email,
+            password,
+            options:{
+              data:{
+                nome:nome
+              }
+            }
+          });
+
+
+        button.disabled = false;
+        button.textContent = "Criar minha conta";
+
+
+        if(error){
+
+          showMessage(
+            error.message,
+            "error"
+          );
+
+          return;
+
+        }
+
+
+        if(data.session){
+
+          await loadApp(data.user);
+
+        }else{
+
+          showMessage(
+            "Conta criada! Verifique seu e-mail para confirmar o cadastro e depois faça login.",
+            "success"
+          );
+
+          showLogin();
+
+        }
+
+      }
+    );
+
+
+  async function logout(){
+
+    await supabaseClient.auth.signOut();
+
+    app.classList.add("hidden");
+    authScreen.classList.remove("hidden");
+
+    showLogin();
+
+  }
+
+
+  async function checkSession(){
+
+    const {
+      data:{
+        session
+      }
+    } =
+      await supabaseClient.auth.getSession();
+
+
+    if(session?.user){
+
+      await loadApp(session.user);
+
+    }
+
+  }
+
+
+  checkSession();
+
+</script>
+
+</body>
+</html>
