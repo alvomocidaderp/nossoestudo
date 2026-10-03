@@ -59,6 +59,15 @@ html{scroll-behavior:smooth}body{font-family:Inter,system-ui,-apple-system,Blink
 .study-video-frame{aspect-ratio:16/9;background:#0c1d2e}.study-video-frame iframe{width:100%;height:100%;border:0;display:block}
 .invite-member-list{display:grid;gap:8px;max-height:280px;overflow:auto;margin:12px 0}.invite-member{display:flex;align-items:center;justify-content:space-between;gap:10px;border:1px solid var(--borda);border-radius:14px;padding:11px}.invite-member strong{font-size:13px}.invite-member span{font-size:11px;color:var(--cinza)}
 
+
+.journey-card{background:linear-gradient(135deg,#0b65b9,#043765);color:white;border-radius:25px;padding:22px;box-shadow:0 14px 30px rgba(7,87,166,.2);margin-bottom:16px}
+.journey-top{display:flex;justify-content:space-between;gap:15px;align-items:flex-start}.journey-card h2{font-size:23px;margin:4px 0}.journey-card p{font-size:13px;opacity:.88;line-height:1.45}
+.progress-ring-text{font-size:28px;font-weight:950;white-space:nowrap}.progress-track{height:10px;background:rgba(255,255,255,.2);border-radius:99px;overflow:hidden;margin:16px 0 7px}.progress-fill{height:100%;background:white;border-radius:99px;transition:.3s}
+.study-dashboard{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px}.study-mini{background:white;border:1px solid var(--borda);border-radius:18px;padding:14px;box-shadow:var(--sombra);cursor:pointer;text-align:left}.study-mini .mini-icon{font-size:23px;margin-bottom:8px}.study-mini strong{display:block;font-size:13px}.study-mini span{display:block;color:var(--cinza);font-size:11px;line-height:1.35;margin-top:4px}
+.study-group{margin-top:22px}.study-group-title{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}.study-group-title h3{font-size:17px}.study-group-title span{font-size:11px;color:var(--cinza);font-weight:800}
+.invite-banner{background:#fff8e8;border:1px solid #f1d99e;border-radius:18px;padding:15px;margin-bottom:16px}.invite-banner h3{font-size:15px}.invite-card{background:white;border:1px solid #f0dfb5;border-radius:14px;padding:12px;margin-top:9px}.invite-card p{font-size:12px;color:var(--cinza);margin:4px 0 9px;line-height:1.4}
+@media(max-width:620px){.study-dashboard{grid-template-columns:1fr}.journey-top{align-items:center}.progress-ring-text{font-size:23px}}
+
 @media(max-width:720px){.hero-inner{grid-template-columns:1fr;text-align:center}.hero p{margin:auto}.hero-actions{justify-content:center}.hero-logo{width:190px}.hero-visual{order:-1}.public-grid{grid-template-columns:1fr}.join{align-items:flex-start;flex-direction:column}.header-actions .btn-soft{display:none}.member-grid{grid-template-columns:1fr 1fr}}@media(min-width:700px){.member-grid{grid-template-columns:repeat(4,1fr)}.bottom-nav{border-left:1px solid var(--borda);border-right:1px solid var(--borda);border-radius:22px 22px 0 0}}
 </style>
 </head>
@@ -313,20 +322,63 @@ async function showStudies(){
 }
 async function loadStudies(){
  const box=document.getElementById('studiesContent');
- box.innerHTML='<div class="loading">Carregando estudos...</div>';
- const [studiesResult,runsResult]=await Promise.all([
+ box.innerHTML='<div class="loading">Carregando sua jornada...</div>';
+ const [studiesResult,runsResult,invitesResult]=await Promise.all([
   supabaseClient.from('estudos').select('*').eq('publicado',true).order('ordem',{ascending:true}).order('semana',{ascending:true}),
-  supabaseClient.from('realizacoes_estudos').select('id,estudo_id,status,iniciado_em,concluido_em').eq('usuario_id',currentProfile.id).order('iniciado_em',{ascending:false})
+  supabaseClient.from('realizacoes_estudos').select('id,estudo_id,status,iniciado_em,concluido_em').eq('usuario_id',currentProfile.id).order('iniciado_em',{ascending:false}),
+  supabaseClient.from('convites_estudos').select('id,estudo_id,remetente_id,mensagem,visualizado,created_at,perfis:remetente_id(nome,apelido)').eq('destinatario_id',currentProfile.id).order('created_at',{ascending:false}).limit(8)
  ]);
  if(studiesResult.error){console.error('Estudos:',studiesResult.error);box.innerHTML='<div class="study-empty">Não foi possível carregar os estudos.</div>';return}
  studiesCache=studiesResult.data||[];
  studyRunsCache={};
  for(const r of (runsResult.data||[])){if(!studyRunsCache[r.estudo_id])studyRunsCache[r.estudo_id]=[];studyRunsCache[r.estudo_id].push(r)}
  if(!studiesCache.length){box.innerHTML='<div class="study-empty">Os estudos aparecerão aqui em breve.</div>';return}
- const first=studiesCache[0];
- box.innerHTML=`<div class="study-hero"><small>📖 NOSSA JORNADA</small><h2>${escapeHtml(first.titulo)}</h2><p>${escapeHtml(first.descricao||'')}</p><button class="btn btn-white" style="margin-top:15px" onclick="openStudy(${first.id})">${studyButtonText(first.id)} →</button></div>
- <div class="section-head"><h2>Biblioteca de Estudos</h2><p>${studiesCache.length} estudos disponíveis</p></div>
- <div class="study-list">${studiesCache.map(s=>{const badge=studyStatusBadge(s.id);return `<article class="study-card" onclick="openStudy(${s.id})"><div class="study-card-top"><div><div class="study-week">${s.semana?'Semana '+s.semana:'Estudo'}</div><h3>${escapeHtml(s.titulo)}</h3></div><span style="color:var(--azul);font-size:22px">›</span></div><p>${escapeHtml(s.descricao||'')}</p>${s.leitura_biblica||s.referencia_biblica?`<span class="study-ref">📖 ${escapeHtml(s.leitura_biblica||s.referencia_biblica)}</span>`:''}${badge}</article>`}).join('')}</div>`;
+
+ const completedIds=new Set((runsResult.data||[]).filter(r=>r.status==='concluido').map(r=>Number(r.estudo_id)));
+ const completedCount=completedIds.size;
+ const total=studiesCache.length;
+ const pct=total?Math.round((completedCount/total)*100):0;
+ const activeRun=(runsResult.data||[]).find(r=>r.status==='em_andamento');
+ const activeStudy=activeRun?studiesCache.find(s=>Number(s.id)===Number(activeRun.estudo_id)):null;
+ const nextStudy=studiesCache.find(s=>!completedIds.has(Number(s.id)))||studiesCache[0];
+
+ const invites=(invitesResult.data||[]).filter(i=>studiesCache.some(s=>Number(s.id)===Number(i.estudo_id)));
+ let inviteHtml='';
+ if(invites.length){
+   inviteHtml=`<div class="invite-banner"><h3>📩 Recomendações para você</h3>${invites.slice(0,3).map(i=>{
+     const st=studiesCache.find(s=>Number(s.id)===Number(i.estudo_id));
+     const sender=i.perfis?.apelido||i.perfis?.nome||'Um membro';
+     return `<div class="invite-card"><strong>${escapeHtml(sender)} recomendou: ${escapeHtml(st?.titulo||'Estudo')}</strong>${i.mensagem?`<p>“${escapeHtml(i.mensagem)}”</p>`:'<p>Abra o estudo quando quiser.</p>'}<button class="btn btn-soft" onclick="openInvitedStudy(${i.id},${i.estudo_id})">Abrir estudo</button></div>`;
+   }).join('')}</div>`;
+ }
+
+ const groups=[
+  {name:'Fundamentos da fé',range:[1,10]},
+  {name:'Jesus e seus ensinamentos',range:[11,20]},
+  {name:'Espírito, Igreja e relacionamentos',range:[21,30]},
+  {name:'Vida com Deus e escolhas',range:[31,40]},
+  {name:'Serviço, histórias e esperança',range:[41,48]},
+  {name:'Natal e encerramento',range:[49,52]}
+ ];
+ const grouped=groups.map(g=>{
+   const list=studiesCache.filter(s=>Number(s.semana)>=g.range[0]&&Number(s.semana)<=g.range[1]);
+   if(!list.length)return '';
+   const done=list.filter(s=>completedIds.has(Number(s.id))).length;
+   return `<section class="study-group"><div class="study-group-title"><h3>${escapeHtml(g.name)}</h3><span>${done}/${list.length} concluídos</span></div><div class="study-list">${list.map(s=>`<article class="study-card" onclick="openStudy(${s.id})"><div class="study-card-top"><div><div class="study-week">${s.semana?'Semana '+s.semana:'Estudo'}</div><h3>${escapeHtml(s.titulo)}</h3></div><span style="color:var(--azul);font-size:22px">›</span></div><p>${escapeHtml(s.descricao||'')}</p>${s.leitura_biblica||s.referencia_biblica?`<span class="study-ref">📖 ${escapeHtml(s.leitura_biblica||s.referencia_biblica)}</span>`:''}${studyStatusBadge(s.id)}</article>`).join('')}</div></section>`;
+ }).join('');
+
+ box.innerHTML=`<div class="journey-card"><div class="journey-top"><div><small style="font-weight:900;opacity:.8">📖 SUA JORNADA</small><h2>${completedCount} de ${total} estudos concluídos</h2><p>Cada estudo concluído fica guardado no seu histórico.</p></div><div class="progress-ring-text">${pct}%</div></div><div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div></div>
+ ${inviteHtml}
+ <div class="study-dashboard">
+  <button class="study-mini" onclick="openStudy(${activeStudy?.id||nextStudy.id})"><div class="mini-icon">${activeStudy?'▶':'⭐'}</div><strong>${activeStudy?'Continuar de onde parei':'Próximo estudo'}</strong><span>${escapeHtml((activeStudy||nextStudy).titulo)}</span></button>
+  <button class="study-mini" onclick="openStudy(${nextStudy.id})"><div class="mini-icon">📖</div><strong>Minha próxima semana</strong><span>${escapeHtml(nextStudy.titulo)}</span></button>
+  <button class="study-mini" onclick="document.getElementById('study-library').scrollIntoView({behavior:'smooth'})"><div class="mini-icon">☰</div><strong>Biblioteca completa</strong><span>Explore as ${total} semanas do programa.</span></button>
+ </div>
+ <div id="study-library"><div class="section-head"><h2>Programa anual</h2><p>Estudos organizados por etapas da nossa caminhada.</p></div>${grouped}</div>`;
+}
+async function openInvitedStudy(inviteId,studyId){
+ await supabaseClient.from('convites_estudos').update({visualizado:true}).eq('id',inviteId).eq('destinatario_id',currentProfile.id);
+ await openStudy(studyId);
 }
 function studyButtonText(studyId){
  const runs=studyRunsCache[studyId]||[];
