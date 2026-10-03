@@ -101,6 +101,16 @@ html{scroll-behavior:smooth}body{font-family:Inter,system-ui,-apple-system,Blink
 .photo-viewer{width:min(100%,720px);padding:12px}.photo-viewer img{width:100%;max-height:72vh;object-fit:contain;border-radius:18px;background:#111}.photo-viewer-info{padding:13px 5px 3px}.photo-viewer-info p{color:var(--cinza);font-size:13px;margin-top:5px;white-space:pre-wrap}
 @media(max-width:620px){.album-grid{grid-template-columns:1fr}.gallery-grid{grid-template-columns:repeat(2,1fr)}.album-cover{height:190px}}
 
+
+/* ===== FURNAS ===== */
+.furnas-view{width:min(100%,900px);margin:auto;padding:20px}.furnas-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}
+.furnas-hero{border-radius:28px;overflow:hidden;background:linear-gradient(145deg,#0870b9,#043765);color:white;box-shadow:0 16px 38px rgba(7,87,166,.22);margin-bottom:18px}.furnas-cover{height:260px;background:linear-gradient(145deg,#0c78bd,#06436f);position:relative;display:flex;align-items:center;justify-content:center;font-size:64px}.furnas-cover img{width:100%;height:100%;object-fit:cover}.furnas-cover:after{content:"";position:absolute;inset:45% 0 0;background:linear-gradient(transparent,rgba(0,0,0,.55))}.furnas-hero-body{padding:22px}.furnas-hero h1{font-size:29px;margin:7px 0}.furnas-hero p{opacity:.9;line-height:1.5}.furnas-meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:13px}.furnas-pill{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.2);padding:7px 10px;border-radius:999px;font-size:11px;font-weight:800}
+.furnas-countdown{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-top:18px}.furnas-count{background:rgba(255,255,255,.13);padding:11px 5px;border-radius:14px;text-align:center}.furnas-count strong{display:block;font-size:21px}.furnas-count span{font-size:9px;text-transform:uppercase;opacity:.78}
+.furnas-section{background:white;border:1px solid var(--borda);border-radius:22px;padding:19px;box-shadow:var(--sombra);margin-bottom:13px}.furnas-section h3{color:var(--azul);margin-bottom:9px}.furnas-section p{font-size:14px;line-height:1.65;white-space:pre-wrap}.furnas-links{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:16px 0}.furnas-link{border:0;background:white;border-radius:18px;padding:16px 10px;box-shadow:var(--sombra);font-weight:850;color:var(--texto)}.furnas-link span{display:block;font-size:25px;margin-bottom:7px}
+.furnas-admin{background:#fff9ed;border:1px solid #efd79e;border-radius:18px;padding:14px;display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:16px}.furnas-admin p{font-size:12px;color:#725b2d}.furnas-empty{text-align:center;background:white;border:1px dashed #cfd8e1;border-radius:22px;padding:38px 20px;color:var(--cinza)}
+.furnas-form textarea{width:100%;min-height:105px;padding:13px;border:1px solid var(--borda);border-radius:14px;resize:vertical;font:inherit;outline:none}.furnas-form textarea:focus{border-color:var(--azul)}
+@media(max-width:620px){.furnas-cover{height:210px}.furnas-links{grid-template-columns:1fr}.furnas-count strong{font-size:17px}}
+
 </style>
 </head>
 <body>
@@ -133,7 +143,7 @@ html{scroll-behavior:smooth}body{font-family:Inter,system-ui,-apple-system,Blink
 <button class="member-card" onclick="showStudies()"><div class="icon">📖</div><h4>Estudos</h4><p>Estudos bíblicos e conteúdos preparados para o grupo.</p></button>
 <button class="member-card" onclick="showCommunity()"><div class="icon">💬</div><h4>Comunidade</h4><p>Compartilhe reflexões, indicações e converse com o grupo.</p></button>
 <button class="member-card" onclick="showAgenda()"><div class="icon">📅</div><h4>Agenda</h4><p>Reuniões, atividades e próximos eventos.</p></button>
-<button class="member-card" onclick="showMemories()"><div class="icon">📸</div><h4>Memórias</h4><p>Furnas, encontros, passeios e momentos que vivemos juntos.</p></button>
+<button class="member-card" onclick="showMemories()"><div class="icon">📸</div><h4>Memórias</h4><p>Furnas, encontros, passeios e momentos que vivemos juntos.</p></button><button class="member-card" onclick="showFurnas()"><div class="icon">🏕️</div><h4>Furnas</h4><p>Preparação, informações e tudo sobre o nosso acampamento.</p></button>
 </section>
 <section id="adminArea" class="admin-panel hidden"><strong>⚙️ Administração</strong><p id="adminDescription">Gerencie membros e conteúdos do Nosso Estudo.</p><div class="admin-actions"><button id="newMemberBtn" class="btn btn-primary hidden" onclick="openMemberAdmin()">+ Novo membro</button><button class="btn btn-soft" onclick="comingSoon('Gerenciar conteúdos')">Gerenciar conteúdos</button></div></section>
 <button class="logout" onclick="logout()">Sair da conta</button>
@@ -201,6 +211,13 @@ html{scroll-behavior:smooth}body{font-family:Inter,system-ui,-apple-system,Blink
  <div id="albumPhotos"><div class="loading">Carregando fotos...</div></div>
 </section>
 
+
+<section id="furnasView" class="furnas-view hidden">
+ <div class="furnas-top"><div><h2>Furnas</h2><p style="color:var(--cinza);font-size:13px;margin-top:3px">Nosso acampamento, preparação e informações.</p></div><button class="back-btn" onclick="showHome()">×</button></div>
+ <div id="furnasAdminBar" class="furnas-admin hidden"><p><strong>Gerenciar Furnas</strong><br>Líderes e administradores podem atualizar esta página.</p><button class="btn btn-primary" onclick="openFurnasAdmin()">⚙️ Editar</button></div>
+ <div id="furnasContent"><div class="loading">Carregando Furnas...</div></div>
+</section>
+
 <section id="profileView" class="profile-view hidden">
   <div class="back-row"><button class="back-btn" onclick="showHome()">‹</button><strong>Meu perfil</strong></div>
   <div class="profile-cover"><h2>Meu Perfil</h2><p style="opacity:.85;margin-top:5px">Sua identidade dentro do Nosso Estudo</p></div>
@@ -231,6 +248,28 @@ html{scroll-behavior:smooth}body{font-family:Inter,system-ui,-apple-system,Blink
 
 
 
+
+
+<div id="furnasModal" class="modal-wrap hidden"><div class="modal admin-modal" style="max-height:92vh;overflow:auto"><button class="modal-close" onclick="closeFurnasAdmin()">×</button><div class="admin-title"><h2>Gerenciar Furnas</h2><p>Essas informações aparecerão na página especial do acampamento.</p></div>
+<form id="furnasForm" class="furnas-form">
+<input id="furnasId" type="hidden">
+<div class="field"><label>Título</label><input id="furnasTitle" maxlength="120" required value="Furnas"></div>
+<div class="field"><label>Subtítulo</label><input id="furnasSubtitle" maxlength="200" placeholder="Ex.: Um tempo especial com Deus e com o Alvo"></div>
+<div class="field"><label>Descrição</label><textarea id="furnasDescription" maxlength="2000"></textarea></div>
+<div class="field"><label>Início</label><input id="furnasStart" type="datetime-local"></div><div class="field"><label>Término</label><input id="furnasEnd" type="datetime-local"></div>
+<div class="field"><label>Local</label><input id="furnasLocation" maxlength="200"></div><div class="field"><label>Endereço</label><input id="furnasAddress" maxlength="300"></div>
+<div class="field"><label>Imagem de capa por URL</label><input id="furnasImage" type="url" placeholder="https://..."></div>
+<div class="field"><label>Sobre o acampamento</label><textarea id="furnasAbout"></textarea></div>
+<div class="field"><label>Programação</label><textarea id="furnasSchedule" placeholder="Ex.: Sexta-feira...&#10;Sábado..."></textarea></div>
+<div class="field"><label>O que levar</label><textarea id="furnasBring"></textarea></div>
+<div class="field"><label>Avisos importantes</label><textarea id="furnasNotices"></textarea></div>
+<div class="field"><label>Preparação espiritual</label><textarea id="furnasSpiritual"></textarea></div>
+<div class="field"><label>Evento da Agenda</label><select id="furnasEvent"><option value="">Nenhum</option></select></div>
+<div class="field"><label>Álbum de Memórias</label><select id="furnasAlbum"><option value="">Nenhum</option></select></div>
+<div class="field"><label>Estudo relacionado</label><select id="furnasStudy"><option value="">Nenhum</option></select></div>
+<div class="field"><label>Link oficial</label><input id="furnasOfficial" type="url" placeholder="https://..."></div>
+<div class="check-row"><label><input id="furnasFeatured" type="checkbox" checked> Destaque</label><label><input id="furnasPublished" type="checkbox" checked> Publicado</label></div>
+<button id="furnasSubmitBtn" class="btn btn-primary wide" type="submit">Salvar Furnas</button></form><div id="furnasMessage" class="message"></div></div></div>
 
 <div id="albumModal" class="modal-wrap hidden"><div class="modal admin-modal"><button class="modal-close" onclick="closeAlbumAdmin()">×</button><div class="admin-title"><h2 id="albumModalTitle">Novo álbum</h2><p>Organize as memórias do grupo por encontro ou evento.</p></div><form id="albumForm"><input id="albumId" type="hidden"><div class="field"><label>Título</label><input id="albumTitle" required maxlength="120" placeholder="Ex.: Furnas 2026"></div><div class="field"><label>Descrição</label><input id="albumDescription" maxlength="500" placeholder="Um pouco sobre esse momento"></div><div class="field"><label>Data do evento</label><input id="albumDate" type="date"></div><div class="field"><label>Local</label><input id="albumLocation" maxlength="200"></div><div class="field"><label>Evento da Agenda <span style="font-weight:500;color:var(--cinza)">(opcional)</span></label><select id="albumEvent"><option value="">Nenhum</option></select></div><div class="check-row"><label><input id="albumActive" type="checkbox" checked> Álbum ativo</label></div><button id="albumSubmitBtn" class="btn btn-primary wide" type="submit">Salvar álbum</button></form><div id="albumMessage" class="message"></div></div></div>
 <div id="memoryPhotoModal" class="modal-wrap hidden" onclick="memoryPhotoBackdrop(event)"><div class="modal photo-viewer"><button class="modal-close" onclick="closeMemoryPhoto()">×</button><img id="memoryViewerImg" alt="Memória"><div class="photo-viewer-info"><strong id="memoryViewerAuthor"></strong><p id="memoryViewerCaption"></p><div id="memoryViewerActions" class="event-actions"></div></div></div></div>
@@ -304,6 +343,7 @@ function showHome(){
  document.getElementById('studyDetailView').classList.add('hidden');
  document.getElementById('memoriesView')?.classList.add('hidden');
  document.getElementById('albumView')?.classList.add('hidden');
+ document.getElementById('furnasView')?.classList.add('hidden');
  document.getElementById('homeView').classList.remove('hidden');
  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
  document.querySelector('.bottom-nav .nav-btn:first-child').classList.add('active');
@@ -406,7 +446,7 @@ let activeStudyRun=null;
 
 async function showStudies(){
  if(!currentProfile)return;
- ['homeView','profileView','communityView','studyDetailView','agendaView','memoriesView','albumView'].forEach(id=>document.getElementById(id)?.classList.add('hidden'));
+ ['homeView','profileView','communityView','studyDetailView','agendaView','memoriesView','albumView','furnasView'].forEach(id=>document.getElementById(id)?.classList.add('hidden'));
  document.getElementById('studiesView').classList.remove('hidden');
  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
  document.getElementById('studiesNavBtn')?.classList.add('active');
@@ -786,6 +826,56 @@ async function deletePost(postId,imagePath){
 
 
 
+
+// ===== FURNAS =====
+let furnasCurrent=null,furnasTimer=null;
+function canManageFurnas(){return currentProfile?.tipo==='lider'||currentProfile?.tipo==='admin'}
+async function showFurnas(){
+ if(!currentProfile)return;
+ ['homeView','profileView','communityView','studiesView','studyDetailView','agendaView','memoriesView','albumView'].forEach(id=>document.getElementById(id)?.classList.add('hidden'));
+ document.getElementById('furnasView').classList.remove('hidden');document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+ document.getElementById('furnasAdminBar').classList.toggle('hidden',!canManageFurnas());window.scrollTo({top:0,behavior:'smooth'});await loadFurnas();
+}
+async function loadFurnas(){
+ const box=document.getElementById('furnasContent');box.innerHTML='<div class="loading">Carregando Furnas...</div>';
+ let q=supabaseClient.from('furnas').select('*').order('data_inicio',{ascending:false}).limit(1);if(!canManageFurnas())q=q.eq('publicado',true);
+ const {data,error}=await q;if(error){console.error('Furnas:',error);box.innerHTML='<div class="furnas-empty">Não foi possível carregar Furnas.</div>';return}
+ furnasCurrent=data?.[0]||null;if(!furnasCurrent){box.innerHTML=`<div class="furnas-empty"><div style="font-size:44px">🏕️</div><h3>Furnas vem aí</h3><p style="margin-top:7px">${canManageFurnas()?'Use o botão “Editar” acima para cadastrar as informações do próximo Furnas.':'As informações do próximo acampamento aparecerão aqui em breve.'}</p></div>`;return}
+ renderFurnas(furnasCurrent);
+}
+function renderFurnas(f){
+ const box=document.getElementById('furnasContent'),date=f.data_inicio?new Date(f.data_inicio):null;
+ const dateText=date?date.toLocaleDateString('pt-BR',{day:'2-digit',month:'long',year:'numeric'}):'Data em breve';
+ const sections=[['🌿 Sobre o acampamento',f.sobre],['🗓️ Programação',f.programacao],['🎒 O que levar',f.o_que_levar],['📢 Avisos importantes',f.avisos],['🙏 Preparação espiritual',f.preparacao_espiritual]].filter(x=>x[1]);
+ box.innerHTML=`<article class="furnas-hero">${f.imagem_url?`<div class="furnas-cover"><img src="${escapeHtml(f.imagem_url)}" alt="Furnas"></div>`:`<div class="furnas-cover">🏕️</div>`}<div class="furnas-hero-body"><span class="event-badge">🏕️ ALVO DA MOCIDADE</span><h1>${escapeHtml(f.titulo||'Furnas')}</h1>${f.subtitulo?`<p>${escapeHtml(f.subtitulo)}</p>`:''}<div class="furnas-meta"><span class="furnas-pill">📅 ${escapeHtml(dateText)}</span>${f.local?`<span class="furnas-pill">📍 ${escapeHtml(f.local)}</span>`:''}</div>${f.data_inicio?'<div id="furnasCountdown" class="furnas-countdown"></div>':''}</div></article>
+ ${f.descricao?`<section class="furnas-section"><h3>Furnas</h3><p>${escapeHtml(f.descricao)}</p></section>`:''}
+ ${sections.map(x=>`<section class="furnas-section"><h3>${x[0]}</h3><p>${escapeHtml(x[1])}</p></section>`).join('')}
+ <div class="furnas-links">
+ ${f.evento_id?`<button class="furnas-link" onclick="showAgenda()"><span>📅</span>Ver na Agenda</button>`:''}
+ ${f.album_id?`<button class="furnas-link" onclick="openFurnasAlbum(${f.album_id})"><span>📸</span>Memórias de Furnas</button>`:''}
+ ${f.estudo_id?`<button class="furnas-link" onclick="openFurnasStudy(${f.estudo_id})"><span>📖</span>Estudo de preparação</button>`:''}
+ </div>
+ ${f.endereco?`<section class="furnas-section"><h3>📍 Local</h3><p>${escapeHtml(f.endereco)}</p></section>`:''}
+ ${f.link_oficial?`<button class="btn btn-primary wide" onclick="window.open('${escapeHtml(f.link_oficial)}','_blank','noopener')">🌐 Acessar página oficial</button>`:''}`;
+ if(f.data_inicio)startFurnasCountdown(f.data_inicio);
+}
+function startFurnasCountdown(iso){
+ if(furnasTimer)clearInterval(furnasTimer);
+ const tick=()=>{const el=document.getElementById('furnasCountdown');if(!el){clearInterval(furnasTimer);return}let d=new Date(iso)-new Date();if(d<=0){el.innerHTML='<div class="furnas-count" style="grid-column:1/-1"><strong>Chegou!</strong><span>Furnas começou 🎉</span></div>';return}const days=Math.floor(d/86400000);d%=86400000;const hrs=Math.floor(d/3600000);d%=3600000;const min=Math.floor(d/60000);const sec=Math.floor((d%60000)/1000);el.innerHTML=`<div class="furnas-count"><strong>${days}</strong><span>dias</span></div><div class="furnas-count"><strong>${hrs}</strong><span>horas</span></div><div class="furnas-count"><strong>${min}</strong><span>min</span></div><div class="furnas-count"><strong>${sec}</strong><span>seg</span></div>`};tick();furnasTimer=setInterval(tick,1000);
+}
+async function openFurnasAlbum(id){await showMemories();await openAlbum(id)}
+async function openFurnasStudy(id){await showStudies();await openStudy(id)}
+function toLocalInput(v){if(!v)return '';const d=new Date(v),z=n=>String(n).padStart(2,'0');return `${d.getFullYear()}-${z(d.getMonth()+1)}-${z(d.getDate())}T${z(d.getHours())}:${z(d.getMinutes())}`}
+async function openFurnasAdmin(){
+ if(!canManageFurnas())return;
+ const f=furnasCurrent||{};document.getElementById('furnasId').value=f.id||'';document.getElementById('furnasTitle').value=f.titulo||'Furnas';document.getElementById('furnasSubtitle').value=f.subtitulo||'';document.getElementById('furnasDescription').value=f.descricao||'';document.getElementById('furnasStart').value=toLocalInput(f.data_inicio);document.getElementById('furnasEnd').value=toLocalInput(f.data_fim);document.getElementById('furnasLocation').value=f.local||'';document.getElementById('furnasAddress').value=f.endereco||'';document.getElementById('furnasImage').value=f.imagem_url||'';document.getElementById('furnasAbout').value=f.sobre||'';document.getElementById('furnasSchedule').value=f.programacao||'';document.getElementById('furnasBring').value=f.o_que_levar||'';document.getElementById('furnasNotices').value=f.avisos||'';document.getElementById('furnasSpiritual').value=f.preparacao_espiritual||'';document.getElementById('furnasOfficial').value=f.link_oficial||'';document.getElementById('furnasFeatured').checked=f.destaque!==false;document.getElementById('furnasPublished').checked=f.publicado!==false;
+ const [ev,al,st]=await Promise.all([supabaseClient.from('eventos').select('id,titulo').order('data_inicio',{ascending:false}).limit(50),supabaseClient.from('albuns').select('id,titulo').order('created_at',{ascending:false}).limit(50),supabaseClient.from('estudos').select('id,titulo,semana').eq('publicado',true).order('semana',{ascending:true})]);
+ const opts=(arr,sel,label)=>`<option value="">Nenhum</option>`+(arr||[]).map(x=>`<option value="${x.id}" ${String(x.id)===String(sel)?'selected':''}>${escapeHtml(label(x))}</option>`).join('');
+ document.getElementById('furnasEvent').innerHTML=opts(ev.data,f.evento_id,x=>x.titulo);document.getElementById('furnasAlbum').innerHTML=opts(al.data,f.album_id,x=>x.titulo);document.getElementById('furnasStudy').innerHTML=opts(st.data,f.estudo_id,x=>(x.semana?'Semana '+x.semana+' — ':'')+x.titulo);
+ document.getElementById('furnasMessage').className='message';document.getElementById('furnasModal').classList.remove('hidden');
+}
+function closeFurnasAdmin(){document.getElementById('furnasModal').classList.add('hidden')}
+
 // ===== MEMÓRIAS =====
 let albumsCache=[],activeAlbum=null,albumPhotosCache=[];
 
@@ -893,7 +983,7 @@ function canManageEvents(){
 }
 async function showAgenda(){
  if(!currentProfile)return;
- ['homeView','profileView','communityView','studiesView','studyDetailView','memoriesView','albumView'].forEach(id=>document.getElementById(id)?.classList.add('hidden'));
+ ['homeView','profileView','communityView','studiesView','studyDetailView','memoriesView','albumView','furnasView'].forEach(id=>document.getElementById(id)?.classList.add('hidden'));
  document.getElementById('agendaView').classList.remove('hidden');
  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
  document.getElementById('agendaNavBtn')?.classList.add('active');
@@ -1036,6 +1126,16 @@ function openMemberAdmin(){if(currentProfile?.tipo!=='admin')return;document.get
 function closeMemberAdmin(){document.getElementById('memberModal').classList.add('hidden')}
 document.getElementById('memberForm').addEventListener('submit',async e=>{e.preventDefault();if(currentProfile?.tipo!=='admin')return;const b=document.getElementById('memberSubmit'),msg=document.getElementById('memberMessage');b.disabled=true;b.textContent='Criando...';msg.className='message';try{const {data:{session}}=await supabaseClient.auth.getSession();if(!session)throw new Error('Sua sessão expirou. Entre novamente.');const response=await fetch(SUPABASE_URL+'/functions/v1/criar-membro',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+session.access_token,'apikey':SUPABASE_KEY},body:JSON.stringify({nome:document.getElementById('memberName').value.trim(),email:document.getElementById('memberEmail').value.trim(),senha:document.getElementById('memberPassword').value,tipo:document.getElementById('memberRole').value})});const result=await response.json();if(!response.ok)throw new Error(result.error||'Não foi possível criar o membro.');showMessage(msg,'Membro criado com sucesso!','success');document.getElementById('memberForm').reset()}catch(err){showMessage(msg,err.message||'Erro ao criar membro.','error')}finally{b.disabled=false;b.textContent='Criar membro'}});
 
+
+
+document.getElementById('furnasForm').addEventListener('submit',async e=>{
+ e.preventDefault();if(!canManageFurnas())return;const btn=document.getElementById('furnasSubmitBtn'),msg=document.getElementById('furnasMessage');btn.disabled=true;btn.textContent='Salvando...';
+ try{
+  const val=id=>document.getElementById(id).value.trim()||null,num=id=>document.getElementById(id).value?Number(document.getElementById(id).value):null;
+  const payload={titulo:val('furnasTitle')||'Furnas',subtitulo:val('furnasSubtitle'),descricao:val('furnasDescription'),data_inicio:document.getElementById('furnasStart').value?new Date(document.getElementById('furnasStart').value).toISOString():null,data_fim:document.getElementById('furnasEnd').value?new Date(document.getElementById('furnasEnd').value).toISOString():null,local:val('furnasLocation'),endereco:val('furnasAddress'),imagem_url:val('furnasImage'),sobre:val('furnasAbout'),programacao:val('furnasSchedule'),o_que_levar:val('furnasBring'),avisos:val('furnasNotices'),preparacao_espiritual:val('furnasSpiritual'),evento_id:num('furnasEvent'),album_id:num('furnasAlbum'),estudo_id:num('furnasStudy'),link_oficial:val('furnasOfficial'),destaque:document.getElementById('furnasFeatured').checked,publicado:document.getElementById('furnasPublished').checked,criado_por:currentProfile.id};
+  const id=document.getElementById('furnasId').value;const r=id?await supabaseClient.from('furnas').update(payload).eq('id',id).select().single():await supabaseClient.from('furnas').insert(payload).select().single();if(r.error)throw r.error;furnasCurrent=r.data;showMessage(msg,'Furnas atualizado com sucesso!','success');renderFurnas(furnasCurrent);setTimeout(closeFurnasAdmin,600);
+ }catch(err){console.error(err);showMessage(msg,err.message||'Não foi possível salvar Furnas.','error')}finally{btn.disabled=false;btn.textContent='Salvar Furnas'}
+});
 
 document.getElementById('albumForm').addEventListener('submit',async e=>{
  e.preventDefault();if(!canManageMemories())return;
