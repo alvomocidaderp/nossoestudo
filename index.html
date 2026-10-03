@@ -90,6 +90,17 @@ html{scroll-behavior:smooth}body{font-family:Inter,system-ui,-apple-system,Blink
 .event-image-preview{width:100%;max-height:210px;object-fit:cover;border-radius:16px;margin-top:10px}
 @media(max-width:620px){.event-featured-img{height:180px}.countdown-box strong{font-size:17px}}
 
+
+/* ===== MEMÓRIAS ===== */
+.memories-view{width:min(100%,900px);margin:auto;padding:20px}.memories-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}.memories-head h2{font-size:24px}.memories-head p{color:var(--cinza);font-size:13px;margin-top:3px}
+.memory-admin{display:flex;justify-content:space-between;align-items:center;gap:10px;background:#fff9ed;border:1px solid #efd79e;border-radius:18px;padding:13px 15px;margin-bottom:16px}.memory-admin p{font-size:12px;color:#725b2d}
+.album-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}.album-card{background:white;border:1px solid var(--borda);border-radius:22px;overflow:hidden;box-shadow:var(--sombra);cursor:pointer;text-align:left}.album-cover{height:180px;background:linear-gradient(135deg,#dcecff,#b7d8f7);display:flex;align-items:center;justify-content:center;font-size:46px;overflow:hidden}.album-cover img{width:100%;height:100%;object-fit:cover}.album-body{padding:16px}.album-body h3{font-size:17px}.album-body p{font-size:12px;color:var(--cinza);line-height:1.45;margin-top:5px}.album-meta{font-size:11px;color:var(--azul);font-weight:800;margin-top:9px}
+.gallery-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.memory-photo{aspect-ratio:1/1;border-radius:16px;overflow:hidden;background:#e9eef3;position:relative;cursor:pointer}.memory-photo img{width:100%;height:100%;object-fit:cover}.memory-photo-owner{position:absolute;left:7px;bottom:7px;right:7px;background:rgba(0,0,0,.55);color:white;padding:6px 8px;border-radius:9px;font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.memory-upload{background:white;border:1px solid var(--borda);border-radius:20px;padding:16px;box-shadow:var(--sombra);margin-bottom:18px}.memory-upload-row{display:flex;gap:9px;align-items:end;flex-wrap:wrap}.memory-upload-row .field{flex:1;min-width:180px;margin:0}
+.memory-empty{text-align:center;background:white;border:1px dashed #cfd8e1;border-radius:22px;padding:35px 20px;color:var(--cinza)}
+.photo-viewer{width:min(100%,720px);padding:12px}.photo-viewer img{width:100%;max-height:72vh;object-fit:contain;border-radius:18px;background:#111}.photo-viewer-info{padding:13px 5px 3px}.photo-viewer-info p{color:var(--cinza);font-size:13px;margin-top:5px;white-space:pre-wrap}
+@media(max-width:620px){.album-grid{grid-template-columns:1fr}.gallery-grid{grid-template-columns:repeat(2,1fr)}.album-cover{height:190px}}
+
 </style>
 </head>
 <body>
@@ -122,7 +133,7 @@ html{scroll-behavior:smooth}body{font-family:Inter,system-ui,-apple-system,Blink
 <button class="member-card" onclick="showStudies()"><div class="icon">📖</div><h4>Estudos</h4><p>Estudos bíblicos e conteúdos preparados para o grupo.</p></button>
 <button class="member-card" onclick="showCommunity()"><div class="icon">💬</div><h4>Comunidade</h4><p>Compartilhe reflexões, indicações e converse com o grupo.</p></button>
 <button class="member-card" onclick="showAgenda()"><div class="icon">📅</div><h4>Agenda</h4><p>Reuniões, atividades e próximos eventos.</p></button>
-<button class="member-card" onclick="comingSoon('Memórias')"><div class="icon">📸</div><h4>Memórias</h4><p>Furnas, encontros, passeios e momentos que vivemos juntos.</p></button>
+<button class="member-card" onclick="showMemories()"><div class="icon">📸</div><h4>Memórias</h4><p>Furnas, encontros, passeios e momentos que vivemos juntos.</p></button>
 </section>
 <section id="adminArea" class="admin-panel hidden"><strong>⚙️ Administração</strong><p id="adminDescription">Gerencie membros e conteúdos do Nosso Estudo.</p><div class="admin-actions"><button id="newMemberBtn" class="btn btn-primary hidden" onclick="openMemberAdmin()">+ Novo membro</button><button class="btn btn-soft" onclick="comingSoon('Gerenciar conteúdos')">Gerenciar conteúdos</button></div></section>
 <button class="logout" onclick="logout()">Sair da conta</button>
@@ -173,6 +184,23 @@ html{scroll-behavior:smooth}body{font-family:Inter,system-ui,-apple-system,Blink
   <div id="agendaContent"><div class="loading">Carregando agenda...</div></div>
 </section>
 
+
+<section id="memoriesView" class="memories-view hidden">
+ <div class="memories-head"><div><h2>Memórias</h2><p>Momentos que fazem parte da história do Alvo.</p></div><button class="back-btn" onclick="showHome()">×</button></div>
+ <div id="memoryAdminBar" class="memory-admin hidden"><p><strong>Gerenciar memórias</strong><br>Crie álbuns para encontros, passeios e eventos.</p><button class="btn btn-primary" onclick="openAlbumAdmin()">+ Novo álbum</button></div>
+ <div id="albumsContent"><div class="loading">Carregando memórias...</div></div>
+</section>
+<section id="albumView" class="memories-view hidden">
+ <div class="back-row"><button class="back-btn" onclick="showMemories()">‹</button><div><strong id="albumViewTitle">Álbum</strong><div id="albumViewMeta" style="font-size:12px;color:var(--cinza)"></div></div></div>
+ <div id="albumManagerActions" class="event-actions hidden"></div>
+ <div class="memory-upload">
+   <strong>📷 Adicionar uma memória</strong><p style="font-size:12px;color:var(--cinza);margin:4px 0 12px">Sua foto ficará disponível somente para membros logados.</p>
+   <div class="memory-upload-row"><div class="field"><label>Foto</label><input id="memoryPhotoInput" type="file" accept="image/jpeg,image/png,image/webp" onchange="showMemoryFileName()"></div><div class="field"><label>Legenda <span style="font-weight:500;color:var(--cinza)">(opcional)</span></label><input id="memoryCaption" maxlength="300" placeholder="Conte um pouquinho sobre este momento"></div><button id="memoryUploadBtn" class="btn btn-primary" onclick="uploadMemoryPhoto()">Enviar</button></div>
+   <div id="memoryFileName" class="file-name" style="margin-top:8px"></div><div id="memoryMessage" class="message"></div>
+ </div>
+ <div id="albumPhotos"><div class="loading">Carregando fotos...</div></div>
+</section>
+
 <section id="profileView" class="profile-view hidden">
   <div class="back-row"><button class="back-btn" onclick="showHome()">‹</button><strong>Meu perfil</strong></div>
   <div class="profile-cover"><h2>Meu Perfil</h2><p style="opacity:.85;margin-top:5px">Sua identidade dentro do Nosso Estudo</p></div>
@@ -202,6 +230,10 @@ html{scroll-behavior:smooth}body{font-family:Inter,system-ui,-apple-system,Blink
 </main>
 
 
+
+
+<div id="albumModal" class="modal-wrap hidden"><div class="modal admin-modal"><button class="modal-close" onclick="closeAlbumAdmin()">×</button><div class="admin-title"><h2 id="albumModalTitle">Novo álbum</h2><p>Organize as memórias do grupo por encontro ou evento.</p></div><form id="albumForm"><input id="albumId" type="hidden"><div class="field"><label>Título</label><input id="albumTitle" required maxlength="120" placeholder="Ex.: Furnas 2026"></div><div class="field"><label>Descrição</label><input id="albumDescription" maxlength="500" placeholder="Um pouco sobre esse momento"></div><div class="field"><label>Data do evento</label><input id="albumDate" type="date"></div><div class="field"><label>Local</label><input id="albumLocation" maxlength="200"></div><div class="field"><label>Evento da Agenda <span style="font-weight:500;color:var(--cinza)">(opcional)</span></label><select id="albumEvent"><option value="">Nenhum</option></select></div><div class="check-row"><label><input id="albumActive" type="checkbox" checked> Álbum ativo</label></div><button id="albumSubmitBtn" class="btn btn-primary wide" type="submit">Salvar álbum</button></form><div id="albumMessage" class="message"></div></div></div>
+<div id="memoryPhotoModal" class="modal-wrap hidden" onclick="memoryPhotoBackdrop(event)"><div class="modal photo-viewer"><button class="modal-close" onclick="closeMemoryPhoto()">×</button><img id="memoryViewerImg" alt="Memória"><div class="photo-viewer-info"><strong id="memoryViewerAuthor"></strong><p id="memoryViewerCaption"></p><div id="memoryViewerActions" class="event-actions"></div></div></div></div>
 
 <div id="eventModal" class="modal-wrap hidden">
   <div class="modal admin-modal">
@@ -270,6 +302,8 @@ function showHome(){
  document.getElementById('communityView').classList.add('hidden');
  document.getElementById('studiesView').classList.add('hidden');
  document.getElementById('studyDetailView').classList.add('hidden');
+ document.getElementById('memoriesView')?.classList.add('hidden');
+ document.getElementById('albumView')?.classList.add('hidden');
  document.getElementById('homeView').classList.remove('hidden');
  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
  document.querySelector('.bottom-nav .nav-btn:first-child').classList.add('active');
@@ -372,7 +406,7 @@ let activeStudyRun=null;
 
 async function showStudies(){
  if(!currentProfile)return;
- ['homeView','profileView','communityView','studyDetailView','agendaView'].forEach(id=>document.getElementById(id)?.classList.add('hidden'));
+ ['homeView','profileView','communityView','studyDetailView','agendaView','memoriesView','albumView'].forEach(id=>document.getElementById(id)?.classList.add('hidden'));
  document.getElementById('studiesView').classList.remove('hidden');
  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
  document.getElementById('studiesNavBtn')?.classList.add('active');
@@ -751,6 +785,105 @@ async function deletePost(postId,imagePath){
 }
 
 
+
+// ===== MEMÓRIAS =====
+let albumsCache=[],activeAlbum=null,albumPhotosCache=[];
+
+function canManageMemories(){return currentProfile?.tipo==='lider'||currentProfile?.tipo==='admin'}
+async function showMemories(){
+ if(!currentProfile)return;
+ ['homeView','profileView','communityView','studiesView','studyDetailView','agendaView','albumView'].forEach(id=>document.getElementById(id)?.classList.add('hidden'));
+ document.getElementById('memoriesView').classList.remove('hidden');
+ document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+ document.getElementById('memoryAdminBar').classList.toggle('hidden',!canManageMemories());
+ window.scrollTo({top:0,behavior:'smooth'});await loadAlbums();
+}
+async function loadAlbums(){
+ const box=document.getElementById('albumsContent');box.innerHTML='<div class="loading">Carregando memórias...</div>';
+ let q=supabaseClient.from('albuns').select('*').order('data_evento',{ascending:false,nullsFirst:false}).order('created_at',{ascending:false});
+ if(!canManageMemories())q=q.eq('ativo',true);
+ const {data,error}=await q;if(error){console.error(error);box.innerHTML='<div class="memory-empty">Não foi possível carregar as memórias.</div>';return}
+ albumsCache=data||[];
+ if(!albumsCache.length){box.innerHTML='<div class="memory-empty"><div style="font-size:38px">📸</div><strong>Nenhum álbum ainda</strong><p style="margin-top:6px">As histórias do Alvo aparecerão aqui.</p></div>';return}
+ const cards=await Promise.all(albumsCache.map(async a=>{
+   let cover='';
+   const {data:f}=await supabaseClient.from('fotos').select('arquivo_url').eq('album_id',a.id).order('created_at',{ascending:true}).limit(1);
+   if(f?.[0]?.arquivo_url){const {data:s}=await supabaseClient.storage.from('memorias').createSignedUrl(f[0].arquivo_url,3600);cover=s?.signedUrl||''}
+   const date=a.data_evento?new Date(a.data_evento+'T12:00:00').toLocaleDateString('pt-BR'):'';
+   return `<button class="album-card" onclick="openAlbum(${a.id})"><div class="album-cover">${cover?`<img src="${escapeHtml(cover)}" alt="">`:'📸'}</div><div class="album-body"><h3>${escapeHtml(a.titulo)}</h3>${a.descricao?`<p>${escapeHtml(a.descricao)}</p>`:''}<div class="album-meta">${[date,a.local].filter(Boolean).map(escapeHtml).join(' • ')||'Memórias do Alvo'}${!a.ativo?' • OCULTO':''}</div></div></button>`;
+ }));
+ box.innerHTML=`<div class="album-grid">${cards.join('')}</div>`;
+}
+async function openAlbum(id){
+ activeAlbum=albumsCache.find(a=>Number(a.id)===Number(id));
+ if(!activeAlbum){const {data}=await supabaseClient.from('albuns').select('*').eq('id',id).single();activeAlbum=data}
+ if(!activeAlbum)return;
+ document.getElementById('memoriesView').classList.add('hidden');document.getElementById('albumView').classList.remove('hidden');
+ document.getElementById('albumViewTitle').textContent=activeAlbum.titulo;
+ document.getElementById('albumViewMeta').textContent=[activeAlbum.data_evento?new Date(activeAlbum.data_evento+'T12:00:00').toLocaleDateString('pt-BR'):'',activeAlbum.local||''].filter(Boolean).join(' • ');
+ const acts=document.getElementById('albumManagerActions');
+ if(canManageMemories()){acts.classList.remove('hidden');acts.innerHTML=`<button class="btn btn-soft" onclick="editAlbum(${activeAlbum.id})">✏️ Editar álbum</button><button class="btn btn-soft" onclick="deleteAlbum(${activeAlbum.id})">🗑️ Excluir álbum</button>`}else acts.classList.add('hidden');
+ window.scrollTo({top:0,behavior:'smooth'});await loadAlbumPhotos();
+}
+async function loadAlbumPhotos(){
+ const box=document.getElementById('albumPhotos');box.innerHTML='<div class="loading">Carregando fotos...</div>';
+ const {data,error}=await supabaseClient.from('fotos').select('*,perfis:usuario_id(nome,apelido)').eq('album_id',activeAlbum.id).order('created_at',{ascending:false});
+ if(error){console.error(error);box.innerHTML='<div class="memory-empty">Não foi possível carregar as fotos.</div>';return}
+ albumPhotosCache=data||[];
+ if(!albumPhotosCache.length){box.innerHTML='<div class="memory-empty"><div style="font-size:38px">🖼️</div><strong>Este álbum ainda está vazio</strong><p style="margin-top:6px">Seja o primeiro a guardar uma memória aqui.</p></div>';return}
+ const items=await Promise.all(albumPhotosCache.map(async f=>{const {data:s}=await supabaseClient.storage.from('memorias').createSignedUrl(f.arquivo_url,3600);const u=s?.signedUrl||'';const who=f.perfis?.apelido||f.perfis?.nome||'Membro';return `<div class="memory-photo" onclick="viewMemoryPhoto(${f.id})">${u?`<img src="${escapeHtml(u)}" alt="">`:''}<div class="memory-photo-owner">${escapeHtml(who)}</div></div>`}));
+ box.innerHTML=`<div class="section-head"><h2>Fotos</h2><p>${albumPhotosCache.length} ${albumPhotosCache.length===1?'memória':'memórias'} neste álbum.</p></div><div class="gallery-grid">${items.join('')}</div>`;
+}
+function showMemoryFileName(){const f=document.getElementById('memoryPhotoInput').files[0];document.getElementById('memoryFileName').textContent=f?f.name:''}
+async function uploadMemoryPhoto(){
+ const file=document.getElementById('memoryPhotoInput').files[0],msg=document.getElementById('memoryMessage'),btn=document.getElementById('memoryUploadBtn');
+ if(!file){showMessage(msg,'Escolha uma foto.','error');return}if(file.size>10*1024*1024){showMessage(msg,'Escolha uma foto de até 10 MB.','error');return}
+ btn.disabled=true;btn.textContent='Enviando...';
+ try{
+  const ext=(file.name.split('.').pop()||'jpg').toLowerCase().replace(/[^a-z0-9]/g,'')||'jpg';
+  const path=currentProfile.id+'/'+activeAlbum.id+'/'+Date.now()+'-'+Math.random().toString(36).slice(2,8)+'.'+ext;
+  const {error:u}=await supabaseClient.storage.from('memorias').upload(path,file,{contentType:file.type||'image/jpeg'});if(u)throw u;
+  const {error:i}=await supabaseClient.from('fotos').insert({album_id:activeAlbum.id,usuario_id:currentProfile.id,arquivo_url:path,legenda:document.getElementById('memoryCaption').value.trim()||null});
+  if(i){await supabaseClient.storage.from('memorias').remove([path]);throw i}
+  document.getElementById('memoryPhotoInput').value='';document.getElementById('memoryCaption').value='';document.getElementById('memoryFileName').textContent='';
+  showMessage(msg,'Memória adicionada!','success');await loadAlbumPhotos();
+ }catch(err){console.error(err);showMessage(msg,err.message||'Não foi possível enviar a foto.','error')}finally{btn.disabled=false;btn.textContent='Enviar'}
+}
+async function viewMemoryPhoto(id){
+ const f=albumPhotosCache.find(x=>Number(x.id)===Number(id));if(!f)return;
+ const {data:s}=await supabaseClient.storage.from('memorias').createSignedUrl(f.arquivo_url,3600);if(!s?.signedUrl)return;
+ document.getElementById('memoryViewerImg').src=s.signedUrl;document.getElementById('memoryViewerAuthor').textContent=f.perfis?.apelido||f.perfis?.nome||'Membro';document.getElementById('memoryViewerCaption').textContent=f.legenda||'';
+ const canDelete=canManageMemories()||f.usuario_id===currentProfile.id;
+ document.getElementById('memoryViewerActions').innerHTML=canDelete?`<button class="btn btn-soft" onclick="deleteMemoryPhoto(${f.id})">🗑️ Excluir foto</button>`:'';
+ document.getElementById('memoryPhotoModal').classList.remove('hidden');
+}
+function closeMemoryPhoto(){document.getElementById('memoryPhotoModal').classList.add('hidden')}
+function memoryPhotoBackdrop(e){if(e.target.id==='memoryPhotoModal')closeMemoryPhoto()}
+async function deleteMemoryPhoto(id){
+ const f=albumPhotosCache.find(x=>Number(x.id)===Number(id));if(!f||!confirm('Excluir esta foto?'))return;
+ const {error}=await supabaseClient.from('fotos').delete().eq('id',id);if(error){alert('Não foi possível excluir a foto.');return}
+ await supabaseClient.storage.from('memorias').remove([f.arquivo_url]);closeMemoryPhoto();await loadAlbumPhotos();
+}
+async function openAlbumAdmin(){
+ if(!canManageMemories())return;document.getElementById('albumForm').reset();document.getElementById('albumId').value='';document.getElementById('albumActive').checked=true;document.getElementById('albumModalTitle').textContent='Novo álbum';await fillAlbumEvents();document.getElementById('albumModal').classList.remove('hidden');
+}
+function closeAlbumAdmin(){document.getElementById('albumModal').classList.add('hidden')}
+async function fillAlbumEvents(selected=''){
+ const sel=document.getElementById('albumEvent');const {data}=await supabaseClient.from('eventos').select('id,titulo,data_inicio').order('data_inicio',{ascending:false}).limit(50);
+ sel.innerHTML='<option value="">Nenhum</option>'+((data||[]).map(e=>`<option value="${e.id}" ${String(e.id)===String(selected)?'selected':''}>${escapeHtml(e.titulo)}</option>`).join(''));
+}
+async function editAlbum(id){
+ const a=albumsCache.find(x=>Number(x.id)===Number(id))||activeAlbum;if(!a)return;
+ document.getElementById('albumId').value=a.id;document.getElementById('albumTitle').value=a.titulo||'';document.getElementById('albumDescription').value=a.descricao||'';document.getElementById('albumDate').value=a.data_evento||'';document.getElementById('albumLocation').value=a.local||'';document.getElementById('albumActive').checked=a.ativo!==false;document.getElementById('albumModalTitle').textContent='Editar álbum';await fillAlbumEvents(a.evento_id||'');document.getElementById('albumModal').classList.remove('hidden');
+}
+async function deleteAlbum(id){
+ if(!canManageMemories()||!confirm('Excluir este álbum? As fotos cadastradas nele também poderão ser removidas do sistema.'))return;
+ const {data:fs}=await supabaseClient.from('fotos').select('arquivo_url').eq('album_id',id);
+ const {error}=await supabaseClient.from('albuns').delete().eq('id',id);if(error){alert('Não foi possível excluir o álbum.');return}
+ if(fs?.length)await supabaseClient.storage.from('memorias').remove(fs.map(x=>x.arquivo_url));
+ activeAlbum=null;await showMemories();
+}
+
 // ===== AGENDA / EVENTOS =====
 let eventsCache=[];
 let countdownTimer=null;
@@ -760,7 +893,7 @@ function canManageEvents(){
 }
 async function showAgenda(){
  if(!currentProfile)return;
- ['homeView','profileView','communityView','studiesView','studyDetailView'].forEach(id=>document.getElementById(id)?.classList.add('hidden'));
+ ['homeView','profileView','communityView','studiesView','studyDetailView','memoriesView','albumView'].forEach(id=>document.getElementById(id)?.classList.add('hidden'));
  document.getElementById('agendaView').classList.remove('hidden');
  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
  document.getElementById('agendaNavBtn')?.classList.add('active');
@@ -902,6 +1035,19 @@ async function logout(){await supabaseClient.auth.signOut();currentProfile=null;
 function openMemberAdmin(){if(currentProfile?.tipo!=='admin')return;document.getElementById('memberMessage').className='message';document.getElementById('memberModal').classList.remove('hidden')}
 function closeMemberAdmin(){document.getElementById('memberModal').classList.add('hidden')}
 document.getElementById('memberForm').addEventListener('submit',async e=>{e.preventDefault();if(currentProfile?.tipo!=='admin')return;const b=document.getElementById('memberSubmit'),msg=document.getElementById('memberMessage');b.disabled=true;b.textContent='Criando...';msg.className='message';try{const {data:{session}}=await supabaseClient.auth.getSession();if(!session)throw new Error('Sua sessão expirou. Entre novamente.');const response=await fetch(SUPABASE_URL+'/functions/v1/criar-membro',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+session.access_token,'apikey':SUPABASE_KEY},body:JSON.stringify({nome:document.getElementById('memberName').value.trim(),email:document.getElementById('memberEmail').value.trim(),senha:document.getElementById('memberPassword').value,tipo:document.getElementById('memberRole').value})});const result=await response.json();if(!response.ok)throw new Error(result.error||'Não foi possível criar o membro.');showMessage(msg,'Membro criado com sucesso!','success');document.getElementById('memberForm').reset()}catch(err){showMessage(msg,err.message||'Erro ao criar membro.','error')}finally{b.disabled=false;b.textContent='Criar membro'}});
+
+
+document.getElementById('albumForm').addEventListener('submit',async e=>{
+ e.preventDefault();if(!canManageMemories())return;
+ const btn=document.getElementById('albumSubmitBtn'),msg=document.getElementById('albumMessage');btn.disabled=true;btn.textContent='Salvando...';msg.className='message';
+ try{
+  const id=document.getElementById('albumId').value;
+  const payload={titulo:document.getElementById('albumTitle').value.trim(),descricao:document.getElementById('albumDescription').value.trim()||null,data_evento:document.getElementById('albumDate').value||null,local:document.getElementById('albumLocation').value.trim()||null,evento_id:document.getElementById('albumEvent').value?Number(document.getElementById('albumEvent').value):null,ativo:document.getElementById('albumActive').checked,criado_por:currentProfile.id};
+  if(!payload.titulo)throw new Error('Informe o título do álbum.');
+  const r=id?await supabaseClient.from('albuns').update(payload).eq('id',id):await supabaseClient.from('albuns').insert(payload);if(r.error)throw r.error;
+  showMessage(msg,id?'Álbum atualizado!':'Álbum criado!','success');await loadAlbums();setTimeout(closeAlbumAdmin,500);
+ }catch(err){console.error(err);showMessage(msg,err.message||'Não foi possível salvar o álbum.','error')}finally{btn.disabled=false;btn.textContent='Salvar álbum'}
+});
 
 document.getElementById('eventForm').addEventListener('submit',async e=>{
  e.preventDefault();
