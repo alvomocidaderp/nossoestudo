@@ -336,7 +336,7 @@ html{scroll-behavior:smooth}body{font-family:Inter,system-ui,-apple-system,Blink
     <strong>Compartilhar um pedido</strong>
     <div class="field" style="margin-top:12px"><label>Título <span style="font-weight:500;color:var(--cinza)">(opcional)</span></label><input id="prayerTitle" maxlength="120" placeholder="Ex.: Minha família"></div>
     <textarea id="prayerText" maxlength="3000" placeholder="Escreva seu pedido de oração..."></textarea>
-    <div class="prayer-options"><label><input id="prayerDiscrete" type="checkbox"> Compartilhar de forma discreta</label></div>
+    <div class="prayer-options"><label><input id="prayerDiscrete" type="checkbox"> Publicar anonimamente</label></div><div style="font-size:11px;color:var(--cinza);margin:-4px 0 12px">Seu nome e sua foto não aparecerão para os outros membros.</div>
     <button id="prayerPublishBtn" class="btn btn-primary" onclick="publishPrayerRequest()">🙏 Compartilhar pedido</button>
     <div id="prayerMessage" class="message"></div>
   </div>
@@ -1833,9 +1833,9 @@ async function loadPrayerRequests(){
  if(error){box.innerHTML=`<div class="message error" style="display:block">${escapeHtml(error.message)}</div>`;return}
  if(!data?.length){box.innerHTML='<div class="empty-feed">Ainda não há pedidos de oração. 🙏</div>';return}
  box.innerHTML=data.map(p=>{
-   const own=p.usuario_id===currentProfile.id, canDelete=own||isLeader(), who=p.discreto&&!own?'Pedido discreto':(p.perfis?.apelido||p.perfis?.nome||'Membro');
+   const own=p.usuario_id===currentProfile.id, canDelete=own||isLeader(), who=p.discreto?'Pedido anônimo':(p.perfis?.apelido||p.perfis?.nome||'Membro');
    const state=p.status==='ativo'?'Em oração':p.status==='respondido'?'Respondido 🙏':'Encerrado';
-   return `<article class="prayer-card"><div class="prayer-top"><div class="user-pic">${p.discreto&&!own?'🙏':escapeHtml(who.charAt(0).toUpperCase())}</div><div><strong>${escapeHtml(who)}</strong><div class="prayer-meta">${escapeHtml(formatGroupDate(p.created_at))}</div></div></div>${p.titulo?`<h3 style="margin-top:12px">${escapeHtml(p.titulo)}</h3>`:''}<div class="prayer-text">${escapeHtml(p.pedido)}</div><span class="prayer-status ${p.status==='ativo'?'':'closed'}">${state}</span><div class="event-actions">${own&&p.status==='ativo'?`<button class="btn btn-soft" onclick="setPrayerStatus(${p.id},'respondido')">🙏 Marcar como respondido</button><button class="btn btn-soft" onclick="setPrayerStatus(${p.id},'encerrado')">Encerrar</button>`:''}${canDelete?`<button class="btn" style="background:#ffeaea;color:#8d2020" onclick="deletePrayerRequest(${p.id})">Excluir</button>`:''}</div></article>`;
+   return `<article class="prayer-card"><div class="prayer-top"><div class="user-pic">${p.discreto?'🙏':escapeHtml(who.charAt(0).toUpperCase())}</div><div><strong>${escapeHtml(who)}</strong><div class="prayer-meta">${escapeHtml(formatGroupDate(p.created_at))}</div></div></div>${p.titulo?`<h3 style="margin-top:12px">${escapeHtml(p.titulo)}</h3>`:''}<div class="prayer-text">${escapeHtml(p.pedido)}</div><span class="prayer-status ${p.status==='ativo'?'':'closed'}">${state}</span><div class="event-actions">${own&&p.status==='ativo'?`<button class="btn btn-soft" onclick="setPrayerStatus(${p.id},'respondido')">🙏 Marcar como respondido</button><button class="btn btn-soft" onclick="setPrayerStatus(${p.id},'encerrado')">Encerrar</button>`:''}${canDelete?`<button class="btn" style="background:#ffeaea;color:#8d2020" onclick="deletePrayerRequest(${p.id})">Excluir</button>`:''}</div></article>`;
  }).join('');
 }
 async function publishPrayerRequest(){
@@ -1888,9 +1888,14 @@ async function loadLeaderDashboard(){
  const box=document.getElementById('leaderDashboard');box.innerHTML='<div class="loading">Carregando painel...</div>';
  const now=new Date().toISOString();
  try{
-   const {data:studies}=await supabaseClient.from('estudos_grupo').select('id,titulo,data_estudo,realizado').eq('publicado',true).order('data_estudo',{ascending:false}).limit(30);
+   const {data:studies}=await supabaseClient.from('estudos_grupo').select('id,titulo,data_estudo,realizado,created_at').eq('publicado',true).order('created_at',{ascending:false}).limit(100);
    const next=(studies||[]).filter(x=>x.data_estudo&&new Date(x.data_estudo)>=new Date()).sort((a,b)=>new Date(a.data_estudo)-new Date(b.data_estudo))[0];
-   const last=(studies||[]).filter(x=>x.realizado).sort((a,b)=>new Date(b.data_estudo||0)-new Date(a.data_estudo||0))[0];
+   const realized=(studies||[]).filter(x=>x.realizado);
+   const last=realized.sort((a,b)=>{
+     const da=new Date(a.data_estudo||a.created_at||0).getTime();
+     const db=new Date(b.data_estudo||b.created_at||0).getTime();
+     return db-da;
+   })[0];
    let presence=0, learnings=0;
    if(last){
      const [p,l]=await Promise.all([
