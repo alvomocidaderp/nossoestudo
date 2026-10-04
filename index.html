@@ -6,7 +6,50 @@
 <meta name="theme-color" content="#0757a6">
 <title>Nosso Estudo | Alvo da Mocidade</title>
 <meta name="description" content="Nosso Estudo — estudos bíblicos, comunhão, eventos e memórias do Alvo da Mocidade.">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+// ===== PWA NOSSO ESTUDO =====
+let deferredPwaPrompt=null;
+function isIosDevice(){return /iphone|ipad|ipod/i.test(navigator.userAgent)}
+function isStandalonePwa(){return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone===true}
+function refreshPwaInstallButton(){
+  const btn=document.getElementById('pwaInstallBtn'); if(!btn)return;
+  if(isStandalonePwa()){btn.classList.add('hidden');return}
+  if(deferredPwaPrompt || isIosDevice()) btn.classList.remove('hidden');
+  else btn.classList.add('hidden');
+}
+window.addEventListener('beforeinstallprompt',e=>{
+  e.preventDefault(); deferredPwaPrompt=e; refreshPwaInstallButton();
+});
+window.addEventListener('appinstalled',()=>{
+  deferredPwaPrompt=null; refreshPwaInstallButton();
+});
+async function installNossoEstudo(){
+  if(isIosDevice() && !deferredPwaPrompt){
+    document.getElementById('pwaIosHelp')?.classList.remove('hidden'); return;
+  }
+  if(!deferredPwaPrompt)return;
+  deferredPwaPrompt.prompt();
+  try{await deferredPwaPrompt.userChoice}catch(e){}
+  deferredPwaPrompt=null; refreshPwaInstallButton();
+}
+function closePwaIosHelp(){document.getElementById('pwaIosHelp')?.classList.add('hidden')}
+if('serviceWorker' in navigator){
+  window.addEventListener('load',async()=>{
+    try{
+      const reg=await navigator.serviceWorker.register('./service-worker.js',{scope:'./'});
+      // Always ask the browser to check for a new SW when the app opens.
+      await reg.update();
+    }catch(err){console.warn('Service Worker:',err)}
+    refreshPwaInstallButton();
+  });
+}
+document.addEventListener('visibilitychange',()=>{
+  if(document.visibilityState==='visible' && 'serviceWorker' in navigator){
+    navigator.serviceWorker.getRegistration('./').then(r=>r?.update()).catch(()=>{});
+  }
+});
+
+</script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0} :root{--azul:#0757a6;--escuro:#043765;--claro:#eaf4ff;--fundo:#f5f7fa;--branco:#fff;--texto:#15212d;--cinza:#687684;--borda:#e4eaf0;--verde:#239b56;--vermelho:#d64545;--sombra:0 12px 32px rgba(20,40,70,.10)}
 html{scroll-behavior:smooth}body{font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--fundo);color:var(--texto);min-height:100vh}button,input,select{font:inherit}button{cursor:pointer}.hidden{display:none!important}
@@ -168,7 +211,27 @@ html{scroll-behavior:smooth}body{font-family:Inter,system-ui,-apple-system,Blink
 .quick-tools{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:16px}.quick-tool{border:0;background:white;border-radius:18px;padding:15px;text-align:left;box-shadow:var(--sombra);font-weight:850}.quick-tool span{display:block;font-size:23px;margin-bottom:7px}
 @media(max-width:520px){.leader-summary,.quick-tools{grid-template-columns:1fr}.leader-wide{grid-column:auto}}
 
+
+/* ===== PWA ===== */
+.pwa-install{position:fixed;right:16px;bottom:92px;z-index:1200;border:0;border-radius:999px;background:#075fb6;color:#fff;padding:12px 16px;font-weight:900;box-shadow:0 12px 30px rgba(0,55,110,.25);cursor:pointer}
+.pwa-install.hidden{display:none!important}
+.pwa-ios-help{position:fixed;inset:0;z-index:3000;background:rgba(5,20,35,.56);display:flex;align-items:flex-end;justify-content:center;padding:16px}
+.pwa-ios-help.hidden{display:none!important}
+.pwa-ios-card{width:min(100%,460px);background:#fff;border-radius:24px;padding:20px;box-shadow:0 20px 60px rgba(0,0,0,.25)}
+.pwa-ios-card h3{margin-bottom:8px}.pwa-ios-card p{font-size:13px;line-height:1.55;color:#52606d}.pwa-ios-card .btn{width:100%;margin-top:14px}
+
 </style>
+
+  <!-- PWA Nosso Estudo -->
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="icon" href="./logo.png">
+  <link rel="apple-touch-icon" href="./logo.png">
+  <meta name="application-name" content="Nosso Estudo">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Nosso Estudo">
+  <meta name="mobile-web-app-capable" content="yes">
+
 </head>
 <body>
 <section id="publicSite">
@@ -2007,5 +2070,15 @@ async function markAllNotificationsRead(){
 }
 
 </script>
+
+<button id="pwaInstallBtn" class="pwa-install hidden" onclick="installNossoEstudo()">📲 Instalar aplicativo</button>
+<div id="pwaIosHelp" class="pwa-ios-help hidden" onclick="if(event.target===this)closePwaIosHelp()">
+  <div class="pwa-ios-card">
+    <h3>📲 Instalar Nosso Estudo</h3>
+    <p>No iPhone/iPad, abra este site no Safari, toque em <strong>Compartilhar</strong> e depois em <strong>Adicionar à Tela de Início</strong>.</p>
+    <button class="btn btn-primary" onclick="closePwaIosHelp()">Entendi</button>
+  </div>
+</div>
+
 </body>
 </html>

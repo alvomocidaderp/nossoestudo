@@ -1,0 +1,20 @@
+{
+  "name": "Nosso Estudo | Alvo da Mocidade",
+  "short_name": "Nosso Estudo",
+  "description": "Aplicativo do Alvo da Mocidade para estudos, comunidade, agenda e vida em grupo.",
+  "id": "/nossoestudo/",
+  "start_url": "/nossoestudo/",
+  "scope": "/nossoestudo/",
+  "display": "standalone",
+  "background_color": "#f4f7fb",
+  "theme_color": "#07589f",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "./logo.png",
+      "sizes": "any",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
