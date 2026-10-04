@@ -6,53 +6,7 @@
 <meta name="theme-color" content="#0757a6">
 <title>Nosso Estudo | Alvo da Mocidade</title>
 <meta name="description" content="Nosso Estudo — estudos bíblicos, comunhão, eventos e memórias do Alvo da Mocidade.">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
-// ===== PWA NOSSO ESTUDO =====
-let deferredPwaPrompt=null;
-function isIosDevice(){return /iphone|ipad|ipod/i.test(navigator.userAgent)}
-function isStandalonePwa(){return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone===true}
-function refreshPwaInstallButton(){
-  const btn=document.getElementById('pwaInstallBtn'); if(!btn)return;
-  if(isStandalonePwa()){btn.classList.add('hidden');return}
-  btn.classList.remove('hidden');
-}
-window.addEventListener('beforeinstallprompt',e=>{
-  e.preventDefault(); deferredPwaPrompt=e; refreshPwaInstallButton();
-});
-window.addEventListener('appinstalled',()=>{
-  deferredPwaPrompt=null; refreshPwaInstallButton();
-});
-async function installNossoEstudo(){
-  if(isIosDevice() && !deferredPwaPrompt){
-    document.getElementById('pwaIosHelp')?.classList.remove('hidden'); return;
-  }
-  if(deferredPwaPrompt){
-    deferredPwaPrompt.prompt();
-    try{await deferredPwaPrompt.userChoice}catch(e){}
-    deferredPwaPrompt=null; refreshPwaInstallButton(); return;
-  }
-  document.getElementById('pwaGenericHelp')?.classList.remove('hidden');
-}
-function closePwaIosHelp(){document.getElementById('pwaIosHelp')?.classList.add('hidden')}
-function closePwaGenericHelp(){document.getElementById('pwaGenericHelp')?.classList.add('hidden')}
-if('serviceWorker' in navigator){
-  window.addEventListener('load',async()=>{
-    try{
-      const reg=await navigator.serviceWorker.register('./service-worker.js',{scope:'./'});
-      // Always ask the browser to check for a new SW when the app opens.
-      await reg.update();
-    }catch(err){console.warn('Service Worker:',err)}
-    refreshPwaInstallButton();
-  });
-}
-document.addEventListener('DOMContentLoaded',refreshPwaInstallButton);
-document.addEventListener('visibilitychange',()=>{
-  if(document.visibilityState==='visible' && 'serviceWorker' in navigator){
-    navigator.serviceWorker.getRegistration('./').then(r=>r?.update()).catch(()=>{});
-  }
-});
-
-</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0} :root{--azul:#0757a6;--escuro:#043765;--claro:#eaf4ff;--fundo:#f5f7fa;--branco:#fff;--texto:#15212d;--cinza:#687684;--borda:#e4eaf0;--verde:#239b56;--vermelho:#d64545;--sombra:0 12px 32px rgba(20,40,70,.10)}
 html{scroll-behavior:smooth}body{font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--fundo);color:var(--texto);min-height:100vh}button,input,select{font:inherit}button{cursor:pointer}.hidden{display:none!important}
@@ -216,12 +170,12 @@ html{scroll-behavior:smooth}body{font-family:Inter,system-ui,-apple-system,Blink
 
 
 /* ===== PWA ===== */
-.pwa-install{position:fixed;right:16px;bottom:92px;z-index:1200;border:0;border-radius:999px;background:#075fb6;color:#fff;padding:14px 18px;font-weight:900;font-size:14px;box-shadow:0 12px 30px rgba(0,55,110,.28);cursor:pointer;max-width:calc(100vw - 32px)}
+.pwa-install{position:fixed;right:16px;bottom:92px;z-index:2200;border:0;border-radius:999px;background:#075fb6;color:#fff;padding:14px 18px;font-weight:900;font-size:14px;box-shadow:0 12px 30px rgba(0,55,110,.28);cursor:pointer;max-width:calc(100vw - 32px)}
 .pwa-install.hidden{display:none!important}
-.pwa-ios-help{position:fixed;inset:0;z-index:3000;background:rgba(5,20,35,.56);display:flex;align-items:flex-end;justify-content:center;padding:16px}
-.pwa-ios-help.hidden{display:none!important}
-.pwa-ios-card{width:min(100%,460px);background:#fff;border-radius:24px;padding:20px;box-shadow:0 20px 60px rgba(0,0,0,.25)}
-.pwa-ios-card h3{margin-bottom:8px}.pwa-ios-card p{font-size:13px;line-height:1.55;color:#52606d}.pwa-ios-card .btn{width:100%;margin-top:14px}
+.pwa-help{position:fixed;inset:0;z-index:4000;background:rgba(5,20,35,.56);display:flex;align-items:flex-end;justify-content:center;padding:16px}
+.pwa-help.hidden{display:none!important}
+.pwa-help-card{width:min(100%,460px);background:#fff;border-radius:24px;padding:20px;box-shadow:0 20px 60px rgba(0,0,0,.25)}
+.pwa-help-card h3{margin-bottom:8px}.pwa-help-card p{font-size:13px;line-height:1.55;color:#52606d}.pwa-help-card .btn{width:100%;margin-top:14px}
 
 </style>
 
@@ -2074,25 +2028,81 @@ async function markAllNotificationsRead(){
 
 </script>
 
-<button id="pwaInstallBtn" class="pwa-install hidden" onclick="installNossoEstudo()">📲 Instalar aplicativo</button>
-<div id="pwaIosHelp" class="pwa-ios-help hidden" onclick="if(event.target===this)closePwaIosHelp()">
-  <div class="pwa-ios-card">
+<button id="pwaInstallBtn" class="pwa-install" type="button">📲 Instalar aplicativo</button>
+
+<div id="pwaHelp" class="pwa-help hidden">
+  <div class="pwa-help-card">
     <h3>📲 Instalar Nosso Estudo</h3>
-    <p>No iPhone/iPad, abra este site no Safari, toque em <strong>Compartilhar</strong> e depois em <strong>Adicionar à Tela de Início</strong>.</p>
-    <button class="btn btn-primary" onclick="closePwaIosHelp()">Entendi</button>
+    <div id="pwaHelpText"></div>
+    <button id="pwaHelpClose" class="btn btn-primary" type="button">Entendi</button>
   </div>
 </div>
 
+<script>
+(function(){
+  let deferredPrompt = null;
+  const btn = document.getElementById('pwaInstallBtn');
+  const help = document.getElementById('pwaHelp');
+  const helpText = document.getElementById('pwaHelpText');
+  const closeBtn = document.getElementById('pwaHelpClose');
 
-<div id="pwaGenericHelp" class="pwa-ios-help hidden" onclick="if(event.target===this)closePwaGenericHelp()">
-  <div class="pwa-ios-card">
-    <h3>📲 Instalar Nosso Estudo</h3>
-    <p><strong>No Android:</strong> abra pelo Chrome e use a opção <strong>Instalar app</strong> ou <strong>Adicionar à tela inicial</strong> no menu do navegador.</p>
-    <p style="margin-top:9px"><strong>No computador:</strong> o Chrome/Edge pode mostrar o ícone de instalação na barra de endereço ou a opção <strong>Instalar Nosso Estudo</strong> no menu.</p>
-    <p style="margin-top:9px">Depois de instalado, o Nosso Estudo fica na tela inicial como um aplicativo e continua recebendo as atualizações publicadas.</p>
-    <button class="btn btn-primary" onclick="closePwaGenericHelp()">Entendi</button>
-  </div>
-</div>
+  const isIos = /iphone|ipad|ipod/i.test(navigator.userAgent);
+  const standalone = () =>
+    window.matchMedia('(display-mode: standalone)').matches ||
+    window.navigator.standalone === true;
+
+  function refreshButton(){
+    if(!btn) return;
+    btn.classList.toggle('hidden', standalone());
+  }
+
+  function openHelp(){
+    if(isIos){
+      helpText.innerHTML =
+        '<p>No iPhone/iPad, abra este site no <strong>Safari</strong>, toque em <strong>Compartilhar</strong> e depois em <strong>Adicionar à Tela de Início</strong>.</p>';
+    }else{
+      helpText.innerHTML =
+        '<p>No <strong>Android</strong>, abra pelo Chrome e toque no menu do navegador. Procure <strong>Instalar app</strong> ou <strong>Adicionar à tela inicial</strong>.</p>' +
+        '<p style="margin-top:9px">No <strong>computador</strong>, Chrome ou Edge também podem mostrar a opção <strong>Instalar Nosso Estudo</strong> no menu ou na barra de endereço.</p>';
+    }
+    help.classList.remove('hidden');
+  }
+
+  window.addEventListener('beforeinstallprompt', function(e){
+    e.preventDefault();
+    deferredPrompt = e;
+    refreshButton();
+  });
+
+  btn.addEventListener('click', async function(){
+    if(deferredPrompt){
+      deferredPrompt.prompt();
+      try { await deferredPrompt.userChoice; } catch(e) {}
+      deferredPrompt = null;
+      refreshButton();
+    }else{
+      openHelp();
+    }
+  });
+
+  closeBtn.addEventListener('click', ()=>help.classList.add('hidden'));
+  help.addEventListener('click', e=>{ if(e.target===help) help.classList.add('hidden'); });
+  window.addEventListener('appinstalled', ()=>{ deferredPrompt=null; refreshButton(); });
+  refreshButton();
+
+  if('serviceWorker' in navigator){
+    window.addEventListener('load', async function(){
+      try{
+        const reg = await navigator.serviceWorker.register('./service-worker.js', {scope:'./'});
+        await reg.update();
+      }catch(e){
+        console.warn('Service Worker:', e);
+      }
+      refreshButton();
+    });
+  }
+})();
+</script>
 
 </body>
 </html>
