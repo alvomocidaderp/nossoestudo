@@ -155,6 +155,19 @@ html{scroll-behavior:smooth}body{font-family:Inter,system-ui,-apple-system,Blink
 .notification-info{min-width:0;flex:1}.notification-info strong{display:block;font-size:14px}.notification-info p{font-size:12px;color:var(--cinza);line-height:1.45;margin-top:4px}.notification-time{font-size:10px;color:#94a0aa;margin-top:7px;display:block}
 .notification-open{border:0;background:transparent;color:var(--azul);font-weight:900;font-size:11px;margin-top:8px;padding:0}
 
+
+/* ===== NOVA LEVA: PRESENÇA / ORAÇÃO / BUSCA / PAINEL / DESTAQUES ===== */
+.presence-box,.prayer-card,.leader-card,.search-card,.home-highlight{background:white;border:1px solid var(--borda);border-radius:20px;padding:16px;box-shadow:var(--sombra)}
+.presence-box{margin:0 0 20px;background:linear-gradient(135deg,#f3f9ff,#fff)}.presence-row{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}.presence-count{font-size:12px;color:var(--cinza);margin-top:5px}
+.prayer-view,.search-view,.leader-view{width:min(100%,900px);margin:auto;padding:20px}.view-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}.view-head h2{font-size:24px}.view-head p{font-size:13px;color:var(--cinza);margin-top:3px}
+.prayer-compose{background:linear-gradient(135deg,#f4f9ff,#fff);border:1px solid var(--borda);border-radius:22px;padding:17px;box-shadow:var(--sombra);margin-bottom:16px}.prayer-compose textarea{width:100%;min-height:110px;border:1px solid var(--borda);border-radius:14px;padding:13px;resize:vertical;font:inherit;outline:none}.prayer-compose textarea:focus{border-color:var(--azul)}.prayer-options{display:flex;gap:12px;flex-wrap:wrap;margin:11px 0}.prayer-options label{display:flex;gap:7px;align-items:center;font-size:12px;font-weight:800}
+.prayer-list{display:grid;gap:11px}.prayer-top{display:flex;align-items:center;gap:9px}.prayer-meta{font-size:11px;color:var(--cinza);margin-top:2px}.prayer-text{font-size:14px;line-height:1.55;white-space:pre-wrap;margin:11px 0}.prayer-status{display:inline-block;font-size:10px;font-weight:900;padding:5px 8px;border-radius:999px;background:#e9f8ef;color:#176b3a}.prayer-status.closed{background:#eef2f5;color:var(--cinza)}
+.search-box{background:white;border:1px solid var(--borda);border-radius:20px;padding:14px;box-shadow:var(--sombra);margin-bottom:15px}.search-input{width:100%;padding:14px;border:1px solid var(--borda);border-radius:14px;outline:none}.search-input:focus{border-color:var(--azul)}.search-results{display:grid;gap:10px}.search-card{cursor:pointer}.search-type{font-size:10px;color:var(--azul);font-weight:900;text-transform:uppercase;letter-spacing:.05em}.search-card h3{font-size:16px;margin:5px 0}.search-card p{font-size:12px;color:var(--cinza);line-height:1.45}
+.leader-summary{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.leader-card strong{display:block;font-size:24px;color:var(--azul)}.leader-card span{display:block;font-size:11px;color:var(--cinza);margin-top:4px}.leader-wide{grid-column:1/-1}.leader-list{margin-top:16px;display:grid;gap:10px}
+.home-highlight{margin-top:16px}.home-highlight-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:11px}.home-highlight-head h3{font-size:16px}.highlight-item{border-top:1px solid var(--borda);padding:11px 0}.highlight-item:first-of-type{border-top:0}.highlight-item p{font-size:13px;line-height:1.5}.highlight-item small{display:block;color:var(--cinza);margin-top:5px}
+.quick-tools{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:16px}.quick-tool{border:0;background:white;border-radius:18px;padding:15px;text-align:left;box-shadow:var(--sombra);font-weight:850}.quick-tool span{display:block;font-size:23px;margin-bottom:7px}
+@media(max-width:520px){.leader-summary,.quick-tools{grid-template-columns:1fr}.leader-wide{grid-column:auto}}
+
 </style>
 </head>
 <body>
@@ -205,14 +218,21 @@ html{scroll-behavior:smooth}body{font-family:Inter,system-ui,-apple-system,Blink
   </div>
 </section>
 
+
+<div id="homeDynamicExtras"></div>
+<div class="quick-tools">
+  <button class="quick-tool" onclick="showPrayerRequests()"><span>🙏</span>Pedidos de oração</button>
+  <button class="quick-tool" onclick="showGlobalSearch()"><span>🔎</span>Buscar no Nosso Estudo</button>
+</div>
+
 <div class="section-head"><h2>Nosso espaço</h2></div><section class="member-grid">
 <button class="member-card" onclick="showGroupStudies()"><div class="icon">📖</div><h4>Estudos do Grupo</h4><p>Estudos das nossas reuniões, preparados pelos líderes e compartilhados com todos.</p></button>
 <button class="member-card" onclick="showStudies()"><div class="icon">🌱</div><h4>Mantenha-se na Palavra</h4><p>Uma jornada pessoal de 52 semanas para continuar firme na Palavra.</p></button>
 <button class="member-card" onclick="showCommunity()"><div class="icon">💬</div><h4>Comunidade</h4><p>Compartilhe reflexões, indicações e converse com o grupo.</p></button>
 <button class="member-card" onclick="showAgenda()"><div class="icon">📅</div><h4>Agenda</h4><p>Reuniões, atividades e próximos eventos.</p></button>
-<button class="member-card" onclick="showMemories()"><div class="icon">📸</div><h4>Memórias</h4><p>Furnas, encontros, passeios e momentos que vivemos juntos.</p></button><button class="member-card" onclick="showFurnas()"><div class="icon">🏕️</div><h4>Furnas</h4><p>Preparação, informações e tudo sobre o nosso acampamento.</p></button>
+<button class="member-card" onclick="showMemories()"><div class="icon">📸</div><h4>Memórias</h4><p>Furnas, encontros, passeios e momentos que vivemos juntos.</p></button><button class="member-card" onclick="showPrayerRequests()"><div class="icon">🙏</div><h4>Pedidos de Oração</h4><p>Compartilhe pedidos com o grupo de forma identificada ou discreta.</p></button><button class="member-card" onclick="showFurnas()"><div class="icon">🏕️</div><h4>Furnas</h4><p>Preparação, informações e tudo sobre o nosso acampamento.</p></button>
 </section>
-<section id="adminArea" class="admin-panel hidden"><strong>⚙️ Administração</strong><p id="adminDescription">Gerencie membros e conteúdos do Nosso Estudo.</p><div class="admin-actions"><button id="newMemberBtn" class="btn btn-primary hidden" onclick="openMemberAdmin()">+ Novo membro</button><button id="manageMembersBtn" class="btn btn-soft hidden" onclick="showMemberManagement()">👥 Gerenciar membros</button><button id="manageMissionsBtn" class="btn btn-soft hidden" onclick="showMissionManagement()">🎯 Missões</button><button class="btn btn-soft" onclick="showGroupStudies()">📖 Estudos do Grupo</button></div></section>
+<section id="adminArea" class="admin-panel hidden"><strong>⚙️ Administração</strong><p id="adminDescription">Gerencie membros e conteúdos do Nosso Estudo.</p><div class="admin-actions"><button id="newMemberBtn" class="btn btn-primary hidden" onclick="openMemberAdmin()">+ Novo membro</button><button id="manageMembersBtn" class="btn btn-soft hidden" onclick="showMemberManagement()">👥 Gerenciar membros</button><button id="manageMissionsBtn" class="btn btn-soft hidden" onclick="showMissionManagement()">🎯 Missões</button><button id="leaderPanelBtn" class="btn btn-soft hidden" onclick="showLeaderPanel()">📊 Painel do líder</button><button class="btn btn-soft" onclick="showGroupStudies()">📖 Estudos do Grupo</button></div></section>
 <button class="logout" onclick="logout()">Sair da conta</button>
 </div>
 
@@ -308,6 +328,31 @@ html{scroll-behavior:smooth}body{font-family:Inter,system-ui,-apple-system,Blink
  <div id="missionsAdminList" class="missions-list"><div class="loading">Carregando missões...</div></div>
 </section>
 
+
+
+<section id="prayerView" class="prayer-view hidden">
+  <div class="view-head"><div><h2>🙏 Pedidos de Oração</h2><p>Um espaço privado de cuidado e oração entre os membros.</p></div><button class="back-btn" onclick="showHome()">×</button></div>
+  <div class="prayer-compose">
+    <strong>Compartilhar um pedido</strong>
+    <div class="field" style="margin-top:12px"><label>Título <span style="font-weight:500;color:var(--cinza)">(opcional)</span></label><input id="prayerTitle" maxlength="120" placeholder="Ex.: Minha família"></div>
+    <textarea id="prayerText" maxlength="3000" placeholder="Escreva seu pedido de oração..."></textarea>
+    <div class="prayer-options"><label><input id="prayerDiscrete" type="checkbox"> Compartilhar de forma discreta</label></div>
+    <button id="prayerPublishBtn" class="btn btn-primary" onclick="publishPrayerRequest()">🙏 Compartilhar pedido</button>
+    <div id="prayerMessage" class="message"></div>
+  </div>
+  <div id="prayerList" class="prayer-list"><div class="loading">Carregando pedidos...</div></div>
+</section>
+
+<section id="searchView" class="search-view hidden">
+  <div class="view-head"><div><h2>🔎 Busca geral</h2><p>Encontre estudos, conteúdos e eventos.</p></div><button class="back-btn" onclick="showHome()">×</button></div>
+  <div class="search-box"><input id="globalSearchInput" class="search-input" placeholder="Ex.: perdão, oração, Jesus..." oninput="debouncedGlobalSearch()"></div>
+  <div id="globalSearchResults" class="search-results"><div class="empty-feed">Digite uma palavra para começar a busca.</div></div>
+</section>
+
+<section id="leaderView" class="leader-view hidden">
+  <div class="view-head"><div><h2>📊 Painel do líder</h2><p>Um resumo do grupo, sem rankings ou comparações entre membros.</p></div><button class="back-btn" onclick="showHome()">×</button></div>
+  <div id="leaderDashboard"><div class="loading">Carregando painel...</div></div>
+</section>
 
 <section id="notificationsView" class="notifications-view hidden">
   <div class="notifications-head">
@@ -481,6 +526,7 @@ async function loadApp(user){
  if(perfil.tipo==='admin')newMemberBtn.classList.remove('hidden');else newMemberBtn.classList.add('hidden');
  document.getElementById('weeklyAdminActions')?.classList.toggle('hidden',!(perfil.tipo==='admin'||perfil.tipo==='lider'));
  document.getElementById('manageMissionsBtn')?.classList.toggle('hidden',!(perfil.tipo==='admin'||perfil.tipo==='lider'));
+ document.getElementById('leaderPanelBtn')?.classList.toggle('hidden',!(perfil.tipo==='admin'||perfil.tipo==='lider'));
  await renderProfilePhoto();
   await loadWeeklyChallenge();
   if(perfil.senha_temporaria===true){
@@ -501,6 +547,10 @@ function showHome(){setActiveBottomNav('home');setTimeout(loadSmartHome,0);setTi
  document.getElementById('missionsView')?.classList.add('hidden');
  document.getElementById('groupStudiesView')?.classList.add('hidden');
  document.getElementById('groupStudyDetailView')?.classList.add('hidden');
+ document.getElementById('prayerView')?.classList.add('hidden');
+ document.getElementById('searchView')?.classList.add('hidden');
+ document.getElementById('leaderView')?.classList.add('hidden');
+ document.getElementById('notificationsView')?.classList.add('hidden');
  document.getElementById('homeView').classList.remove('hidden');
  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
  document.querySelector('.bottom-nav .nav-btn:first-child').classList.add('active');
@@ -624,7 +674,8 @@ async function openGroupStudy(id){
 }
 async function renderGroupStudy(){
  const s=activeGroupStudy,box=document.getElementById('groupStudyDetailContent');const qs=Array.isArray(s.perguntas)?s.perguntas:[];
- box.innerHTML=`<article class="study-detail"><div class="study-detail-head"><small>ESTUDO DO GRUPO</small><h2>${escapeHtml(s.titulo)}</h2><p>${escapeHtml(s.tema||s.descricao||'')}</p><div class="group-meta"><span class="group-pill">📅 ${escapeHtml(formatGroupDate(s.data_estudo))}</span>${s.referencia_biblica?`<span class="group-pill">📖 ${escapeHtml(s.referencia_biblica)}</span>`:''}</div></div><div class="study-detail-body">${isLeader()?`<div class="study-actions"><button class="btn btn-soft" onclick="openGroupStudyAdmin(${s.id})">✏️ Editar estudo</button><button class="btn" style="background:#ffeaea;color:#a32727" onclick="deleteGroupStudy(${s.id})">🗑️ Excluir estudo</button></div>`:''}${s.descricao?`<div class="study-section"><h3>Sobre o estudo</h3><p>${escapeHtml(s.descricao)}</p></div>`:''}${s.referencia_biblica?`<div class="study-section"><h3>📖 Texto bíblico</h3><div class="study-reading">${escapeHtml(s.referencia_biblica)}</div></div>`:''}${s.introducao?`<div class="study-section"><h3>Começando</h3><p>${escapeHtml(s.introducao)}</p></div>`:''}${s.conteudo?`<div class="study-section"><h3>Nosso estudo</h3><p>${escapeHtml(s.conteudo)}</p></div>`:''}${qs.length?`<div class="study-section"><h3>❓ Para conversar</h3><ol class="study-questions">${qs.map(q=>`<li>${escapeHtml(q)}</li>`).join('')}</ol></div>`:''}${s.observacoes_lider?`<div class="study-section"><h3>🗣️ Palavra do líder</h3><div class="study-callout">${escapeHtml(s.observacoes_lider)}</div></div>`:''}${s.video_url?`<div class="study-section"><h3>🎬 Vídeo de apoio</h3><a class="btn btn-soft" href="${escapeHtml(s.video_url)}" target="_blank" rel="noopener">Abrir vídeo</a></div>`:''}${s.material_url?`<div class="study-section"><h3>📎 Material de apoio</h3><a class="btn btn-soft" href="${escapeHtml(s.material_url)}" target="_blank" rel="noopener">${escapeHtml(s.material_titulo||'Abrir material')}</a></div>`:''}<div class="study-section"><h3>💭 O que eu aprendi?</h3><p style="color:var(--cinza);font-size:13px;line-height:1.5">Compartilhe com o grupo algo que ficou no seu coração ou que você aprendeu neste estudo.</p><div class="learn-box"><textarea id="groupLearningText" maxlength="3000" placeholder="Escreva com suas palavras..."></textarea><button class="btn btn-primary" style="margin-top:10px" onclick="publishLearning()">Compartilhar com o grupo</button><div id="groupLearningMessage" class="message"></div></div><div id="groupLearningFeed" class="learn-feed"><div class="loading">Carregando aprendizados...</div></div></div></div></article>`;
+ box.innerHTML=`<article class="study-detail"><div class="study-detail-head"><small>ESTUDO DO GRUPO</small><h2>${escapeHtml(s.titulo)}</h2><p>${escapeHtml(s.tema||s.descricao||'')}</p><div class="group-meta"><span class="group-pill">📅 ${escapeHtml(formatGroupDate(s.data_estudo))}</span>${s.referencia_biblica?`<span class="group-pill">📖 ${escapeHtml(s.referencia_biblica)}</span>`:''}</div></div><div class="study-detail-body">${isLeader()?`<div class="study-actions"><button class="btn btn-soft" onclick="openGroupStudyAdmin(${s.id})">✏️ Editar estudo</button><button class="btn" style="background:#ffeaea;color:#a32727" onclick="deleteGroupStudy(${s.id})">🗑️ Excluir estudo</button></div>`:''}${s.descricao?`<div class="study-section"><h3>Sobre o estudo</h3><p>${escapeHtml(s.descricao)}</p></div>`:''}${s.referencia_biblica?`<div class="study-section"><h3>📖 Texto bíblico</h3><div class="study-reading">${escapeHtml(s.referencia_biblica)}</div></div>`:''}${s.introducao?`<div class="study-section"><h3>Começando</h3><p>${escapeHtml(s.introducao)}</p></div>`:''}${s.conteudo?`<div class="study-section"><h3>Nosso estudo</h3><p>${escapeHtml(s.conteudo)}</p></div>`:''}${qs.length?`<div class="study-section"><h3>❓ Para conversar</h3><ol class="study-questions">${qs.map(q=>`<li>${escapeHtml(q)}</li>`).join('')}</ol></div>`:''}${s.observacoes_lider?`<div class="study-section"><h3>🗣️ Palavra do líder</h3><div class="study-callout">${escapeHtml(s.observacoes_lider)}</div></div>`:''}${s.video_url?`<div class="study-section"><h3>🎬 Vídeo de apoio</h3><a class="btn btn-soft" href="${escapeHtml(s.video_url)}" target="_blank" rel="noopener">Abrir vídeo</a></div>`:''}${s.material_url?`<div class="study-section"><h3>📎 Material de apoio</h3><a class="btn btn-soft" href="${escapeHtml(s.material_url)}" target="_blank" rel="noopener">${escapeHtml(s.material_titulo||'Abrir material')}</a></div>`:''}<div id="groupPresenceBox" class="presence-box"><div class="loading">Carregando participação...</div></div><div class="study-section"><h3>💭 O que eu aprendi?</h3><p style="color:var(--cinza);font-size:13px;line-height:1.5">Compartilhe com o grupo algo que ficou no seu coração ou que você aprendeu neste estudo.</p><div class="learn-box"><textarea id="groupLearningText" maxlength="3000" placeholder="Escreva com suas palavras..."></textarea><button class="btn btn-primary" style="margin-top:10px" onclick="publishLearning()">Compartilhar com o grupo</button><div id="groupLearningMessage" class="message"></div></div><div id="groupLearningFeed" class="learn-feed"><div class="loading">Carregando aprendizados...</div></div></div></div></article>`;
+ await loadGroupPresence();
  await loadLearnings();
 }
 async function loadLearnings(){
@@ -1692,6 +1743,7 @@ function setActiveBottomNav(name){
 }
 async function loadSmartHome(){
   if(!currentProfile)return;
+  setTimeout(loadHomeExtras,0);
   try{
     const now=new Date().toISOString();
     const {data:s}=await supabaseClient.from('estudos_grupo')
@@ -1725,9 +1777,139 @@ async function loadSmartHome(){
 }
 
 
+
+// ===== NOVA LEVA: PRESENÇA / HOME / ORAÇÃO / PAINEL / BUSCA =====
+function hideMainViews(){
+ ['homeView','studiesView','studyDetailView','groupStudiesView','groupStudyDetailView','communityView','agendaView','memoriesView','albumView','furnasView','memberManagementView','missionsView','profileView','notificationsView','prayerView','searchView','leaderView']
+ .forEach(id=>document.getElementById(id)?.classList.add('hidden'));
+}
+async function loadGroupPresence(){
+ if(!activeGroupStudy||!currentProfile)return;
+ const box=document.getElementById('groupPresenceBox'); if(!box)return;
+ const {data,error}=await supabaseClient.from('presencas_estudos_grupo').select('id,usuario_id').eq('estudo_id',activeGroupStudy.id);
+ if(error){box.innerHTML='<div class="presence-count">Não foi possível carregar as participações.</div>';return}
+ const mine=(data||[]).some(x=>x.usuario_id===currentProfile.id), total=(data||[]).length;
+ box.innerHTML=`<div class="presence-row"><div><strong>${mine?'✓ Você participou deste estudo':'🙋 Você participou deste estudo?'}</strong><div class="presence-count">${total} ${total===1?'membro participou':'membros participaram'} deste encontro.</div></div><button class="btn ${mine?'btn-soft':'btn-primary'}" onclick="toggleGroupPresence(${mine})">${mine?'Desmarcar':'🙋 Eu participei'}</button></div>`;
+}
+async function toggleGroupPresence(marked){
+ if(!activeGroupStudy||!currentProfile)return;
+ let result;
+ if(marked) result=await supabaseClient.from('presencas_estudos_grupo').delete().eq('estudo_id',activeGroupStudy.id).eq('usuario_id',currentProfile.id);
+ else result=await supabaseClient.from('presencas_estudos_grupo').insert({estudo_id:activeGroupStudy.id,usuario_id:currentProfile.id});
+ if(result.error){alert('Não foi possível atualizar sua participação: '+result.error.message);return}
+ await loadGroupPresence();
+}
+
+async function loadHomeExtras(){
+ if(!currentProfile)return;
+ const host=document.getElementById('homeDynamicExtras'); if(!host)return;
+ let cards=[];
+ try{
+   const today=new Date().toISOString().slice(0,10);
+   const {data:r}=await supabaseClient.from('responsaveis_semanais').select('id,titulo_missao,descricao_missao,fim,status').eq('usuario_id',currentProfile.id).eq('status','pendente').gte('fim',today).order('fim',{ascending:true}).limit(1);
+   if(r?.[0]) cards.push(`<article class="home-smart-card home-smart-wide"><div class="smart-icon">🎯</div><small>Sua missão está pendente</small><strong>${escapeHtml(r[0].titulo_missao||'Missão da semana')}</strong><p>${escapeHtml(r[0].descricao_missao||'Veja sua missão desta semana.')}</p></article>`);
+ }catch(e){}
+ try{
+   const since=new Date(Date.now()-7*86400000).toISOString();
+   const {count}=await supabaseClient.from('fotos').select('id',{count:'exact',head:true}).gte('created_at',since);
+   if(count>0) cards.push(`<article class="home-smart-card"><div class="smart-icon">📸</div><small>Memórias recentes</small><strong>${count} ${count===1?'nova foto':'novas fotos'}</strong><p>Adicionadas nos últimos 7 dias.</p><button onclick="showMemories()">Ver memórias →</button></article>`);
+ }catch(e){}
+ try{
+   const {data:a}=await supabaseClient.from('aprendizados_estudos').select('id,texto,created_at,perfis:usuario_id(nome,apelido),estudos_grupo:estudo_id(titulo,realizado)').order('created_at',{ascending:false}).limit(8);
+   const highlights=(a||[]).filter(x=>x.estudos_grupo?.realizado).slice(0,3);
+   if(highlights.length){
+     cards.push(`<div class="home-highlight" style="grid-column:1/-1"><div class="home-highlight-head"><h3>💭 O que ficou do último estudo</h3><button class="btn btn-soft" onclick="showGroupStudies()">Ver estudos</button></div>${highlights.map(x=>`<div class="highlight-item"><p>“${escapeHtml((x.texto||'').slice(0,220))}${(x.texto||'').length>220?'…':''}”</p><small>${escapeHtml(x.perfis?.apelido||x.perfis?.nome||'Membro')} • ${escapeHtml(x.estudos_grupo?.titulo||'Estudo do grupo')}</small></div>`).join('')}</div>`);
+   }
+ }catch(e){}
+ host.innerHTML=cards.length?`<section class="home-smart"><div class="home-smart-grid">${cards.join('')}</div></section>`:'';
+}
+
+async function showPrayerRequests(){
+ hideMainViews(); document.getElementById('prayerView').classList.remove('hidden'); setActiveBottomNav(''); await loadPrayerRequests(); window.scrollTo({top:0,behavior:'smooth'});
+}
+async function loadPrayerRequests(){
+ const box=document.getElementById('prayerList'); if(!box)return; box.innerHTML='<div class="loading">Carregando pedidos...</div>';
+ const {data,error}=await supabaseClient.from('pedidos_oracao').select('*,perfis:usuario_id(nome,apelido)').order('created_at',{ascending:false});
+ if(error){box.innerHTML=`<div class="message error" style="display:block">${escapeHtml(error.message)}</div>`;return}
+ if(!data?.length){box.innerHTML='<div class="empty-feed">Ainda não há pedidos de oração. 🙏</div>';return}
+ box.innerHTML=data.map(p=>{
+   const own=p.usuario_id===currentProfile.id, canDelete=own||isLeader(), who=p.discreto&&!own?'Pedido discreto':(p.perfis?.apelido||p.perfis?.nome||'Membro');
+   const state=p.status==='ativo'?'Em oração':p.status==='respondido'?'Respondido 🙏':'Encerrado';
+   return `<article class="prayer-card"><div class="prayer-top"><div class="user-pic">${p.discreto&&!own?'🙏':escapeHtml(who.charAt(0).toUpperCase())}</div><div><strong>${escapeHtml(who)}</strong><div class="prayer-meta">${escapeHtml(formatGroupDate(p.created_at))}</div></div></div>${p.titulo?`<h3 style="margin-top:12px">${escapeHtml(p.titulo)}</h3>`:''}<div class="prayer-text">${escapeHtml(p.pedido)}</div><span class="prayer-status ${p.status==='ativo'?'':'closed'}">${state}</span><div class="event-actions">${own&&p.status==='ativo'?`<button class="btn btn-soft" onclick="setPrayerStatus(${p.id},'respondido')">🙏 Marcar como respondido</button><button class="btn btn-soft" onclick="setPrayerStatus(${p.id},'encerrado')">Encerrar</button>`:''}${canDelete?`<button class="btn" style="background:#ffeaea;color:#8d2020" onclick="deletePrayerRequest(${p.id})">Excluir</button>`:''}</div></article>`;
+ }).join('');
+}
+async function publishPrayerRequest(){
+ const pedido=document.getElementById('prayerText').value.trim(), titulo=document.getElementById('prayerTitle').value.trim(), discreto=document.getElementById('prayerDiscrete').checked, msg=document.getElementById('prayerMessage'), btn=document.getElementById('prayerPublishBtn');
+ if(!pedido){showMessage(msg,'Escreva seu pedido de oração.','error');return}
+ btn.disabled=true;btn.textContent='Compartilhando...';
+ const {error}=await supabaseClient.from('pedidos_oracao').insert({usuario_id:currentProfile.id,titulo:titulo||null,pedido,discreto,status:'ativo'});
+ btn.disabled=false;btn.textContent='🙏 Compartilhar pedido';
+ if(error){showMessage(msg,error.message||'Não foi possível compartilhar.','error');return}
+ document.getElementById('prayerTitle').value='';document.getElementById('prayerText').value='';document.getElementById('prayerDiscrete').checked=false;showMessage(msg,'Pedido compartilhado com o grupo.','success');await loadPrayerRequests();
+}
+async function setPrayerStatus(id,status){
+ const {error}=await supabaseClient.from('pedidos_oracao').update({status}).eq('id',id).eq('usuario_id',currentProfile.id);
+ if(error){alert('Não foi possível atualizar o pedido.');return} await loadPrayerRequests();
+}
+async function deletePrayerRequest(id){
+ if(!confirm('Excluir este pedido de oração?'))return;
+ const {error}=await supabaseClient.from('pedidos_oracao').delete().eq('id',id);
+ if(error){alert('Não foi possível excluir o pedido.');return} await loadPrayerRequests();
+}
+
+let globalSearchTimer=null;
+function showGlobalSearch(){
+ hideMainViews();document.getElementById('searchView').classList.remove('hidden');setActiveBottomNav('');setTimeout(()=>document.getElementById('globalSearchInput')?.focus(),150);window.scrollTo({top:0,behavior:'smooth'});
+}
+function debouncedGlobalSearch(){clearTimeout(globalSearchTimer);globalSearchTimer=setTimeout(runGlobalSearch,300)}
+async function runGlobalSearch(){
+ const q=(document.getElementById('globalSearchInput').value||'').trim(), box=document.getElementById('globalSearchResults');
+ if(q.length<2){box.innerHTML='<div class="empty-feed">Digite pelo menos 2 letras para buscar.</div>';return}
+ box.innerHTML='<div class="loading">Buscando...</div>';
+ const pattern='%'+q.replace(/[%_]/g,'')+'%';
+ const [g,j,e]=await Promise.all([
+   supabaseClient.from('estudos_grupo').select('id,titulo,tema,descricao,referencia_biblica').eq('publicado',true).or(`titulo.ilike.${pattern},tema.ilike.${pattern},descricao.ilike.${pattern},referencia_biblica.ilike.${pattern}`).limit(20),
+   supabaseClient.from('estudos').select('id,titulo,descricao,referencia_biblica,semana').eq('publicado',true).or(`titulo.ilike.${pattern},descricao.ilike.${pattern},referencia_biblica.ilike.${pattern}`).limit(20),
+   supabaseClient.from('eventos').select('id,titulo,descricao,local,data_inicio').eq('publicado',true).or(`titulo.ilike.${pattern},descricao.ilike.${pattern},local.ilike.${pattern}`).limit(20)
+ ]);
+ const results=[];
+ (g.data||[]).forEach(x=>results.push({type:'📖 Estudo do Grupo',title:x.titulo,text:x.tema||x.descricao||x.referencia_biblica||'',open:`showGroupStudies();setTimeout(()=>openGroupStudy(${x.id}),300)`}));
+ (j.data||[]).forEach(x=>results.push({type:'🌱 Mantenha-se na Palavra',title:x.titulo,text:[x.referencia_biblica,x.descricao].filter(Boolean).join(' • '),open:`showStudies();setTimeout(()=>openStudy(${x.id}),300)`}));
+ (e.data||[]).forEach(x=>results.push({type:'📅 Agenda',title:x.titulo,text:[x.local,x.descricao].filter(Boolean).join(' • '),open:'showAgenda()'}));
+ if(!results.length){box.innerHTML='<div class="empty-feed">Nenhum resultado encontrado.</div>';return}
+ box.innerHTML=results.map(r=>`<article class="search-card" onclick="${r.open}"><div class="search-type">${r.type}</div><h3>${escapeHtml(r.title||'')}</h3><p>${escapeHtml((r.text||'').slice(0,220))}</p></article>`).join('');
+}
+
+async function showLeaderPanel(){
+ if(!isLeader()){alert('Área disponível apenas para líderes e administradores.');return}
+ hideMainViews();document.getElementById('leaderView').classList.remove('hidden');setActiveBottomNav('');await loadLeaderDashboard();window.scrollTo({top:0,behavior:'smooth'});
+}
+async function loadLeaderDashboard(){
+ const box=document.getElementById('leaderDashboard');box.innerHTML='<div class="loading">Carregando painel...</div>';
+ const now=new Date().toISOString();
+ try{
+   const {data:studies}=await supabaseClient.from('estudos_grupo').select('id,titulo,data_estudo,realizado').eq('publicado',true).order('data_estudo',{ascending:false}).limit(30);
+   const next=(studies||[]).filter(x=>x.data_estudo&&new Date(x.data_estudo)>=new Date()).sort((a,b)=>new Date(a.data_estudo)-new Date(b.data_estudo))[0];
+   const last=(studies||[]).filter(x=>x.realizado).sort((a,b)=>new Date(b.data_estudo||0)-new Date(a.data_estudo||0))[0];
+   let presence=0, learnings=0;
+   if(last){
+     const [p,l]=await Promise.all([
+       supabaseClient.from('presencas_estudos_grupo').select('id',{count:'exact',head:true}).eq('estudo_id',last.id),
+       supabaseClient.from('aprendizados_estudos').select('id',{count:'exact',head:true}).eq('estudo_id',last.id)
+     ]); presence=p.count||0;learnings=l.count||0;
+   }
+   const [ev,pr,al]=await Promise.all([
+     supabaseClient.from('eventos').select('id',{count:'exact',head:true}).eq('publicado',true).gte('data_inicio',now),
+     supabaseClient.from('pedidos_oracao').select('id',{count:'exact',head:true}).eq('status','ativo'),
+     supabaseClient.from('albuns').select('id',{count:'exact',head:true}).eq('ativo',true)
+   ]);
+   box.innerHTML=`<div class="leader-summary"><article class="leader-card leader-wide"><span>PRÓXIMO ENCONTRO</span><strong style="font-size:18px">${escapeHtml(next?.titulo||'Nenhum estudo agendado')}</strong><span>${next?.data_estudo?escapeHtml(formatGroupDate(next.data_estudo)):'Cadastre a próxima reunião em Estudos do Grupo.'}</span></article><article class="leader-card"><strong>${presence}</strong><span>participantes no último estudo</span></article><article class="leader-card"><strong>${learnings}</strong><span>reflexões no último estudo</span></article><article class="leader-card"><strong>${ev.count||0}</strong><span>eventos próximos</span></article><article class="leader-card"><strong>${pr.count||0}</strong><span>pedidos de oração ativos</span></article><article class="leader-card leader-wide"><span>ÚLTIMO ESTUDO REALIZADO</span><strong style="font-size:18px">${escapeHtml(last?.titulo||'Ainda não há estudo marcado como realizado')}</strong></article></div>`;
+ }catch(err){console.error(err);box.innerHTML='<div class="message error" style="display:block">Não foi possível carregar o painel agora.</div>'}
+}
+
 // ===== CENTRAL DE NOVIDADES =====
 function notificationIcon(tipo){
-  const map={estudo:'📖',evento:'📅',comentario:'💬',curtida:'❤️',memoria:'📸',missao:'🎯',convite:'🌱'};
+  const map={estudo:'📖',evento:'📅',comentario:'💬',comentario_aprendizado:'💭',curtida:'❤️',memoria:'📸',missao:'🎯',convite:'🌱'};
   return map[tipo] || '🔔';
 }
 function notificationTime(value){
