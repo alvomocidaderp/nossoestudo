@@ -1745,19 +1745,36 @@ async function loadSmartHome(){
   if(!currentProfile)return;
   setTimeout(loadHomeExtras,0);
   try{
-    const now=new Date().toISOString();
+    const now=new Date();
     const {data:s}=await supabaseClient.from('estudos_grupo')
-      .select('id,titulo,tema,data_estudo,referencia_biblica')
-      .eq('publicado',true).gte('data_estudo',now).order('data_estudo',{ascending:true}).limit(1);
+      .select('id,titulo,tema,data_estudo,referencia_biblica,realizado,created_at')
+      .eq('publicado',true).order('created_at',{ascending:false}).limit(100);
     const box=document.getElementById('smartNextStudy');
     if(box){
-      const x=s?.[0];
+      const all=s||[];
+      const future=all.filter(x=>!x.realizado&&x.data_estudo&&new Date(x.data_estudo)>=now)
+        .sort((a,b)=>new Date(a.data_estudo)-new Date(b.data_estudo))[0];
+      const available=all.find(x=>!x.realizado);
+      const last=all[0];
+      const x=future||available||last;
+      const mode=future?'next':(available?'available':(last?'last':'none'));
+      const label=box.querySelector('small');
       const strong=box.querySelector('strong'), p=box.querySelector('p');
+      if(label)label.textContent=mode==='next'?'PRÓXIMO ESTUDO DO GRUPO':mode==='available'?'ESTUDO DISPONÍVEL':mode==='last'?'ÚLTIMO ESTUDO DO GRUPO':'ESTUDOS DO GRUPO';
       if(x){
         strong.textContent=x.titulo;
-        const d=new Date(x.data_estudo);
-        p.textContent=`${d.toLocaleDateString('pt-BR',{weekday:'short',day:'2-digit',month:'short'})} • ${d.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'})}${x.referencia_biblica?' • '+x.referencia_biblica:''}`;
-      }else{strong.textContent='Nenhum estudo agendado';p.textContent='Quando o líder publicar o próximo estudo, ele aparecerá aqui.'}
+        if(mode==='next'){
+          const d=new Date(x.data_estudo);
+          p.textContent=`${d.toLocaleDateString('pt-BR',{weekday:'short',day:'2-digit',month:'short'})} • ${d.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'})}${x.referencia_biblica?' • '+x.referencia_biblica:''}`;
+        }else if(mode==='available'){
+          p.textContent=`Já disponível para o grupo${x.referencia_biblica?' • '+x.referencia_biblica:''}.`;
+        }else{
+          p.textContent=`Veja novamente o último estudo publicado${x.referencia_biblica?' • '+x.referencia_biblica:''}.`;
+        }
+      }else{
+        strong.textContent='Nenhum estudo publicado';
+        p.textContent='Quando o líder publicar um estudo, ele aparecerá aqui.';
+      }
     }
   }catch(e){}
   try{
