@@ -176,7 +176,7 @@ html{scroll-behavior:smooth}body{font-family:Inter,system-ui,-apple-system,Blink
 </main>
 </section>
 
-<div id="loginModal" class="modal-wrap hidden" onclick="modalBackdrop(event)"><div class="modal"><button class="modal-close" onclick="closeLogin()">×</button><div class="modal-brand"><img src="logo.png" alt="Alvo da Mocidade"><h2>Área de membros</h2><p id="loginSubtitle">Entre para continuar no Nosso Estudo.</p></div><form id="loginForm"><div class="field"><label>E-mail</label><input id="loginEmail" type="email" placeholder="seu@email.com" required></div><div class="field"><label>Senha</label><input id="loginPassword" type="password" placeholder="Sua senha" required></div><button class="btn btn-primary wide" id="loginButton" type="submit">Entrar</button></form><div id="authMessage" class="message"></div><div class="login-help">Ainda não tem acesso? <button type="button" onclick="goWhatsApp()">Fale com o líder Valmir</button></div></div></div>
+<div id="loginModal" class="modal-wrap hidden" onclick="modalBackdrop(event)"><div class="modal"><button class="modal-close" onclick="closeLogin()">×</button><div class="modal-brand"><img src="logo.png" alt="Alvo da Mocidade"><h2>Área de membros</h2><p id="loginSubtitle">Entre para continuar no Nosso Estudo.</p></div><form id="loginForm"><div class="field"><label>E-mail</label><input id="loginEmail" type="email" placeholder="seu@email.com" required></div><div class="field"><label>Senha</label><input id="loginPassword" type="password" placeholder="Sua senha" required></div><button class="btn btn-primary wide" id="loginButton" type="submit">Entrar</button></form><div id="authMessage" class="message"></div><div class="login-help"><button type="button" onclick="openForgotPassword()">Esqueci minha senha</button><br><br>Ainda não tem acesso? <button type="button" onclick="goWhatsApp()">Fale com o líder Valmir</button></div></div></div>
 
 <main id="app" class="hidden">
 <header class="topbar"><div class="topbar-inner"><div class="user-row"><div class="app-brand"><img src="logo.png" alt="Alvo"><div class="hello"><small>Bem-vindo ao Nosso Estudo</small><h2 id="welcomeName">Olá 👋</h2></div></div><div class="top-actions"><button id="notificationBtn" class="notification-btn" onclick="showNotifications()" aria-label="Novidades">🔔<span id="notificationBadge" class="notification-badge hidden">0</span></button><div class="avatar" id="avatar">N</div></div></div></div></header>
@@ -297,7 +297,7 @@ html{scroll-behavior:smooth}body{font-family:Inter,system-ui,-apple-system,Blink
 </section>
 
 <section id="memberManagementView" class="member-admin-view hidden">
-<div class="member-admin-head"><div><h2>👥 Gerenciar membros</h2><p style="color:var(--cinza);font-size:13px;margin-top:3px">Contas, cargos e participação no sorteio.</p></div><button class="back-btn" onclick="showHome()">×</button></div>
+<div class="member-admin-head"><div><h2>👥 Gerenciar membros</h2><p style="color:var(--cinza);font-size:13px;margin-top:3px">Contas, cargos, senhas e participação no sorteio.</p></div><button class="back-btn" onclick="showHome()">×</button></div>
 <div class="member-admin-tools"><input id="memberSearch" class="member-search" placeholder="🔎 Buscar por nome, apelido ou e-mail..." oninput="filterManagedMembers()"><div style="margin-top:10px"><button class="btn btn-primary" onclick="openMemberAdmin()">+ Novo membro</button></div></div>
 <div id="managedMembersList" class="manage-members-list"><div class="loading">Carregando membros...</div></div>
 </section>
@@ -338,6 +338,7 @@ html{scroll-behavior:smooth}body{font-family:Inter,system-ui,-apple-system,Blink
     <div class="profile-actions">
       <button id="saveProfileBtn" class="btn btn-primary" onclick="saveProfile()">Salvar alterações</button>
       <button id="removePhotoBtn" class="btn btn-soft hidden" onclick="removeProfilePhoto()">Remover foto</button>
+      <button class="btn btn-soft" onclick="openChangePassword(false)">🔐 Alterar minha senha</button>
     </div>
     <div id="profileMessage" class="message"></div>
     <p class="profile-status">Sua foto, nome e apelido serão usados para identificar você nas publicações, comentários e outras interações do grupo.</p>
@@ -427,11 +428,20 @@ html{scroll-behavior:smooth}body{font-family:Inter,system-ui,-apple-system,Blink
 
 <div id="memberModal" class="modal-wrap hidden"><div class="modal admin-modal"><button class="modal-close" onclick="closeMemberAdmin()">×</button><div class="admin-title"><h2>Novo membro</h2><p>Somente administradores podem criar novos acessos.</p></div><form id="memberForm"><div class="field"><label>Nome</label><input id="memberName" required placeholder="Nome completo"></div><div class="field"><label>E-mail</label><input id="memberEmail" type="email" required placeholder="email@exemplo.com"></div><div class="field"><label>Senha provisória</label><input id="memberPassword" type="password" minlength="6" required placeholder="Mínimo 6 caracteres"></div><div class="field"><label>Cargo</label><select id="memberRole"><option value="membro">Membro</option><option value="lider">Líder</option><option value="admin">Administrador</option></select></div><button id="memberSubmit" class="btn btn-primary wide" type="submit">Criar membro</button></form><div id="memberMessage" class="message"></div><p class="note">A senha é provisória. Depois podemos adicionar recuperação/troca de senha pelo próprio site.</p></div></div>
 
+
+<div id="forgotPasswordModal" class="modal-wrap hidden"><div class="modal"><button class="modal-close" onclick="closeForgotPassword()">×</button><div class="admin-title"><h2>Recuperar senha</h2><p>Informe o e-mail cadastrado. Você receberá um link para criar uma nova senha.</p></div><form id="forgotPasswordForm"><div class="field"><label>E-mail</label><input id="forgotPasswordEmail" type="email" required placeholder="seu@email.com"></div><button id="forgotPasswordBtn" class="btn btn-primary wide" type="submit">Enviar link de recuperação</button></form><div id="forgotPasswordMessage" class="message"></div></div></div>
+
+<div id="changePasswordModal" class="modal-wrap hidden"><div class="modal"><button id="changePasswordClose" class="modal-close" onclick="closeChangePassword()">×</button><div class="admin-title"><h2 id="changePasswordTitle">Alterar minha senha</h2><p id="changePasswordText">Crie uma nova senha para sua conta.</p></div><form id="changePasswordForm"><div class="field"><label>Nova senha</label><input id="newOwnPassword" type="password" minlength="6" required placeholder="Mínimo de 6 caracteres"></div><div class="field"><label>Confirmar nova senha</label><input id="confirmOwnPassword" type="password" minlength="6" required placeholder="Digite novamente"></div><button id="changePasswordBtn" class="btn btn-primary wide" type="submit">Salvar nova senha</button></form><div id="changePasswordMessage" class="message"></div></div></div>
+
+<div id="resetMemberPasswordModal" class="modal-wrap hidden"><div class="modal"><button class="modal-close" onclick="closeResetMemberPassword()">×</button><div class="admin-title"><h2>🔑 Redefinir senha</h2><p id="resetMemberPasswordName">Crie uma senha temporária para o membro.</p></div><form id="resetMemberPasswordForm"><input id="resetMemberPasswordId" type="hidden"><div class="field"><label>Senha temporária</label><input id="resetMemberPasswordValue" type="password" minlength="6" required placeholder="Mínimo de 6 caracteres"></div><div class="field"><label>Confirmar senha temporária</label><input id="resetMemberPasswordConfirm" type="password" minlength="6" required placeholder="Digite novamente"></div><button id="resetMemberPasswordBtn" class="btn btn-primary wide" type="submit">Definir senha temporária</button></form><div id="resetMemberPasswordMessage" class="message"></div><p class="note">No próximo acesso, o usuário será obrigado a criar uma senha pessoal.</p></div></div>
+
 <script>
 const SUPABASE_URL="https://bawfjkrpliuhntzkgbad.supabase.co";
 const SUPABASE_KEY="sb_publishable_pUaKLDa3SLmLVN4f5E2JVw_wcJtzTSU";
 const supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 let currentProfile=null;
+let passwordRecoveryMode=false;
+let forcePasswordChange=false;
 const publicSite=document.getElementById('publicSite'),app=document.getElementById('app'),loginModal=document.getElementById('loginModal'),authMessage=document.getElementById('authMessage');
 function openLogin(context=''){document.getElementById('loginSubtitle').textContent=context?`${context} é uma área exclusiva para membros. Entre para continuar.`:'Entre para continuar no Nosso Estudo.';authMessage.className='message';authMessage.textContent='';loginModal.classList.remove('hidden');}
 function closeLogin(){loginModal.classList.add('hidden')}
@@ -473,10 +483,14 @@ async function loadApp(user){
  document.getElementById('manageMissionsBtn')?.classList.toggle('hidden',!(perfil.tipo==='admin'||perfil.tipo==='lider'));
  await renderProfilePhoto();
   await loadWeeklyChallenge();
+  if(perfil.senha_temporaria===true){
+    forcePasswordChange=true;
+    setTimeout(()=>openChangePassword(true),150);
+  }
 }
 
 function showHome(){setActiveBottomNav('home');setTimeout(loadSmartHome,0);setTimeout(refreshNotificationBadge,0);
- if(currentProfile?.tipo==='admin')document.getElementById('manageMembersBtn')?.classList.remove('hidden');
+ document.getElementById('manageMembersBtn')?.classList.toggle('hidden',!(currentProfile?.tipo==='admin'||currentProfile?.tipo==='lider'));
  document.getElementById('profileView').classList.add('hidden');
  document.getElementById('communityView').classList.add('hidden');
  document.getElementById('studiesView').classList.add('hidden');
@@ -1488,7 +1502,7 @@ checkSession();
 
 let managedMembers=[];
 async function showMemberManagement(){
- if(currentProfile?.tipo!=='admin'){alert('Somente administradores podem gerenciar membros.');return}
+ if(!['admin','lider'].includes(currentProfile?.tipo)){alert('Somente líderes e administradores podem gerenciar membros.');return}
  document.querySelectorAll('#homeView,#studiesView,#studyDetailView,#communityView,#agendaView,#memoriesView,#albumView,#furnasView,#profileView,#memberManagementView,#missionsView,#groupStudiesView,#groupStudyDetailView').forEach(el=>el?.classList.add('hidden'));
  document.getElementById('memberManagementView').classList.remove('hidden');
  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
@@ -1497,7 +1511,7 @@ async function showMemberManagement(){
 }
 async function loadManagedMembers(){
  const box=document.getElementById('managedMembersList'); box.innerHTML='<div class="loading">Carregando membros...</div>';
- const {data,error}=await supabaseClient.from('perfis').select('id,nome,apelido,email,telefone,foto_url,tipo,ativo,participa_sorteio,created_at').order('nome');
+ const {data,error}=await supabaseClient.from('perfis').select('id,nome,apelido,email,telefone,foto_url,tipo,ativo,participa_sorteio,senha_temporaria,created_at').order('nome');
  if(error){box.innerHTML=`<div class="message error" style="display:block">${escapeHtml(error.message)}</div>`;return}
  managedMembers=data||[];
  await renderManagedMembers(managedMembers);
@@ -1508,7 +1522,11 @@ async function renderManagedMembers(list){
  const rows=await Promise.all(list.map(async m=>{
    let photo=''; if(m.foto_url){try{const {data}=await supabaseClient.storage.from('perfis').createSignedUrl(m.foto_url,3600);photo=data?.signedUrl||''}catch(e){}}
    const initials=(m.apelido||m.nome||'M').trim().charAt(0).toUpperCase();
-   return `<div class="manage-member-card"><div class="manage-member-top">${photo?`<img class="user-pic" src="${photo}" alt="">`:`<div class="user-pic">${escapeHtml(initials)}</div>`}<div class="manage-member-info"><strong>${escapeHtml(m.nome||'Membro')}${m.id===currentProfile.id?' (você)':''}</strong>${m.apelido?`<span>@${escapeHtml(m.apelido)}</span>`:''}<span>${escapeHtml(m.email||'')}</span></div></div><div class="member-badges"><span class="member-badge">${m.tipo==='admin'?'Administrador':m.tipo==='lider'?'Líder':'Membro'}</span><span class="member-badge ${m.ativo?'':'off'}">${m.ativo?'Conta ativa':'Conta desativada'}</span><span class="member-badge ${m.participa_sorteio?'':'off'}">${m.participa_sorteio?'🎯 Participa do sorteio':'Fora do sorteio'}</span></div><div class="member-manage-actions"><button class="btn btn-soft" onclick="openEditMember('${m.id}')">✏️ Editar</button></div></div>`;
+   const isSelf=m.id===currentProfile.id;
+   const canEdit=currentProfile?.tipo==='admin';
+   const canReset=!isSelf && (currentProfile?.tipo==='admin' || (currentProfile?.tipo==='lider' && m.tipo!=='admin'));
+   const canDelete=!isSelf && ((currentProfile?.tipo==='admin' && m.tipo!=='admin') || (currentProfile?.tipo==='lider' && m.tipo==='membro'));
+   return `<div class="manage-member-card"><div class="manage-member-top">${photo?`<img class="user-pic" src="${photo}" alt="">`:`<div class="user-pic">${escapeHtml(initials)}</div>`}<div class="manage-member-info"><strong>${escapeHtml(m.nome||'Membro')}${isSelf?' (você)':''}</strong>${m.apelido?`<span>@${escapeHtml(m.apelido)}</span>`:''}<span>${escapeHtml(m.email||'')}</span></div></div><div class="member-badges"><span class="member-badge">${m.tipo==='admin'?'Administrador':m.tipo==='lider'?'Líder':'Membro'}</span><span class="member-badge ${m.ativo?'':'off'}">${m.ativo?'Conta ativa':'Conta desativada'}</span><span class="member-badge ${m.participa_sorteio?'':'off'}">${m.participa_sorteio?'🎯 Participa do sorteio':'Fora do sorteio'}</span>${m.senha_temporaria?'<span class="member-badge off">🔑 Senha temporária</span>':''}</div><div class="member-manage-actions">${canEdit?`<button class="btn btn-soft" onclick="openEditMember('${m.id}')">✏️ Editar</button>`:''}${canReset?`<button class="btn btn-soft" onclick="openResetMemberPassword('${m.id}')">🔑 Redefinir senha</button>`:''}${canDelete?`<button class="btn" style="background:#ffeaea;color:#8d2020" onclick="deleteManagedMember('${m.id}')">🗑️ Excluir conta</button>`:''}</div></div>`;
  }));
  box.innerHTML=rows.join('');
 }
@@ -1539,6 +1557,131 @@ document.getElementById('editMemberForm').addEventListener('submit',async e=>{
  if(id===currentProfile.id) Object.assign(currentProfile,payload);
  await loadManagedMembers(); setTimeout(closeEditMember,500);
 });
+
+
+// ===== SENHAS / RECUPERAÇÃO / EXCLUSÃO DE CONTA =====
+async function callDynamicApi(payload){
+ const {data:{session}}=await supabaseClient.auth.getSession();
+ if(!session)throw new Error('Sua sessão expirou. Entre novamente.');
+ const response=await fetch(SUPABASE_URL+'/functions/v1/dynamic-api',{
+   method:'POST',
+   headers:{'Content-Type':'application/json','Authorization':'Bearer '+session.access_token,'apikey':SUPABASE_KEY},
+   body:JSON.stringify(payload)
+ });
+ let result={};
+ try{result=await response.json()}catch(e){}
+ if(!response.ok)throw new Error(result.error||'Não foi possível concluir a operação.');
+ return result;
+}
+
+function openForgotPassword(){
+ closeLogin();
+ document.getElementById('forgotPasswordForm').reset();
+ const msg=document.getElementById('forgotPasswordMessage');msg.className='message';msg.textContent='';
+ document.getElementById('forgotPasswordModal').classList.remove('hidden');
+}
+function closeForgotPassword(){document.getElementById('forgotPasswordModal').classList.add('hidden')}
+document.getElementById('forgotPasswordForm').addEventListener('submit',async e=>{
+ e.preventDefault();
+ const btn=document.getElementById('forgotPasswordBtn'),msg=document.getElementById('forgotPasswordMessage');
+ btn.disabled=true;btn.textContent='Enviando...';msg.className='message';msg.textContent='';
+ try{
+   const email=document.getElementById('forgotPasswordEmail').value.trim();
+   const {error}=await supabaseClient.auth.resetPasswordForEmail(email,{redirectTo:'https://alvomocidaderp.github.io/nossoestudo/'});
+   if(error)throw error;
+   showMessage(msg,'Se este e-mail estiver cadastrado, enviaremos um link para criar uma nova senha.','success');
+ }catch(err){showMessage(msg,err.message||'Não foi possível enviar o link agora.','error')}
+ finally{btn.disabled=false;btn.textContent='Enviar link de recuperação'}
+});
+
+function openChangePassword(forced=false){
+ forcePasswordChange=forced||forcePasswordChange;
+ const modal=document.getElementById('changePasswordModal');
+ const close=document.getElementById('changePasswordClose');
+ document.getElementById('changePasswordTitle').textContent=forcePasswordChange?'Crie sua senha pessoal':'Alterar minha senha';
+ document.getElementById('changePasswordText').textContent=forcePasswordChange?'Você entrou com uma senha temporária. Para continuar, crie agora uma senha pessoal.':'Crie uma nova senha para sua conta.';
+ close.classList.toggle('hidden',forcePasswordChange);
+ document.getElementById('changePasswordForm').reset();
+ const msg=document.getElementById('changePasswordMessage');msg.className='message';msg.textContent='';
+ modal.classList.remove('hidden');
+}
+function closeChangePassword(){
+ if(forcePasswordChange)return;
+ document.getElementById('changePasswordModal').classList.add('hidden');
+}
+document.getElementById('changePasswordForm').addEventListener('submit',async e=>{
+ e.preventDefault();
+ const btn=document.getElementById('changePasswordBtn'),msg=document.getElementById('changePasswordMessage');
+ const p1=document.getElementById('newOwnPassword').value,p2=document.getElementById('confirmOwnPassword').value;
+ if(p1.length<6){showMessage(msg,'A nova senha precisa ter pelo menos 6 caracteres.','error');return}
+ if(p1!==p2){showMessage(msg,'As duas senhas não são iguais.','error');return}
+ btn.disabled=true;btn.textContent='Salvando...';
+ try{
+   const {error}=await supabaseClient.auth.updateUser({password:p1});
+   if(error)throw error;
+   const {data:{user}}=await supabaseClient.auth.getUser();
+   if(user){
+     const {error:flagError}=await supabaseClient.from('perfis').update({senha_temporaria:false}).eq('id',user.id);
+     if(flagError)throw flagError;
+   }
+   if(currentProfile)currentProfile.senha_temporaria=false;
+   forcePasswordChange=false;passwordRecoveryMode=false;
+   document.getElementById('changePasswordClose').classList.remove('hidden');
+   showMessage(msg,'Senha alterada com sucesso!','success');
+   setTimeout(()=>{document.getElementById('changePasswordModal').classList.add('hidden');if(currentProfile)showHome();},700);
+ }catch(err){showMessage(msg,err.message||'Não foi possível alterar sua senha.','error')}
+ finally{btn.disabled=false;btn.textContent='Salvar nova senha'}
+});
+
+function openResetMemberPassword(id){
+ if(!['admin','lider'].includes(currentProfile?.tipo))return;
+ const m=managedMembers.find(x=>x.id===id);if(!m)return;
+ document.getElementById('resetMemberPasswordId').value=id;
+ document.getElementById('resetMemberPasswordName').textContent='Crie uma senha temporária para '+(m.nome||'este membro')+'.';
+ document.getElementById('resetMemberPasswordForm').reset();
+ const msg=document.getElementById('resetMemberPasswordMessage');msg.className='message';msg.textContent='';
+ document.getElementById('resetMemberPasswordModal').classList.remove('hidden');
+}
+function closeResetMemberPassword(){document.getElementById('resetMemberPasswordModal').classList.add('hidden')}
+document.getElementById('resetMemberPasswordForm').addEventListener('submit',async e=>{
+ e.preventDefault();
+ const id=document.getElementById('resetMemberPasswordId').value;
+ const p1=document.getElementById('resetMemberPasswordValue').value,p2=document.getElementById('resetMemberPasswordConfirm').value;
+ const btn=document.getElementById('resetMemberPasswordBtn'),msg=document.getElementById('resetMemberPasswordMessage');
+ if(p1.length<6){showMessage(msg,'A senha temporária precisa ter pelo menos 6 caracteres.','error');return}
+ if(p1!==p2){showMessage(msg,'As duas senhas não são iguais.','error');return}
+ btn.disabled=true;btn.textContent='Salvando...';
+ try{
+   await callDynamicApi({acao:'redefinir_senha',usuario_id:id,nova_senha:p1});
+   showMessage(msg,'Senha temporária criada. No próximo acesso, o membro deverá criar uma senha pessoal.','success');
+   await loadManagedMembers();
+   setTimeout(closeResetMemberPassword,900);
+ }catch(err){showMessage(msg,err.message||'Não foi possível redefinir a senha.','error')}
+ finally{btn.disabled=false;btn.textContent='Definir senha temporária'}
+});
+
+async function deleteManagedMember(id){
+ if(!['admin','lider'].includes(currentProfile?.tipo))return;
+ const m=managedMembers.find(x=>x.id===id);if(!m)return;
+ if(!confirm(`Excluir a conta de ${m.nome||'este membro'}?\n\nEsta ação não poderá ser desfeita.`))return;
+ const typed=prompt(`Para confirmar, digite EXCLUIR:`);
+ if(typed!=='EXCLUIR'){if(typed!==null)alert('Exclusão cancelada: confirmação incorreta.');return}
+ try{
+   await callDynamicApi({acao:'excluir_membro',usuario_id:id});
+   alert('Conta excluída com sucesso.');
+   await loadManagedMembers();
+ }catch(err){alert(err.message||'Não foi possível excluir a conta.')}
+}
+
+supabaseClient.auth.onAuthStateChange((event,session)=>{
+ if(event==='PASSWORD_RECOVERY'){
+   passwordRecoveryMode=true;
+   forcePasswordChange=false;
+   closeForgotPassword();
+   setTimeout(()=>openChangePassword(false),100);
+ }
+});
+
 
 // ===== HOME INTELIGENTE + ESTADO DA BARRA INFERIOR =====
 function setActiveBottomNav(name){
