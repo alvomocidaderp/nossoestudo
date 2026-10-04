@@ -1891,24 +1891,33 @@ async function loadLeaderDashboard(){
    const {data:studies}=await supabaseClient.from('estudos_grupo').select('id,titulo,data_estudo,realizado,created_at').eq('publicado',true).order('created_at',{ascending:false}).limit(100);
    const next=(studies||[]).filter(x=>x.data_estudo&&new Date(x.data_estudo)>=new Date()).sort((a,b)=>new Date(a.data_estudo)-new Date(b.data_estudo))[0];
    const realized=(studies||[]).filter(x=>x.realizado);
-   const last=realized.sort((a,b)=>{
+   const lastRealized=realized.sort((a,b)=>{
      const da=new Date(a.data_estudo||a.created_at||0).getTime();
      const db=new Date(b.data_estudo||b.created_at||0).getTime();
      return db-da;
    })[0];
-   let presence=0, learnings=0;
-   if(last){
+
+   // Para as estatísticas, prioriza o último estudo realizado.
+   // Se ainda não houver realizado, usa o estudo mais recente que já tenha
+   // presença ou reflexão, para o painel atualizar durante os testes/encontro.
+   let statsStudy=lastRealized||null, presence=0, learnings=0;
+   const candidates=lastRealized?[lastRealized]:(studies||[]);
+   for(const candidate of candidates){
      const [p,l]=await Promise.all([
-       supabaseClient.from('presencas_estudos_grupo').select('id',{count:'exact',head:true}).eq('estudo_id',last.id),
-       supabaseClient.from('aprendizados_estudos').select('id',{count:'exact',head:true}).eq('estudo_id',last.id)
-     ]); presence=p.count||0;learnings=l.count||0;
+       supabaseClient.from('presencas_estudos_grupo').select('id',{count:'exact',head:true}).eq('estudo_id',candidate.id),
+       supabaseClient.from('aprendizados_estudos').select('id',{count:'exact',head:true}).eq('estudo_id',candidate.id)
+     ]);
+     const pc=p.count||0, lc=l.count||0;
+     if(lastRealized || pc>0 || lc>0){
+       statsStudy=candidate; presence=pc; learnings=lc; break;
+     }
    }
    const [ev,pr,al]=await Promise.all([
      supabaseClient.from('eventos').select('id',{count:'exact',head:true}).eq('publicado',true).gte('data_inicio',now),
      supabaseClient.from('pedidos_oracao').select('id',{count:'exact',head:true}).eq('status','ativo'),
      supabaseClient.from('albuns').select('id',{count:'exact',head:true}).eq('ativo',true)
    ]);
-   box.innerHTML=`<div class="leader-summary"><article class="leader-card leader-wide"><span>PRÓXIMO ENCONTRO</span><strong style="font-size:18px">${escapeHtml(next?.titulo||'Nenhum estudo agendado')}</strong><span>${next?.data_estudo?escapeHtml(formatGroupDate(next.data_estudo)):'Cadastre a próxima reunião em Estudos do Grupo.'}</span></article><article class="leader-card"><strong>${presence}</strong><span>participantes no último estudo</span></article><article class="leader-card"><strong>${learnings}</strong><span>reflexões no último estudo</span></article><article class="leader-card"><strong>${ev.count||0}</strong><span>eventos próximos</span></article><article class="leader-card"><strong>${pr.count||0}</strong><span>pedidos de oração ativos</span></article><article class="leader-card leader-wide"><span>ÚLTIMO ESTUDO REALIZADO</span><strong style="font-size:18px">${escapeHtml(last?.titulo||'Ainda não há estudo marcado como realizado')}</strong></article></div>`;
+   box.innerHTML=`<div class="leader-summary"><article class="leader-card leader-wide"><span>PRÓXIMO ENCONTRO</span><strong style="font-size:18px">${escapeHtml(next?.titulo||'Nenhum estudo agendado')}</strong><span>${next?.data_estudo?escapeHtml(formatGroupDate(next.data_estudo)):'Cadastre a próxima reunião em Estudos do Grupo.'}</span></article><article class="leader-card"><strong>${presence}</strong><span>participantes no último estudo</span></article><article class="leader-card"><strong>${learnings}</strong><span>reflexões no último estudo</span></article><article class="leader-card"><strong>${ev.count||0}</strong><span>eventos próximos</span></article><article class="leader-card"><strong>${pr.count||0}</strong><span>pedidos de oração ativos</span></article><article class="leader-card leader-wide"><span>${lastRealized?'ÚLTIMO ESTUDO REALIZADO':'ESTUDO COM ATIVIDADE RECENTE'}</span><strong style="font-size:18px">${escapeHtml(statsStudy?.titulo||'Ainda não há participação ou reflexão registrada')}</strong></article></div>`;
  }catch(err){console.error(err);box.innerHTML='<div class="message error" style="display:block">Não foi possível carregar o painel agora.</div>'}
 }
 
