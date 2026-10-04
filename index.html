@@ -139,6 +139,22 @@ html{scroll-behavior:smooth}body{font-family:Inter,system-ui,-apple-system,Blink
 .nav-btn.active{color:var(--azul)}
 @media(max-width:390px){.home-smart-grid{grid-template-columns:1fr}.home-smart-wide{grid-column:auto}}
 
+
+/* ===== CENTRAL DE NOVIDADES ===== */
+.top-actions{display:flex;align-items:center;gap:9px}
+.notification-btn{position:relative;width:48px;height:48px;border:1px solid rgba(255,255,255,.25);border-radius:16px;background:rgba(255,255,255,.16);color:white;font-size:21px;display:flex;align-items:center;justify-content:center}
+.notification-badge{position:absolute;right:-4px;top:-5px;min-width:19px;height:19px;padding:0 5px;border-radius:999px;background:#e54848;color:white;border:2px solid var(--azul);font-size:10px;font-weight:950;display:flex;align-items:center;justify-content:center}
+.notifications-view{width:min(100%,900px);margin:auto;padding:20px}
+.notifications-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}
+.notifications-head h2{font-size:24px}.notifications-head p{color:var(--cinza);font-size:13px;margin-top:3px}
+.notifications-toolbar{display:flex;justify-content:flex-end;margin-bottom:12px}
+.notification-list{display:grid;gap:10px}
+.notification-card{background:white;border:1px solid var(--borda);border-radius:19px;padding:15px;box-shadow:var(--sombra);display:flex;gap:12px;align-items:flex-start}
+.notification-card.unread{border-left:4px solid var(--azul);background:#fafdff}
+.notification-icon{width:42px;height:42px;border-radius:14px;background:var(--claro);display:flex;align-items:center;justify-content:center;font-size:20px;flex:none}
+.notification-info{min-width:0;flex:1}.notification-info strong{display:block;font-size:14px}.notification-info p{font-size:12px;color:var(--cinza);line-height:1.45;margin-top:4px}.notification-time{font-size:10px;color:#94a0aa;margin-top:7px;display:block}
+.notification-open{border:0;background:transparent;color:var(--azul);font-weight:900;font-size:11px;margin-top:8px;padding:0}
+
 </style>
 </head>
 <body>
@@ -163,7 +179,7 @@ html{scroll-behavior:smooth}body{font-family:Inter,system-ui,-apple-system,Blink
 <div id="loginModal" class="modal-wrap hidden" onclick="modalBackdrop(event)"><div class="modal"><button class="modal-close" onclick="closeLogin()">×</button><div class="modal-brand"><img src="logo.png" alt="Alvo da Mocidade"><h2>Área de membros</h2><p id="loginSubtitle">Entre para continuar no Nosso Estudo.</p></div><form id="loginForm"><div class="field"><label>E-mail</label><input id="loginEmail" type="email" placeholder="seu@email.com" required></div><div class="field"><label>Senha</label><input id="loginPassword" type="password" placeholder="Sua senha" required></div><button class="btn btn-primary wide" id="loginButton" type="submit">Entrar</button></form><div id="authMessage" class="message"></div><div class="login-help">Ainda não tem acesso? <button type="button" onclick="goWhatsApp()">Fale com o líder Valmir</button></div></div></div>
 
 <main id="app" class="hidden">
-<header class="topbar"><div class="topbar-inner"><div class="user-row"><div class="app-brand"><img src="logo.png" alt="Alvo"><div class="hello"><small>Bem-vindo ao Nosso Estudo</small><h2 id="welcomeName">Olá 👋</h2></div></div><div class="avatar" id="avatar">N</div></div></div></header>
+<header class="topbar"><div class="topbar-inner"><div class="user-row"><div class="app-brand"><img src="logo.png" alt="Alvo"><div class="hello"><small>Bem-vindo ao Nosso Estudo</small><h2 id="welcomeName">Olá 👋</h2></div></div><div class="top-actions"><button id="notificationBtn" class="notification-btn" onclick="showNotifications()" aria-label="Novidades">🔔<span id="notificationBadge" class="notification-badge hidden">0</span></button><div class="avatar" id="avatar">N</div></div></div></div></header>
 <div id="homeView" class="content">
 <section class="verse"><div class="eyebrow-blue">Palavra para hoje</div><blockquote>“Lâmpada para os meus pés é a tua palavra e luz para o meu caminho.”</blockquote><span>Salmos 119:105</span></section>
 <div class="section-head"><h2>Desafio da semana</h2></div><section class="challenge"><small>🎯 RESPONSÁVEL DA SEMANA</small><div id="weeklyChallengeContent"><h3 id="weeklyPerson">Em breve teremos o primeiro sorteio</h3><p id="weeklyMission">Toda semana alguém do grupo terá uma missão especial para compartilhar com todos.</p></div><div id="weeklyAdminActions" class="challenge-admin-actions hidden"><button class="btn btn-white" onclick="openWeeklyDraw()">🎲 Sortear responsável</button><button class="btn btn-glass" onclick="openWeeklyHistory()">📜 Histórico</button></div></section>
@@ -290,6 +306,16 @@ html{scroll-behavior:smooth}body{font-family:Inter,system-ui,-apple-system,Blink
  <div class="missions-head"><div><h2>🎯 Missões</h2><p>Biblioteca de missões usadas no responsável da semana.</p></div><button class="back-btn" onclick="showHome()">×</button></div>
  <div class="missions-toolbar"><div><strong>Administrar missões</strong><p style="font-size:12px;color:var(--cinza);margin-top:3px">Crie, edite e escolha quais missões podem entrar nos sorteios.</p></div><button class="btn btn-primary" onclick="openMissionAdmin()">+ Nova missão</button></div>
  <div id="missionsAdminList" class="missions-list"><div class="loading">Carregando missões...</div></div>
+</section>
+
+
+<section id="notificationsView" class="notifications-view hidden">
+  <div class="notifications-head">
+    <div><h2>🔔 Novidades</h2><p>O que aconteceu no Nosso Estudo.</p></div>
+    <button class="back-btn" onclick="showHome()">×</button>
+  </div>
+  <div class="notifications-toolbar"><button class="btn btn-soft" onclick="markAllNotificationsRead()">✓ Marcar tudo como lido</button></div>
+  <div id="notificationsList" class="notification-list"><div class="loading">Carregando novidades...</div></div>
 </section>
 
 <section id="profileView" class="profile-view hidden">
@@ -449,7 +475,7 @@ async function loadApp(user){
   await loadWeeklyChallenge();
 }
 
-function showHome(){setActiveBottomNav('home');setTimeout(loadSmartHome,0);
+function showHome(){setActiveBottomNav('home');setTimeout(loadSmartHome,0);setTimeout(refreshNotificationBadge,0);
  if(currentProfile?.tipo==='admin')document.getElementById('manageMembersBtn')?.classList.remove('hidden');
  document.getElementById('profileView').classList.add('hidden');
  document.getElementById('communityView').classList.add('hidden');
@@ -608,7 +634,7 @@ let activeStudyRun=null;
 
 async function showStudies(){setActiveBottomNav('studies');setActiveBottomNav('studies');
  if(!currentProfile)return;
- ['homeView','profileView','communityView','studyDetailView','agendaView','memoriesView','albumView','furnasView','groupStudiesView','groupStudyDetailView'].forEach(id=>document.getElementById(id)?.classList.add('hidden'));
+ ['homeView','profileView','communityView','studyDetailView','agendaView','memoriesView','albumView','furnasView','groupStudiesView','groupStudyDetailView','notificationsView'].forEach(id=>document.getElementById(id)?.classList.add('hidden'));
  document.getElementById('studiesView').classList.remove('hidden');
  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
  document.getElementById('studiesNavBtn')?.classList.add('active');
@@ -1534,6 +1560,75 @@ async function loadSmartHome(){
       }else{strong.textContent='Nada marcado por enquanto';p.textContent='Os próximos eventos aparecerão aqui.'}
     }
   }catch(e){}
+}
+
+
+// ===== CENTRAL DE NOVIDADES =====
+function notificationIcon(tipo){
+  const map={estudo:'📖',evento:'📅',comentario:'💬',curtida:'❤️',memoria:'📸',missao:'🎯',convite:'🌱'};
+  return map[tipo] || '🔔';
+}
+function notificationTime(value){
+  if(!value)return '';
+  const d=new Date(value), diff=Date.now()-d.getTime(), min=Math.floor(diff/60000);
+  if(min<1)return 'agora';
+  if(min<60)return `há ${min} min`;
+  const h=Math.floor(min/60); if(h<24)return `há ${h} h`;
+  return d.toLocaleDateString('pt-BR',{day:'2-digit',month:'short'});
+}
+async function refreshNotificationBadge(){
+  if(!currentProfile?.id)return;
+  const {count,error}=await supabaseClient.from('notificacoes')
+    .select('id',{count:'exact',head:true})
+    .eq('usuario_id',currentProfile.id).eq('lida',false);
+  if(error)return;
+  const badge=document.getElementById('notificationBadge');
+  if(!badge)return;
+  if(count>0){badge.textContent=count>99?'99+':String(count);badge.classList.remove('hidden')}
+  else badge.classList.add('hidden');
+}
+async function showNotifications(){
+  ['homeView','studiesView','studyDetailView','groupStudiesView','groupStudyDetailView','communityView','agendaView','memoriesView','albumView','furnasView','memberManagementView','missionsView','profileView']
+    .forEach(id=>document.getElementById(id)?.classList.add('hidden'));
+  document.getElementById('notificationsView')?.classList.remove('hidden');
+  document.querySelectorAll('.bottom-nav .nav-btn').forEach(b=>b.classList.remove('active'));
+  await loadNotifications();
+}
+async function loadNotifications(){
+  const list=document.getElementById('notificationsList');
+  if(!list||!currentProfile?.id)return;
+  list.innerHTML='<div class="loading">Carregando novidades...</div>';
+  const {data,error}=await supabaseClient.from('notificacoes')
+    .select('*').eq('usuario_id',currentProfile.id)
+    .order('created_at',{ascending:false}).limit(60);
+  if(error){list.innerHTML='<div class="empty-feed">Não foi possível carregar as novidades.</div>';return}
+  if(!data?.length){list.innerHTML='<div class="empty-feed"><div class="big">🔔</div>Nenhuma novidade por enquanto.</div>';return}
+  list.innerHTML=data.map(n=>`
+    <article class="notification-card ${n.lida?'':'unread'}">
+      <div class="notification-icon">${notificationIcon(n.tipo)}</div>
+      <div class="notification-info">
+        <strong>${escapeHtml(n.titulo||'Novidade')}</strong>
+        ${n.mensagem?`<p>${escapeHtml(n.mensagem)}</p>`:''}
+        <span class="notification-time">${notificationTime(n.created_at)}</span>
+        ${n.referencia_tipo?`<button class="notification-open" onclick="openNotification(${n.id},'${String(n.referencia_tipo).replace(/'/g,"")} ',${n.referencia_id??'null'})">Abrir →</button>`:''}
+      </div>
+    </article>`).join('');
+}
+async function openNotification(id,tipo,refId){
+  await supabaseClient.from('notificacoes').update({lida:true}).eq('id',id).eq('usuario_id',currentProfile.id);
+  await refreshNotificationBadge();
+  tipo=(tipo||'').trim();
+  if(tipo==='estudo_grupo'){showGroupStudies(); if(refId)setTimeout(()=>openGroupStudy(refId),350);return}
+  if(tipo==='evento'){showAgenda();return}
+  if(tipo==='comunidade'){showCommunity();return}
+  if(tipo==='memorias'){showMemories();return}
+  if(tipo==='jornada'){showStudies();return}
+  showHome();
+}
+async function markAllNotificationsRead(){
+  if(!currentProfile?.id)return;
+  await supabaseClient.from('notificacoes').update({lida:true}).eq('usuario_id',currentProfile.id).eq('lida',false);
+  await refreshNotificationBadge(); await loadNotifications();
 }
 
 </script>
