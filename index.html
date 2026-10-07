@@ -189,38 +189,28 @@ html{scroll-behavior:smooth}body{font-family:Inter,system-ui,-apple-system,Blink
 .book-card{position:relative}.book-card-badge{position:absolute;top:9px;left:9px;background:rgba(3,31,57,.82);color:#fff;border-radius:999px;padding:6px 8px;font-size:9px;font-weight:900;z-index:2}.book-actions-mini{display:flex;gap:6px;margin-top:10px}.book-actions-mini button{border:0;background:#f3f6f9;border-radius:10px;padding:7px 8px;font-size:10px;font-weight:850;color:var(--azul);flex:1}.reader-social{margin-top:12px}.privacy-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:9px 0}.privacy-row select{border:1px solid var(--borda);border-radius:11px;padding:9px;background:white}.social-card{background:#f7f9fb;border:1px solid var(--borda);border-radius:15px;padding:12px;margin-top:9px}.social-card p{font-size:13px;line-height:1.5;white-space:pre-wrap}.social-meta{font-size:10px;color:var(--cinza);margin-bottom:6px}.social-actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.social-actions button{border:0;background:white;border-radius:9px;padding:7px 9px;font-size:10px;font-weight:850;color:var(--azul)}.social-comment{font-size:11px;background:white;border-radius:9px;padding:7px 8px;margin-top:6px}.social-comment-form{display:flex;gap:6px;margin-top:7px}.social-comment-form input{flex:1;min-width:0;border:1px solid var(--borda);border-radius:10px;padding:8px}.social-comment-form button{border:0;background:var(--azul);color:white;border-radius:10px;padding:0 10px;font-weight:900}.reader-tools{grid-template-columns:repeat(4,1fr)}@media(max-width:520px){.reader-tools{grid-template-columns:repeat(2,1fr)}}
 
 
-/* ===== NOSSO ESTUDO • LEITOR IMERSIVO 3.0 ===== */
-.reader-view{width:min(100%,980px);padding:12px 12px 110px}
-.reader-view .back-row{margin:2px 0 10px}
-.reader-view .back-btn{width:38px;height:38px;border-radius:12px}
-.reader-shell{border-radius:20px;box-shadow:0 8px 28px rgba(20,40,70,.09)}
-.reader-head{padding:12px 14px;position:sticky;top:0;z-index:15;background:rgba(255,255,255,.96);backdrop-filter:blur(14px)}
-.reader-head-info strong{font-size:15px}.reader-head-info span{font-size:11px}
-.reader-canvas-wrap{background:#d9dee3;padding:6px;min-height:auto;overflow:auto;touch-action:pan-x pan-y pinch-zoom}
-.reader-canvas-wrap canvas{display:block;margin:auto;max-width:none;background:#fff;box-shadow:0 3px 14px rgba(0,0,0,.15)}
-.reader-controls{padding:10px 12px}.reader-page{font-size:13px}
-.reader-immersive-tools{display:flex;gap:7px;padding:9px 10px;border-bottom:1px solid var(--borda);background:#fff;overflow-x:auto;scrollbar-width:none}
-.reader-immersive-tools::-webkit-scrollbar{display:none}
-.reader-immersive-tools button{flex:0 0 auto;border:1px solid var(--borda);background:#f7f9fb;color:var(--texto);border-radius:999px;padding:8px 11px;font-size:11px;font-weight:850}
-.reader-immersive-tools button.active{background:var(--claro);color:var(--azul);border-color:#b9d8f6}
-.reader-zoom-label{min-width:50px;text-align:center}
-.reader-reading-mode{padding:clamp(22px,6vw,58px);max-width:760px;margin:auto;background:#fff;min-height:62vh}
-.reader-reading-mode .reading-text{font-family:Georgia,"Times New Roman",serif;font-size:20px;line-height:1.72;color:#202124;white-space:pre-wrap}
-.reader-reading-mode .reading-title{font-size:12px;color:var(--azul);font-weight:900;text-transform:uppercase;letter-spacing:.08em;margin-bottom:18px}
-.reader-reading-mode.sepia{background:#f4ecd8}.reader-reading-mode.dark{background:#17191c}.reader-reading-mode.dark .reading-text{color:#e8e6e3}
-body.reader-fullscreen #readerView{position:fixed;inset:0;z-index:5000;background:#eef1f4;overflow:auto;padding:0 0 30px;width:100%;max-width:none}
-body.reader-fullscreen #readerView>.back-row,body.reader-fullscreen .bottom-nav,body.reader-fullscreen .topbar{display:none!important}
-body.reader-fullscreen .reader-shell{border:0;border-radius:0;box-shadow:none}
-body.reader-fullscreen .reader-canvas-wrap{min-height:calc(100vh - 145px)}
+/* ===== NOSSO ESTUDO • LEITOR IMERSIVO FUNCIONAL ===== */
+.ne-readerbar{display:flex;align-items:center;gap:7px;padding:9px 10px;background:#fff;border-bottom:1px solid var(--borda);overflow-x:auto;scrollbar-width:none}
+.ne-readerbar::-webkit-scrollbar{display:none}.ne-readerbar button{border:1px solid var(--borda);background:#f7f9fb;color:var(--texto);border-radius:999px;padding:8px 11px;font-size:11px;font-weight:850;white-space:nowrap}
+.ne-readerbar button.active{background:var(--claro);border-color:#b9d8f6;color:var(--azul)}.ne-sep{width:1px;height:25px;background:var(--borda);flex:none}
+.ne-reading{max-width:760px;margin:auto;min-height:60vh;padding:clamp(25px,6vw,58px);background:#fff}
+.ne-reading-brand{font-size:10px;color:var(--azul);font-weight:900;text-transform:uppercase;letter-spacing:.1em;margin-bottom:24px}
+.ne-reading-text{font-family:Georgia,"Times New Roman",serif;line-height:1.78;color:#202124;white-space:pre-wrap}
+.ne-reading.sepia{background:#f4ecd8}.ne-reading.dark{background:#17191c}.ne-reading.dark .ne-reading-text{color:#ece8df}.ne-reading.dark .ne-reading-brand{color:#8fc5ff}
+.ne-reading-unavailable{max-width:620px;margin:20px auto;background:#fff;border:1px solid var(--borda);border-radius:20px;padding:25px;text-align:center}.ne-reading-unavailable p{color:var(--cinza);font-size:13px;line-height:1.55;margin:8px 0 15px}
+body.ne-reader-fullscreen #readerView{position:fixed;inset:0;z-index:5000;background:#eef1f4;overflow:auto;width:100%;max-width:none;padding:0 0 30px}
+body.ne-reader-fullscreen #readerView>.back-row,body.ne-reader-fullscreen .bottom-nav,body.ne-reader-fullscreen .topbar{display:none!important}
+body.ne-reader-fullscreen .reader-shell{border:0;border-radius:0;box-shadow:none;max-width:980px;margin:auto}
 @media(max-width:620px){
- .reader-view{padding:6px 0 96px}
- .reader-view>.back-row{padding:5px 10px 0}
- .reader-shell{border-left:0;border-right:0;border-radius:0}
- .reader-head{padding:10px 12px}
- .reader-canvas-wrap{padding:2px}
- .reader-controls{padding:9px 10px}
- .reader-tools{padding:0 10px}
- .reader-panel{margin-left:10px;margin-right:10px}
+ .reader-view{width:100%;padding:6px 0 96px}.reader-view>.back-row{padding:5px 10px 0;margin-bottom:7px}
+ .reader-view>.back-row .back-btn{width:38px;height:38px;border-radius:12px}
+ .reader-shell{border-left:0;border-right:0;border-radius:0;box-shadow:none}
+ .reader-head{padding:10px 12px}.reader-head-info strong{font-size:15px}.reader-head-info span{font-size:11px}
+ .reader-canvas-wrap{padding:2px;min-height:auto;overflow:auto;-webkit-overflow-scrolling:touch;touch-action:pan-x pan-y pinch-zoom}
+ .reader-canvas-wrap canvas{max-width:none;height:auto!important;box-shadow:0 2px 10px rgba(0,0,0,.15)}
+ .reader-controls{padding:9px 9px;gap:7px}.reader-controls .btn{padding:11px 14px}.reader-page{font-size:13px}
+ .reader-tools{padding:0 10px;gap:7px}.reader-tool{padding:10px 6px}.reader-panel{margin-left:10px;margin-right:10px}
+ .ne-reading{min-height:68vh;padding:28px 22px}.ne-reading-text{line-height:1.72}
 }
 
 </style>
@@ -2110,81 +2100,91 @@ async function renderLibrary(){const box=document.getElementById('libraryContent
 async function toggleWantToRead(id){if(libraryWantSet.has(id)){await supabaseClient.from('biblioteca_quero_ler').delete().eq('usuario_id',currentProfile.id).eq('material_id',id);libraryWantSet.delete(id)}else{const {error}=await supabaseClient.from('biblioteca_quero_ler').insert({usuario_id:currentProfile.id,material_id:id});if(error){alert('Não foi possível adicionar à lista.');return}libraryWantSet.add(id)}await renderLibrary()}
 async function toggleFavoriteFromLibrary(id){if(libraryFavoriteSet.has(id)){await supabaseClient.from('biblioteca_favoritos').delete().eq('usuario_id',currentProfile.id).eq('material_id',id);libraryFavoriteSet.delete(id)}else{const {error}=await supabaseClient.from('biblioteca_favoritos').insert({usuario_id:currentProfile.id,material_id:id});if(error){alert('Não foi possível favoritar.');return}libraryFavoriteSet.add(id)}await renderLibrary()}
 async function loadWeeklyReading(){const host=document.getElementById('weeklyReadingContent');if(!host)return;const today=new Date().toISOString().slice(0,10);const {data}=await supabaseClient.from('biblioteca_leituras_semana').select('*,biblioteca_materiais(titulo)').eq('ativo',true).lte('data_inicio',today).gte('data_fim',today).order('created_at',{ascending:false}).limit(1);const r=data?.[0];if(!r){host.innerHTML=isLeader()?'<div style="display:flex;justify-content:flex-end;margin-bottom:12px"><button class="btn btn-soft" onclick="openWeeklyReadingAdmin()">📅 Definir leitura da semana</button></div>':'';return}host.innerHTML=`<section class="weekly-reading"><small>📅 LEITURA DA SEMANA</small><h3>${escapeHtml(r.titulo||r.biblioteca_materiais?.titulo||'Leitura da semana')}</h3><p>${escapeHtml(r.descricao||'')}${r.pagina_inicio?`<br><strong>Páginas ${r.pagina_inicio}${r.pagina_fim?'–'+r.pagina_fim:''}</strong>`:''}</p><div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:13px"><button class="btn btn-white" onclick="openLibraryMaterial('${r.material_id}',${r.pagina_inicio||1})">Começar leitura</button>${isLeader()?'<button class="btn btn-glass" onclick="openWeeklyReadingAdmin()">Alterar</button>':''}</div></section>`}
-async function openLibraryMaterial(id,startPage=null){const m=libraryMaterials.find(x=>x.id===id)||(await supabaseClient.from('biblioteca_materiais').select('*').eq('id',id).single()).data;if(!m)return;activeLibraryMaterial=m;const {data:p}=await supabaseClient.from('biblioteca_progresso').select('*').eq('usuario_id',currentProfile.id).eq('material_id',id).maybeSingle();activeReaderProgress=p||null;activeReaderPage=Math.max(1,Number(startPage||p?.pagina_atual||1));hideMainViewsForLibrary();document.getElementById('readerView').classList.remove('hidden');document.getElementById('readerContent').innerHTML='<div class="loading">Preparando seu leitor...</div>';const url=await signedLibraryUrl(m.arquivo_url);if(!url){document.getElementById('readerContent').innerHTML='<div class="library-empty">Não foi possível abrir este arquivo.</div>';return}try{const pdfjs=await import('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.10.38/pdf.min.mjs');pdfjs.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.10.38/pdf.worker.min.mjs';activePdfDoc=await pdfjs.getDocument(url).promise;if(activeReaderPage>activePdfDoc.numPages)activeReaderPage=1;await renderReader()}catch(e){console.error('Erro no leitor:',e);document.getElementById('readerContent').innerHTML='<div class="library-empty">Não foi possível carregar o PDF. <button class="btn btn-soft" style="margin-top:12px" onclick="openLibraryReader(activeLibraryMaterial.id,activeReaderPage)">Tentar novamente</button></div>'}}
-let readerZoom=1,readerDisplayMode='pdf',readerTheme='light',readerFontSize=20;
+async function openLibraryMaterial(id,startPage=null){const m=libraryMaterials.find(x=>x.id===id)||(await supabaseClient.from('biblioteca_materiais').select('*').eq('id',id).single()).data;if(!m)return;activeLibraryMaterial=m;const {data:p}=await supabaseClient.from('biblioteca_progresso').select('*').eq('usuario_id',currentProfile.id).eq('material_id',id).maybeSingle();activeReaderProgress=p||null;activeReaderPage=Math.max(1,Number(startPage||p?.pagina_atual||1));hideMainViewsForLibrary();document.getElementById('readerView').classList.remove('hidden');document.getElementById('readerContent').innerHTML='<div class="loading">Preparando seu leitor...</div>';const url=await signedLibraryUrl(m.arquivo_url);if(!url){document.getElementById('readerContent').innerHTML='<div class="library-empty">Não foi possível abrir este arquivo.</div>';return}try{const pdfjs=await import('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.10.38/pdf.min.mjs');pdfjs.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.10.38/pdf.worker.min.mjs';activePdfDoc=await pdfjs.getDocument(url).promise;if(activeReaderPage>activePdfDoc.numPages)activeReaderPage=1;await renderReader()}catch(e){console.error(e);document.getElementById('readerContent').innerHTML='<div class="library-empty">Não foi possível carregar o PDF neste dispositivo.</div>'}}
+let readerMode='page',readerFontSize=20,readerTheme='light',readerZoom=1;
 
 async function renderReader(){
  const m=activeLibraryMaterial,total=activePdfDoc.numPages,pct=Math.round((activeReaderPage/total)*100);
  const {data:fav}=await supabaseClient.from('biblioteca_favoritos').select('id').eq('usuario_id',currentProfile.id).eq('material_id',m.id).maybeSingle();
  const host=document.getElementById('readerContent');
  host.innerHTML=`<div class="reader-shell">
-   <div class="reader-head">
-    <div class="reader-head-info"><strong>${escapeHtml(m.titulo)}</strong><span>${escapeHtml(m.autor||'Nosso Estudo')}</span></div>
-    <button class="reader-tool ${fav?'active':''}" onclick="toggleLibraryFavorite()">${fav?'❤️':'🤍'}</button>
-   </div>
-   <div class="reader-immersive-tools">
-    <button onclick="setReaderMode('pdf')" class="${readerDisplayMode==='pdf'?'active':''}">📄 Página</button>
-    <button onclick="setReaderMode('reading')" class="${readerDisplayMode==='reading'?'active':''}">Aa Leitura</button>
-    <button onclick="changeReaderZoom(-.15)">−</button>
-    <button class="reader-zoom-label" onclick="resetReaderZoom()">${Math.round(readerZoom*100)}%</button>
-    <button onclick="changeReaderZoom(.15)">＋</button>
-    <button onclick="cycleReaderTheme()">◐ Tema</button>
-    <button onclick="toggleReaderFullscreen()">⛶ Tela cheia</button>
-   </div>
-   <div id="readerStage"></div>
-   <div class="reader-controls">
-    <button class="btn btn-soft" onclick="readerPrev()" ${activeReaderPage<=1?'disabled':''}>‹</button>
-    <div class="reader-page">Página ${activeReaderPage} de ${total}<small>${pct}% concluído</small><div class="book-progress"><span style="width:${pct}%"></span></div></div>
-    <button class="btn btn-primary" onclick="readerNext()" ${activeReaderPage>=total?'disabled':''}>›</button>
-   </div>
+  <div class="reader-head">
+   <div class="reader-head-info"><strong>${escapeHtml(m.titulo)}</strong><span>${escapeHtml(m.autor||'Nosso Estudo')}</span></div>
+   <button class="reader-tool ${fav?'active':''}" onclick="toggleLibraryFavorite()">${fav?'❤️':'🤍'}</button>
   </div>
-  <div class="reader-tools">
-   <button class="reader-tool" onclick="addLibraryBookmark()">🔖 Marcar página</button>
-   <button class="reader-tool" onclick="showReaderPanel('notes')">📝 Anotações</button>
-   <button class="reader-tool" onclick="showReaderPanel('learn')">💡 O que aprendi?</button>
-   <button class="reader-tool" onclick="showBookDiscussion()">💬 Discussão</button>
+  <div class="ne-readerbar">
+   <button class="${readerMode==='page'?'active':''}" onclick="setReaderMode('page')">📄 Original</button>
+   <button class="${readerMode==='text'?'active':''}" onclick="setReaderMode('text')">Aa Leitura</button>
+   <span class="ne-sep"></span>
+   <button onclick="readerFontDown()">A−</button>
+   <button onclick="readerFontUp()">A+</button>
+   <button onclick="cycleReaderTheme()">◐ Tema</button>
+   <button onclick="toggleReaderFullscreen()">⛶ Tela cheia</button>
   </div>
-  <div id="readerPanel"></div>
-  ${isLeader()?`<div class="reader-panel"><strong>⚙️ Administração</strong><div class="event-actions"><button class="btn btn-soft" onclick="editLibraryMaterial('${m.id}')">Editar material</button><button class="btn btn-soft" onclick="deleteLibraryMaterial('${m.id}')">Excluir</button></div></div>`:''}`;
+  <div id="neReaderStage"></div>
+  <div class="reader-controls">
+   <button class="btn btn-soft" onclick="readerPrev()" ${activeReaderPage<=1?'disabled':''}>‹</button>
+   <div class="reader-page">Página ${activeReaderPage} de ${total}<small>${pct}% concluído</small><div class="book-progress"><span style="width:${pct}%"></span></div></div>
+   <button class="btn btn-primary" onclick="readerNext()" ${activeReaderPage>=total?'disabled':''}>›</button>
+  </div>
+ </div>
+ <div class="reader-tools">
+  <button class="reader-tool" onclick="addLibraryBookmark()">🔖 Marcar página</button>
+  <button class="reader-tool" onclick="showReaderPanel('notes')">📝 Anotações</button>
+  <button class="reader-tool" onclick="showReaderPanel('learn')">💡 O que aprendi?</button>
+  <button class="reader-tool" onclick="showBookDiscussion()">💬 Discussão</button>
+ </div>
+ <div id="readerPanel"></div>
+ ${isLeader()?`<div class="reader-panel"><strong>⚙️ Administração</strong><div class="event-actions"><button class="btn btn-soft" onclick="editLibraryMaterial('${m.id}')">Editar material</button><button class="btn btn-soft" onclick="deleteLibraryMaterial('${m.id}')">Excluir</button></div></div>`:''}`;
  await renderReaderStage();
  await saveReaderProgress(total);
 }
+
 async function renderReaderStage(){
- const stage=document.getElementById('readerStage'); if(!stage||!activePdfDoc)return;
+ const stage=document.getElementById('neReaderStage'); if(!stage||!activePdfDoc)return;
  const page=await activePdfDoc.getPage(activeReaderPage);
- if(readerDisplayMode==='reading'){
-   try{
-    const content=await page.getTextContent();
-    const raw=content.items.map(i=>i.str).join(' ').replace(/\s+/g,' ').trim();
-    if(raw.length>80){
-      stage.innerHTML=`<div class="reader-reading-mode ${readerTheme}" style="--reader-font:${readerFontSize}px"><div class="reading-title">Nosso Estudo • Modo Leitura</div><div class="reading-text" style="font-size:${readerFontSize}px">${escapeHtml(raw)}</div></div>`;
-      return;
-    }
-   }catch(e){console.warn(e)}
-   readerDisplayMode='pdf';
+ if(readerMode==='text'){
+  try{
+   const tc=await page.getTextContent();
+   const parts=tc.items.map(i=>(i.str||'').trim()).filter(Boolean);
+   const txt=parts.join(' ').replace(/\s+/g,' ').trim();
+   if(txt.length>=40){
+    stage.innerHTML=`<article class="ne-reading ${readerTheme}">
+      <div class="ne-reading-brand">Nosso Estudo • Modo Leitura</div>
+      <div class="ne-reading-text" style="font-size:${readerFontSize}px">${escapeHtml(txt)}</div>
+     </article>`;
+    return;
+   }
+   stage.innerHTML=`<div class="ne-reading-unavailable"><strong>Modo Leitura indisponível nesta página</strong><p>Este PDF não possui texto suficiente para reorganizar. A página original continua disponível normalmente.</p><button class="btn btn-primary" onclick="setReaderMode('page')">Voltar ao original</button></div>`;
+   return;
+  }catch(e){
+   console.warn('Modo leitura:',e);
+   stage.innerHTML=`<div class="ne-reading-unavailable"><strong>Não foi possível converter esta página em texto.</strong><p>O PDF original não foi afetado.</p><button class="btn btn-primary" onclick="setReaderMode('page')">Abrir original</button></div>`;
+   return;
+  }
  }
  stage.innerHTML='<div class="reader-canvas-wrap"><canvas id="pdfCanvas"></canvas></div>';
  const canvas=document.getElementById('pdfCanvas'),ctx=canvas.getContext('2d');
  const base=page.getViewport({scale:1});
- const available=Math.max(280,Math.min(window.innerWidth-8,900));
- const fit=available/base.width;
- const scale=fit*readerZoom;
+ const margin=window.innerWidth<=620?8:64;
+ const max=Math.min(Math.max(280,window.innerWidth-margin),820);
+ const scale=(max/base.width)*readerZoom;
  const vp=page.getViewport({scale});
- const dpr=Math.min(window.devicePixelRatio||1,2);
- canvas.width=Math.floor(vp.width*dpr); canvas.height=Math.floor(vp.height*dpr);
+ canvas.width=vp.width; canvas.height=vp.height;
  canvas.style.width=vp.width+'px'; canvas.style.height=vp.height+'px';
- const transform=dpr!==1?[dpr,0,0,dpr,0,0]:null;
- await page.render({canvasContext:ctx,viewport:vp,transform}).promise;
+ await page.render({canvasContext:ctx,viewport:vp}).promise;
 }
-async function setReaderMode(mode){readerDisplayMode=mode;await renderReader()}
-async function changeReaderZoom(delta){readerDisplayMode='pdf';readerZoom=Math.max(.7,Math.min(2.6,readerZoom+delta));await renderReader()}
-async function resetReaderZoom(){readerZoom=1;readerDisplayMode='pdf';await renderReader()}
-async function cycleReaderTheme(){readerTheme=readerTheme==='light'?'sepia':readerTheme==='sepia'?'dark':'light';if(readerDisplayMode==='reading')await renderReaderStage()}
-function toggleReaderFullscreen(){document.body.classList.toggle('reader-fullscreen')}
-function readerFont(delta){readerFontSize=Math.max(16,Math.min(30,readerFontSize+delta));renderReaderStage()}
 
+async function setReaderMode(mode){readerMode=mode;await renderReader()}
+function readerFontDown(){readerFontSize=Math.max(16,readerFontSize-2);if(readerMode==='text')renderReaderStage()}
+function readerFontUp(){readerFontSize=Math.min(32,readerFontSize+2);if(readerMode==='text')renderReaderStage()}
+function cycleReaderTheme(){readerTheme=readerTheme==='light'?'sepia':readerTheme==='sepia'?'dark':'light';if(readerMode==='text')renderReaderStage()}
+function toggleReaderFullscreen(){document.body.classList.toggle('ne-reader-fullscreen')}
+
+async function saveReaderProgress(total){const pct=Math.min(100,(activeReaderPage/total)*100),done=activeReaderPage>=total;const payload={usuario_id:currentProfile.id,material_id:activeLibraryMaterial.id,pagina_atual:activeReaderPage,percentual:pct,ultima_leitura:new Date().toISOString(),concluido:done,concluido_em:done?new Date().toISOString():null};await supabaseClient.from('biblioteca_progresso').upsert(payload,{onConflict:'usuario_id,material_id'});activeReaderProgress=payload}
+async function readerPrev(){if(activeReaderPage>1){activeReaderPage--;await renderReader();window.scrollTo({top:0,behavior:'smooth'})}}
 async function readerNext(){if(activePdfDoc&&activeReaderPage<activePdfDoc.numPages){activeReaderPage++;await renderReader();window.scrollTo({top:0,behavior:'smooth'})}}
-function closeReader(){document.body.classList.remove('reader-fullscreen');activePdfDoc=null;readerZoom=1;readerDisplayMode='pdf';showLibrary()}
+function closeReader(){document.body.classList.remove('ne-reader-fullscreen');activePdfDoc=null;readerMode='page';readerZoom=1;showLibrary()}
 async function toggleLibraryFavorite(){const {data}=await supabaseClient.from('biblioteca_favoritos').select('id').eq('usuario_id',currentProfile.id).eq('material_id',activeLibraryMaterial.id).maybeSingle();if(data)await supabaseClient.from('biblioteca_favoritos').delete().eq('id',data.id);else await supabaseClient.from('biblioteca_favoritos').insert({usuario_id:currentProfile.id,material_id:activeLibraryMaterial.id});await renderReader()}
 async function addLibraryBookmark(){const title=prompt('Nome do marcador (opcional):','Página '+activeReaderPage);if(title===null)return;const {error}=await supabaseClient.from('biblioteca_marcadores').insert({usuario_id:currentProfile.id,material_id:activeLibraryMaterial.id,pagina:activeReaderPage,titulo:title||null});if(error)alert('Não foi possível salvar o marcador.');else alert('Página '+activeReaderPage+' marcada!')}
 async function showReaderPanel(kind){const panel=document.getElementById('readerPanel');const table=kind==='notes'?'biblioteca_anotacoes':'biblioteca_aprendizados',field=kind==='notes'?'anotacao':'aprendizado',title=kind==='notes'?'📝 Minhas anotações':'💡 O que eu aprendi?';const {data}=await supabaseClient.from(table).select('*').eq('usuario_id',currentProfile.id).eq('material_id',activeLibraryMaterial.id).order('created_at',{ascending:false});panel.innerHTML=`<div class="reader-panel"><strong>${title}</strong><textarea id="readerPanelText" placeholder="${kind==='notes'?'Esta anotação fica só para você.':'Registre uma reflexão sobre sua leitura...'}"></textarea>${kind==='learn'?'<div class="privacy-row"><label><strong>Quem pode ver?</strong></label><select id="readerVisibility"><option value="privado">🔒 Só para mim</option><option value="grupo">👥 Compartilhar com o grupo</option></select></div>':''}<button class="btn btn-primary" onclick="saveReaderText('${kind}')">Salvar na página ${activeReaderPage}</button><div class="reader-list">${(data||[]).map(x=>`<div class="reader-item"><button onclick="deleteReaderText('${kind}','${x.id}')">Excluir</button><strong>Pág. ${x.pagina||'-'}</strong>${kind==='learn'?` • ${x.visibilidade==='grupo'?'👥 Compartilhado':'🔒 Privado'}`:''}<br>${escapeHtml(x[field])}</div>`).join('')}</div>${kind==='learn'?'<div style="margin-top:14px"><button class="btn btn-soft wide" onclick="showSharedReflections()">👥 Ver reflexões compartilhadas</button></div>':''}</div>`}
