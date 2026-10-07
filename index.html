@@ -213,6 +213,19 @@ body.ne-reader-fullscreen .reader-shell{border:0;border-radius:0;box-shadow:none
  .ne-reading{min-height:68vh;padding:28px 22px}.ne-reading-text{line-height:1.72}
 }
 
+
+/* Tema também funciona no PDF original */
+body.ne-theme-sepia .reader-canvas-wrap{background:#cfc4a8}
+body.ne-theme-sepia .reader-canvas-wrap canvas{filter:sepia(.32) brightness(.96)}
+body.ne-theme-dark .reader-canvas-wrap{background:#111418}
+body.ne-theme-dark .reader-canvas-wrap canvas{filter:brightness(.72) contrast(.96)}
+body.ne-theme-dark .reader-shell,
+body.ne-theme-dark .reader-head,
+body.ne-theme-dark .ne-readerbar{background:#171a1f;color:#f1f3f5;border-color:#30343a}
+body.ne-theme-dark .ne-readerbar button{background:#23272d;color:#f1f3f5;border-color:#383e46}
+body.ne-theme-dark .ne-readerbar button.active{background:#163c60;color:#dceeff;border-color:#285d8e}
+body.ne-theme-dark .reader-page small{color:#aeb7c0}
+
 </style>
 
   <!-- PWA Nosso Estudo -->
@@ -2176,15 +2189,29 @@ async function renderReaderStage(){
 }
 
 async function setReaderMode(mode){readerMode=mode;await renderReader()}
-function readerFontDown(){readerFontSize=Math.max(16,readerFontSize-2);if(readerMode==='text')renderReaderStage()}
-function readerFontUp(){readerFontSize=Math.min(32,readerFontSize+2);if(readerMode==='text')renderReaderStage()}
-function cycleReaderTheme(){readerTheme=readerTheme==='light'?'sepia':readerTheme==='sepia'?'dark':'light';if(readerMode==='text')renderReaderStage()}
+function readerFontDown(){
+ if(readerMode==='text'){readerFontSize=Math.max(16,readerFontSize-2)}
+ else{readerZoom=Math.max(.65,readerZoom-.12)}
+ renderReaderStage()
+}
+function readerFontUp(){
+ if(readerMode==='text'){readerFontSize=Math.min(32,readerFontSize+2)}
+ else{readerZoom=Math.min(2.4,readerZoom+.12)}
+ renderReaderStage()
+}
+function cycleReaderTheme(){
+ readerTheme=readerTheme==='light'?'sepia':readerTheme==='sepia'?'dark':'light';
+ document.body.classList.remove('ne-theme-sepia','ne-theme-dark');
+ if(readerTheme==='sepia')document.body.classList.add('ne-theme-sepia');
+ if(readerTheme==='dark')document.body.classList.add('ne-theme-dark');
+ renderReaderStage()
+}
 function toggleReaderFullscreen(){document.body.classList.toggle('ne-reader-fullscreen')}
 
 async function saveReaderProgress(total){const pct=Math.min(100,(activeReaderPage/total)*100),done=activeReaderPage>=total;const payload={usuario_id:currentProfile.id,material_id:activeLibraryMaterial.id,pagina_atual:activeReaderPage,percentual:pct,ultima_leitura:new Date().toISOString(),concluido:done,concluido_em:done?new Date().toISOString():null};await supabaseClient.from('biblioteca_progresso').upsert(payload,{onConflict:'usuario_id,material_id'});activeReaderProgress=payload}
 async function readerPrev(){if(activeReaderPage>1){activeReaderPage--;await renderReader();window.scrollTo({top:0,behavior:'smooth'})}}
 async function readerNext(){if(activePdfDoc&&activeReaderPage<activePdfDoc.numPages){activeReaderPage++;await renderReader();window.scrollTo({top:0,behavior:'smooth'})}}
-function closeReader(){document.body.classList.remove('ne-reader-fullscreen');activePdfDoc=null;readerMode='page';readerZoom=1;showLibrary()}
+function closeReader(){document.body.classList.remove('ne-reader-fullscreen','ne-theme-sepia','ne-theme-dark');activePdfDoc=null;readerMode='page';readerZoom=1;readerTheme='light';showLibrary()}
 async function toggleLibraryFavorite(){const {data}=await supabaseClient.from('biblioteca_favoritos').select('id').eq('usuario_id',currentProfile.id).eq('material_id',activeLibraryMaterial.id).maybeSingle();if(data)await supabaseClient.from('biblioteca_favoritos').delete().eq('id',data.id);else await supabaseClient.from('biblioteca_favoritos').insert({usuario_id:currentProfile.id,material_id:activeLibraryMaterial.id});await renderReader()}
 async function addLibraryBookmark(){const title=prompt('Nome do marcador (opcional):','Página '+activeReaderPage);if(title===null)return;const {error}=await supabaseClient.from('biblioteca_marcadores').insert({usuario_id:currentProfile.id,material_id:activeLibraryMaterial.id,pagina:activeReaderPage,titulo:title||null});if(error)alert('Não foi possível salvar o marcador.');else alert('Página '+activeReaderPage+' marcada!')}
 async function showReaderPanel(kind){const panel=document.getElementById('readerPanel');const table=kind==='notes'?'biblioteca_anotacoes':'biblioteca_aprendizados',field=kind==='notes'?'anotacao':'aprendizado',title=kind==='notes'?'📝 Minhas anotações':'💡 O que eu aprendi?';const {data}=await supabaseClient.from(table).select('*').eq('usuario_id',currentProfile.id).eq('material_id',activeLibraryMaterial.id).order('created_at',{ascending:false});panel.innerHTML=`<div class="reader-panel"><strong>${title}</strong><textarea id="readerPanelText" placeholder="${kind==='notes'?'Esta anotação fica só para você.':'Registre uma reflexão sobre sua leitura...'}"></textarea>${kind==='learn'?'<div class="privacy-row"><label><strong>Quem pode ver?</strong></label><select id="readerVisibility"><option value="privado">🔒 Só para mim</option><option value="grupo">👥 Compartilhar com o grupo</option></select></div>':''}<button class="btn btn-primary" onclick="saveReaderText('${kind}')">Salvar na página ${activeReaderPage}</button><div class="reader-list">${(data||[]).map(x=>`<div class="reader-item"><button onclick="deleteReaderText('${kind}','${x.id}')">Excluir</button><strong>Pág. ${x.pagina||'-'}</strong>${kind==='learn'?` • ${x.visibilidade==='grupo'?'👥 Compartilhado':'🔒 Privado'}`:''}<br>${escapeHtml(x[field])}</div>`).join('')}</div>${kind==='learn'?'<div style="margin-top:14px"><button class="btn btn-soft wide" onclick="showSharedReflections()">👥 Ver reflexões compartilhadas</button></div>':''}</div>`}
